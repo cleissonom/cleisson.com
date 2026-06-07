@@ -21,7 +21,7 @@ stack:
   - Markdown
   - App Router
 links:
-  repo: https://github.cleisson.com/website
+  repo: https://github.cleisson.com/cleisson.com
   live: https://cleisson.com
 highlights:
   - Portfólio localizado com rotas em inglês, português e espanhol.
