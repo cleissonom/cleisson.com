@@ -1,18 +1,34 @@
-import { DEVIMG_MANIFEST } from "@/lib/devimg.generated"
+import { DEVIMG_MANIFEST as DEVIMG_BLOG_MANIFEST } from "@/lib/devimg-blog.generated"
+import { DEVIMG_MANIFEST as DEVIMG_PROJECTS_MANIFEST } from "@/lib/devimg-projects.generated"
 import { DEVIMG_MANIFEST as DEVIMG_SEO_MANIFEST } from "@/lib/devimg-seo.generated"
 
-type ProjectImageFit = "cover" | "contain"
+type ImageFit = "cover" | "contain"
 
-type ProjectImageVariant = {
+type ImageVariant = {
   src: string
   width: number
   height: number
-  fit: ProjectImageFit
+  fit: ImageFit
 }
 
-type DevimgSource = (typeof DEVIMG_MANIFEST.sources)[number]
-type DevimgVariant = DevimgSource["variants"][number]
+type DevimgVariant = {
+  src: string
+  width: number
+  height: number
+  fit: string
+  preset: string
+  format: string
+}
+
+type DevimgManifest = {
+  sources: readonly {
+    source_path: string
+    variants: readonly DevimgVariant[]
+  }[]
+}
+
 type ProjectPreset = "project-card" | "project-banner"
+type BlogPreset = "blog-card" | "blog-article" | "blog-social"
 
 const PROJECT_VARIANT_DEFAULTS: Record<ProjectPreset, { width: number; height: number }> = {
   "project-card": {
@@ -25,7 +41,23 @@ const PROJECT_VARIANT_DEFAULTS: Record<ProjectPreset, { width: number; height: n
   }
 }
 
+const BLOG_VARIANT_DEFAULTS: Record<BlogPreset, { width: number; height: number }> = {
+  "blog-card": {
+    width: 640,
+    height: 392
+  },
+  "blog-article": {
+    width: 1200,
+    height: 735
+  },
+  "blog-social": {
+    width: 1200,
+    height: 735
+  }
+}
+
 const PROJECT_VARIANT_FORMAT = "jpeg"
+const BLOG_VARIANT_FORMAT = "jpeg"
 const SEO_VARIANT_FORMAT = "jpeg"
 const SEO_VARIANT_PRESET = "seo-open-graph"
 const SEO_VARIANT_DEFAULT = {
@@ -33,11 +65,11 @@ const SEO_VARIANT_DEFAULT = {
   height: 630
 }
 
-export function projectCardImageVariant(src: string): ProjectImageVariant {
+export function projectCardImageVariant(src: string): ImageVariant {
   return projectImageVariant(src, "project-card")
 }
 
-export function projectBannerImageVariant(src: string): ProjectImageVariant {
+export function projectBannerImageVariant(src: string): ImageVariant {
   return projectImageVariant(src, "project-banner")
 }
 
@@ -49,14 +81,18 @@ export function projectBannerImage(src: string): string {
   return projectBannerImageVariant(src).src
 }
 
-export function seoImageVariant(
-  src: string
-): Pick<ProjectImageVariant, "src" | "width" | "height"> {
-  const sourcePath = projectSourcePath(src)
-  const source = DEVIMG_SEO_MANIFEST.sources.find((source) => source.source_path === sourcePath)
-  const variant = source?.variants.find(
-    (variant) => variant.preset === SEO_VARIANT_PRESET && variant.format === SEO_VARIANT_FORMAT
-  )
+export function blogCardImageVariant(src: string): ImageVariant {
+  return blogImageVariant(src, "blog-card")
+}
+
+export function blogArticleImageVariant(src: string): ImageVariant {
+  return blogImageVariant(src, "blog-article")
+}
+
+export function seoImageVariant(src: string): Pick<ImageVariant, "src" | "width" | "height"> {
+  const variant =
+    findImageVariant(DEVIMG_SEO_MANIFEST, src, SEO_VARIANT_PRESET, SEO_VARIANT_FORMAT) ??
+    findImageVariant(DEVIMG_BLOG_MANIFEST, src, "blog-social", BLOG_VARIANT_FORMAT)
 
   return {
     src: variant?.src ?? src,
@@ -65,31 +101,46 @@ export function seoImageVariant(
   }
 }
 
-function projectImageVariant(src: string, preset: ProjectPreset): ProjectImageVariant {
-  const variant = findProjectVariant(src, preset)
+function projectImageVariant(src: string, preset: ProjectPreset): ImageVariant {
+  const variant = findImageVariant(DEVIMG_PROJECTS_MANIFEST, src, preset, PROJECT_VARIANT_FORMAT)
   const fallback = PROJECT_VARIANT_DEFAULTS[preset]
 
   return {
     src: variant?.src ?? src,
     width: variant?.width ?? fallback.width,
     height: variant?.height ?? fallback.height,
-    fit: projectImageFit(variant?.fit)
+    fit: imageFit(variant?.fit)
   }
 }
 
-function findProjectVariant(src: string, preset: ProjectPreset): DevimgVariant | undefined {
-  const sourcePath = projectSourcePath(src)
-  const source = DEVIMG_MANIFEST.sources.find((source) => source.source_path === sourcePath)
+function blogImageVariant(src: string, preset: BlogPreset): ImageVariant {
+  const variant = findImageVariant(DEVIMG_BLOG_MANIFEST, src, preset, BLOG_VARIANT_FORMAT)
+  const fallback = BLOG_VARIANT_DEFAULTS[preset]
 
-  return source?.variants.find(
-    (variant) => variant.preset === preset && variant.format === PROJECT_VARIANT_FORMAT
-  )
+  return {
+    src: variant?.src ?? src,
+    width: variant?.width ?? fallback.width,
+    height: variant?.height ?? fallback.height,
+    fit: imageFit(variant?.fit)
+  }
+}
+
+function findImageVariant(
+  manifest: DevimgManifest,
+  src: string,
+  preset: string,
+  format: string
+): DevimgVariant | undefined {
+  const sourcePath = projectSourcePath(src)
+  const source = manifest.sources.find((source) => source.source_path === sourcePath)
+
+  return source?.variants.find((variant) => variant.preset === preset && variant.format === format)
 }
 
 function projectSourcePath(src: string): string {
   return src.startsWith("/") ? `public${src}` : src
 }
 
-function projectImageFit(fit: string | undefined): ProjectImageFit {
+function imageFit(fit: string | undefined): ImageFit {
   return fit === "contain" ? "contain" : "cover"
 }

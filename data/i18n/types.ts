@@ -135,6 +135,7 @@ export type LocaleDictionary = {
       metadataTitle: string
       metadataDescription: string
       lead: string
+      downloadPdfLabel: string
       notFoundTitle: string
       notFoundDescription: string
     }

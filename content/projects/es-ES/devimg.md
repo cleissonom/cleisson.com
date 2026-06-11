@@ -32,7 +32,7 @@ highlights:
 
 DevImg es un pipeline de imágenes para desarrollo creado para que los flujos de imágenes frontend sean reproducibles, revisables y validados en CI en lugar de manuales. Está pensado para equipos que mantienen assets estáticos en el repositorio y quieren que las variantes generadas se comporten como artefactos normales de build.
 
-La herramienta lee un `devimg.toml`, escanea carpetas de origen, genera variantes configuradas, escribe un manifiesto JSON, exporta helpers amigables para la aplicación, produce un informe Markdown y valida que los archivos generados existan, estén actualizados y respeten los presupuestos configurados. Vive al lado de los componentes de imagen del framework y de la CDN: DevImg se encarga de la generación determinística de variantes, mientras el frontend decide cómo renderizar los assets seleccionados.
+La herramienta lee una configuración DevImg, como `devimg.projects.toml`, escanea carpetas de origen, genera variantes configuradas, escribe un manifiesto JSON, exporta helpers amigables para la aplicación, produce un informe Markdown y valida que los archivos generados existan, estén actualizados y respeten los presupuestos configurados. Vive al lado de los componentes de imagen del framework y de la CDN: DevImg se encarga de la generación determinística de variantes, mientras el frontend decide cómo renderizar los assets seleccionados.
 
 ## Instalación y CI
 
@@ -54,7 +54,7 @@ La Action descarga el binario correspondiente desde GitHub Releases, verifica su
 
 ## Flujo de uso
 
-1. Define fuentes, presets, anchos, formatos, calidad, recorte y presupuestos en `devimg.toml`.
+1. Define fuentes, presets, anchos, formatos, calidad, recorte y presupuestos en `devimg.projects.toml`.
 2. Ejecuta `devimg optimize` para generar variantes responsivas y el manifiesto.
 3. Ejecuta `devimg manifest export` cuando la aplicación necesite un helper TypeScript o JSON versionado para nombres con hash de contenido.
 4. Ejecuta `devimg review` para crear un artefacto HTML estático de revisión visual.
@@ -88,7 +88,7 @@ Quería que el pipeline se comportara como infraestructura de desarrollo: config
 
 Este sitio usa DevImg para imágenes de tarjetas y banners de proyectos. Las imágenes de origen viven en `public/projects`, las variantes generadas viven en `public/images/generated` y el código de la aplicación lee un helper TypeScript versionado generado desde el manifiesto.
 
-El CI usa la Action pública `cleissonom/devimg/action@v0.2.7`, descarga un binario de release con checksum, ejecuta `devimg check --fail-on-warning` en modo estricto, confirma que los helpers exportados estén actualizados, sube artefactos de revisión para proyectos y SEO, y ejecuta dry-runs de revisión con IA, alt text metadata-only y borrador de página de proyecto sin claves de API. El borrador en prosa se escribe solo en `$RUNNER_TEMP` y CI no lo commitea ni lo publica. El `devimg.toml` predeterminado gestiona covers de proyectos, mientras `devimg.seo.toml` genera imágenes Open Graph más pequeñas y con hash de contenido para metadata.
+El CI usa la Action pública `cleissonom/devimg/action@v0.2.7`, descarga un binario de release con checksum, ejecuta `devimg check --fail-on-warning` en modo estricto, confirma que los helpers exportados estén actualizados, sube artefactos de revisión para proyectos, blog y SEO, y ejecuta dry-runs de revisión con IA, alt text metadata-only y borrador de página de proyecto sin claves de API. El borrador en prosa se escribe solo en `$RUNNER_TEMP` y CI no lo commitea ni lo publica. Las configuraciones nombradas `devimg.projects.toml`, `devimg.blog.toml` y `devimg.seo.toml` mantienen aislados los covers de proyectos, las imágenes del blog y las imágenes Open Graph.
 
 ## Alcance actual
 

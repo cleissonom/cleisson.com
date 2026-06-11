@@ -40,9 +40,7 @@ export function projectJsonLd(locale: Locale, project: ProjectEntry) {
 }
 
 export function blogPostJsonLd(locale: Locale, post: BlogEntry) {
-  const image = post.coverImage
-    ? absoluteUrl(post.coverImage)
-    : absoluteUrl(seoImageVariant(SEO_IMAGE_PATHS.blog).src)
+  const image = absoluteUrl(seoImageVariant(post.coverImage ?? SEO_IMAGE_PATHS.blog).src)
 
   return {
     "@context": "https://schema.org",

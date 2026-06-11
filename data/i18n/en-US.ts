@@ -289,6 +289,7 @@ export const enUSDictionary: LocaleDictionary = {
       metadataDescription:
         "Writing on backend engineering, cloud infrastructure, and scalable architecture.",
       lead: "Notes from production engineering work: reliability, infrastructure, distributed systems, and delivery strategy.",
+      downloadPdfLabel: "Download article PDF",
       notFoundTitle: "Post not found",
       notFoundDescription: "Post not found for this locale."
     },

@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation"
+import type { ComponentPropsWithoutRef } from "react"
+import Image from "next/image"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
 import {
+  ButtonLink,
   Chip,
   ChipRow,
   Eyebrow,
@@ -17,9 +20,33 @@ import { JsonLd } from "@/components/json-ld"
 import { getDictionary } from "@/data/i18n"
 import { siteIdentity } from "@/data/profile"
 import { getAllPostSlugs, getPostBySlug } from "@/lib/content"
+import { blogArticleImageVariant } from "@/lib/devimg"
+import { formatContentDate } from "@/lib/display-date"
 import { LOCALES, isLocale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl, buildPageTitle, createMetadata } from "@/lib/metadata"
 import { blogPostJsonLd, breadcrumbJsonLd } from "@/lib/schema"
+
+function MarkdownImage({ src = "", alt = "" }: ComponentPropsWithoutRef<"img">) {
+  const imageSrc = typeof src === "string" ? src : ""
+
+  if (!imageSrc) {
+    return null
+  }
+
+  const image = blogArticleImageVariant(imageSrc)
+
+  return (
+    <Image
+      className={`markdown-image${image.fit === "contain" ? " markdown-image-contain" : ""}`}
+      src={image.src}
+      alt={alt}
+      width={image.width}
+      height={image.height}
+      loading="lazy"
+      unoptimized
+    />
+  )
+}
 
 export function generateStaticParams() {
   return LOCALES.flatMap((locale) =>
@@ -57,8 +84,8 @@ export async function generateMetadata({
     title: buildPageTitle(post.title),
     description: post.summary,
     path: `/blog/${post.slug}`,
-    imagePath: SEO_IMAGE_PATHS.blog,
-    imageAlt: `${post.title} social preview`,
+    imagePath: post.coverImage ?? SEO_IMAGE_PATHS.blog,
+    imageAlt: post.coverAlt ?? `${post.title} social preview`,
     openGraphType: "article",
     keywords: post.tags,
     authors: [siteIdentity.name],
@@ -105,29 +132,41 @@ export default async function BlogDetailPage({
           <Lead>{post.summary}</Lead>
         </PageHeader>
 
-        <div className="article-meta-row">
-          <MutedText>
-            {ui.labels.published}: {new Date(post.date).toLocaleDateString(locale)}
-          </MutedText>
-          {post.updatedAt ? (
+        <div className="article-hero-aside">
+          <div className="article-meta-row">
             <MutedText>
-              {ui.labels.updated}: {new Date(post.updatedAt).toLocaleDateString(locale)}
+              {ui.labels.published}: {formatContentDate(post.date, locale)}
             </MutedText>
-          ) : null}
-          <MutedText>
-            {post.readingTimeMinutes} {dictionary.snippets.readingMinutesShort}
-          </MutedText>
-        </div>
+            {post.updatedAt ? (
+              <MutedText>
+                {ui.labels.updated}: {formatContentDate(post.updatedAt, locale)}
+              </MutedText>
+            ) : null}
+            <MutedText>
+              {post.readingTimeMinutes} {dictionary.snippets.readingMinutesShort}
+            </MutedText>
+          </div>
 
-        <ChipRow>
-          {post.tags.map((tag) => (
-            <Chip key={`${post.slug}-${tag}`}>{tag}</Chip>
-          ))}
-        </ChipRow>
+          <ChipRow>
+            {post.tags.map((tag) => (
+              <Chip key={`${post.slug}-${tag}`}>{tag}</Chip>
+            ))}
+          </ChipRow>
+
+          {post.pdfUrl ? (
+            <div className="article-actions">
+              <ButtonLink href={post.pdfUrl} variant="secondary" download>
+                {dictionary.pages.blog.downloadPdfLabel}
+              </ButtonLink>
+            </div>
+          ) : null}
+        </div>
       </Surface>
 
       <Surface className="markdown content-prose article-prose">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ img: MarkdownImage }}>
+          {post.body}
+        </ReactMarkdown>
       </Surface>
 
       <nav className="detail-footer-nav" aria-label={ui.labels.backToBlog}>

@@ -1,43 +1,50 @@
 # Dev Image Pipeline
 
-This site dogfoods `devimg` for static project cover variants and SEO Open Graph images. Project covers use JPEG generated sources with `next/image` marked `unoptimized` because DevImg already owns their sizing and quality. SEO source PNGs are converted into smaller content-hashed JPEGs for metadata.
+This site dogfoods `devimg` for static project cover variants, blog card/social images, and SEO Open Graph images. Project and blog images use JPEG generated sources with `next/image` marked `unoptimized` because DevImg already owns their sizing and quality. Inline blog charts can use SVG directly when translated chart text needs to stay crisp. SEO source PNGs are converted into smaller content-hashed JPEGs for metadata.
 
 ## Scope
 
 - Project source: `public/projects`
 - Project output: `public/images/generated/projects`
-- Project manifest: `public/images/devimg-manifest.json`
+- Project manifest: `public/images/projects-manifest.json`
 - SEO source: `public/seo`
 - SEO output: `public/images/generated/seo`
 - SEO manifest: `public/images/seo-manifest.json`
-- Local reports: `.devimg/devimg-report.md` and `.devimg/seo-report.md`
+- Blog source: `public/images/blog`
+- Blog output: `public/images/generated/blog`
+- Blog manifest: `public/images/blog-manifest.json`
+- Local reports: `.devimg/projects-report.md`, `.devimg/blog-report.md`, and `.devimg/seo-report.md`
 
 The generated filenames are content-hashed through `content_hash_filenames = true`, so each generated URL changes when the encoded bytes change. This is the required precondition before applying broad immutable CDN caching to generated assets.
 
-Project cover variants use `crop = "top"` so screenshot headers and top navigation remain visible in cropped cards and banners. SEO variants use a separate `devimg.seo.toml` config so project presets do not generate unrelated SEO outputs and SEO presets do not generate unrelated project outputs.
+Project cover variants use `crop = "top"` so screenshot headers and top navigation remain visible in cropped cards and banners. Blog variants use a separate `devimg.blog.toml` config so article/card/social presets do not generate unrelated project outputs. SEO variants use a separate `devimg.seo.toml` config so project presets do not generate unrelated SEO outputs and SEO presets do not generate unrelated project outputs.
 
 The CLI Tools and DevImg artwork use `[[overrides]]` entries with `fit = "contain"` so each full diagram is resized without cropping while the other project screenshots keep top-crop behavior.
 
 AccessTrace keeps two narrow `quality:cover-crop` acknowledgements for the card and banner presets because the top-anchored crop was visually reviewed and is intentional. New unacknowledged warnings still fail strict checks.
 
-`lib/devimg.generated.ts` is generated from `public/images/devimg-manifest.json`; `lib/devimg-seo.generated.ts` is generated from `public/images/seo-manifest.json`. They are the only places generated content-hash filenames are copied into app code. `lib/devimg.ts` derives project card, project banner, and SEO metadata variants from those generated modules.
+`lib/devimg-projects.generated.ts` is generated from `public/images/projects-manifest.json`; `lib/devimg-blog.generated.ts` is generated from `public/images/blog-manifest.json`; `lib/devimg-seo.generated.ts` is generated from `public/images/seo-manifest.json`. They are the only places generated content-hash filenames are copied into app code. `lib/devimg.ts` derives project card, project banner, blog card, blog social, and SEO metadata variants from those generated modules.
 
 ## Local Commands
 
 ```bash
-devimg optimize --dry-run
-devimg optimize
-devimg manifest export --manifest public/images/devimg-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg.generated.ts
-devimg manifest export --manifest public/images/devimg-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg.generated.ts --check
-devimg check --fail-on-warning
+devimg optimize --config devimg.projects.toml --dry-run
+devimg optimize --config devimg.projects.toml --allow-overwrite
+devimg manifest export --manifest public/images/projects-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-projects.generated.ts
+devimg manifest export --manifest public/images/projects-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-projects.generated.ts --check
+devimg check --config devimg.projects.toml --fail-on-warning
+devimg optimize --config devimg.blog.toml --allow-overwrite
+devimg manifest export --manifest public/images/blog-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-blog.generated.ts
+devimg manifest export --manifest public/images/blog-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-blog.generated.ts --check
+devimg check --config devimg.blog.toml --fail-on-warning
 devimg optimize --config devimg.seo.toml
 devimg manifest export --manifest public/images/seo-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-seo.generated.ts
 devimg manifest export --manifest public/images/seo-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-seo.generated.ts --check
 devimg check --config devimg.seo.toml --fail-on-warning
-devimg ai consent --ai-provider openai --model openai-dry-run-model --dry-run --output /tmp/cleisson-devimg-openai-consent.json --force
-devimg review --manifest public/images/devimg-manifest.json --ai --ai-provider openai --model openai-dry-run-model --dry-run --ai-output /tmp/cleisson-devimg-openai-ai-review.json --markdown /tmp/cleisson-devimg-openai-ai-review.md --force
-devimg alt --output /tmp/cleisson-devimg-alt.json --markdown /tmp/cleisson-devimg-alt.md --force
-devimg draft --draft-type project-page-copy --ai-provider openai --model openai-dry-run-model --dry-run --ai-review-json /tmp/cleisson-devimg-openai-ai-review.json --review-html .devimg/review.html --output /tmp/cleisson-devimg-project-page-copy.md --force
+devimg ai consent --config devimg.projects.toml --ai-provider openai --model openai-dry-run-model --dry-run --output /tmp/cleisson-devimg-openai-consent.json --force
+devimg review --manifest public/images/projects-manifest.json --ai --ai-provider openai --model openai-dry-run-model --dry-run --ai-output /tmp/cleisson-devimg-openai-ai-review.json --markdown /tmp/cleisson-devimg-openai-ai-review.md --force
+devimg alt --config devimg.projects.toml --output /tmp/cleisson-devimg-alt.json --markdown /tmp/cleisson-devimg-alt.md --force
+devimg draft --config devimg.projects.toml --draft-type project-page-copy --ai-provider openai --model openai-dry-run-model --dry-run --ai-review-json /tmp/cleisson-devimg-openai-ai-review.json --review-html .devimg/projects-review.html --output /tmp/cleisson-devimg-project-page-copy.md --force
 ```
 
 Use `--allow-overwrite` when intentionally regenerating existing variants after changing source images or presets.
@@ -50,4 +57,4 @@ The main CI workflow uses the public `cleissonom/devimg/action@v0.2.7` Action. I
 
 After the Action resolves the CLI, CI uses its `binary-path` output to run fully flagged AI consent, AI review, metadata-only alt-text, and draft dry-runs. The previews are written only under `$RUNNER_TEMP`, asserted nonempty, and do not require `OPENAI_API_KEY`; draft prose is not committed or published by CI.
 
-Generated variants, `public/images/devimg-manifest.json`, `public/images/seo-manifest.json`, `lib/devimg.generated.ts`, and `lib/devimg-seo.generated.ts` should be committed with image changes; `.devimg/` is ignored because reports and review artifacts are regenerated locally and in CI.
+Generated variants, `public/images/projects-manifest.json`, `public/images/blog-manifest.json`, `public/images/seo-manifest.json`, `lib/devimg-projects.generated.ts`, `lib/devimg-blog.generated.ts`, and `lib/devimg-seo.generated.ts` should be committed with image changes; `.devimg/` is ignored because reports and review artifacts are regenerated locally and in CI.

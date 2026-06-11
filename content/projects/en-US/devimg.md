@@ -32,7 +32,7 @@ highlights:
 
 DevImg is a developer image pipeline built to make frontend image workflows reproducible, reviewable, and CI-enforced instead of manual. It is designed for teams that keep static assets in the repository and want generated image variants to behave like normal build artifacts.
 
-The tool reads a `devimg.toml` config, scans source folders, generates configured variants, writes a JSON manifest, exports app-friendly helpers, produces a Markdown report, and checks that generated files are present, current, and inside configured budgets. It sits beside framework image components and CDNs: DevImg owns deterministic source-to-variant generation, while the frontend decides how to render the selected assets.
+The tool reads a DevImg config such as `devimg.projects.toml`, scans source folders, generates configured variants, writes a JSON manifest, exports app-friendly helpers, produces a Markdown report, and checks that generated files are present, current, and inside configured budgets. It sits beside framework image components and CDNs: DevImg owns deterministic source-to-variant generation, while the frontend decides how to render the selected assets.
 
 ## Install and CI
 
@@ -54,7 +54,7 @@ The Action downloads the matching GitHub Release binary, verifies its SHA-256 ch
 
 ## Workflow
 
-1. Define sources, presets, widths, formats, quality, crop behavior, and budgets in `devimg.toml`.
+1. Define sources, presets, widths, formats, quality, crop behavior, and budgets in `devimg.projects.toml`.
 2. Run `devimg optimize` to generate responsive variants and a manifest.
 3. Run `devimg manifest export` when the app needs a checked-in TypeScript or JSON helper for content-hash filenames.
 4. Run `devimg review` to create a static HTML artifact for visual inspection.
@@ -88,7 +88,7 @@ I wanted the pipeline to behave like normal developer infrastructure: determinis
 
 This website uses DevImg for project card and banner images. The source images live under `public/projects`, generated variants live under `public/images/generated`, and application code reads a checked-in TypeScript helper generated from the manifest.
 
-CI uses the public `cleissonom/devimg/action@v0.2.7`, downloads a checksum-verified release binary, runs strict `devimg check --fail-on-warning`, validates that the helper exports are up to date, uploads project and SEO review artifacts, and dry-runs the AI review, metadata-only alt-text, and project-page draft artifact paths without API keys. Draft prose is written only under `$RUNNER_TEMP` and is not committed or published by CI. The default `devimg.toml` manages project covers, while `devimg.seo.toml` generates smaller content-hashed Open Graph images for metadata.
+CI uses the public `cleissonom/devimg/action@v0.2.7`, downloads a checksum-verified release binary, runs strict `devimg check --fail-on-warning`, validates that the helper exports are up to date, uploads project, blog, and SEO review artifacts, and dry-runs the AI review, metadata-only alt-text, and project-page draft artifact paths without API keys. Draft prose is written only under `$RUNNER_TEMP` and is not committed or published by CI. The named configs `devimg.projects.toml`, `devimg.blog.toml`, and `devimg.seo.toml` keep project covers, blog images, and Open Graph images isolated.
 
 ## Current scope
 
