@@ -41,10 +41,10 @@ devimg optimize --config devimg.seo.toml
 devimg manifest export --manifest public/images/seo-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-seo.generated.ts
 devimg manifest export --manifest public/images/seo-manifest.json --strip-prefix public --url-prefix / --format typescript --output lib/devimg-seo.generated.ts --check
 devimg check --config devimg.seo.toml --fail-on-warning
-devimg ai consent --ai-provider openai --model openai-dry-run-model --dry-run --output /tmp/cleisson-devimg-openai-consent.json --force
+devimg ai consent --config devimg.projects.toml --ai-provider openai --model openai-dry-run-model --dry-run --output /tmp/cleisson-devimg-openai-consent.json --force
 devimg review --manifest public/images/projects-manifest.json --ai --ai-provider openai --model openai-dry-run-model --dry-run --ai-output /tmp/cleisson-devimg-openai-ai-review.json --markdown /tmp/cleisson-devimg-openai-ai-review.md --force
-devimg alt --output /tmp/cleisson-devimg-alt.json --markdown /tmp/cleisson-devimg-alt.md --force
-devimg draft --draft-type project-page-copy --ai-provider openai --model openai-dry-run-model --dry-run --ai-review-json /tmp/cleisson-devimg-openai-ai-review.json --review-html .devimg/projects-review.html --output /tmp/cleisson-devimg-project-page-copy.md --force
+devimg alt --config devimg.projects.toml --output /tmp/cleisson-devimg-alt.json --markdown /tmp/cleisson-devimg-alt.md --force
+devimg draft --config devimg.projects.toml --draft-type project-page-copy --ai-provider openai --model openai-dry-run-model --dry-run --ai-review-json /tmp/cleisson-devimg-openai-ai-review.json --review-html .devimg/projects-review.html --output /tmp/cleisson-devimg-project-page-copy.md --force
 ```
 
 Use `--allow-overwrite` when intentionally regenerating existing variants after changing source images or presets.

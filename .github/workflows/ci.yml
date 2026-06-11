@@ -92,6 +92,7 @@ jobs:
             --output .devimg/seo-review.html \
             --force
           "$DEVIMG_BIN" ai consent \
+            --config devimg.projects.toml \
             --ai-provider openai \
             --model openai-dry-run-model \
             --dry-run \
@@ -105,9 +106,11 @@ jobs:
             --ai-output "${RUNNER_TEMP}/devimg-openai-ai-review.json" \
               --markdown "${RUNNER_TEMP}/devimg-openai-ai-review.md"
           "$DEVIMG_BIN" alt \
+            --config devimg.projects.toml \
             --output "${RUNNER_TEMP}/devimg-alt.json" \
             --markdown "${RUNNER_TEMP}/devimg-alt.md"
           "$DEVIMG_BIN" draft \
+            --config devimg.projects.toml \
             --draft-type project-page-copy \
             --ai-provider openai \
             --model openai-dry-run-model \
