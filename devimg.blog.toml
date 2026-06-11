@@ -1,0 +1,34 @@
+[project]
+root = "."
+manifest = "public/images/blog-manifest.json"
+report = ".devimg/blog-report.md"
+overwrite = false
+strip_metadata = true
+content_hash_filenames = true
+
+[[sources]]
+name = "blog-images"
+input = "public/images/blog"
+output = "public/images/generated/blog"
+include = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.webp"]
+
+[[preset]]
+name = "blog-card"
+widths = [640]
+formats = ["jpeg"]
+quality = 92
+fit = "contain"
+allow_upscale = false
+
+[[preset]]
+name = "blog-social"
+widths = [1200]
+formats = ["jpeg"]
+quality = 92
+fit = "contain"
+allow_upscale = false
+
+[budgets]
+max_total_bytes = "650kb"
+max_file_bytes = "260kb"
+fail_on_regression = true

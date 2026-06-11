@@ -22,6 +22,13 @@ const safeExternalUrlSchema = z
     }
   }, "URL must use http or https protocol")
 
+const safePublicPathSchema = z
+  .string()
+  .startsWith("/")
+  .refine((value) => !value.startsWith("//"), "Path must be an internal public path")
+  .refine((value) => !value.includes("\\"), "Path must use URL separators")
+  .refine((value) => !value.split(/[?#]/, 1)[0]?.includes(".."), "Path cannot traverse directories")
+
 const dateStringSchema = z.union([z.string().min(1), z.date()]).transform((value) => {
   if (typeof value === "string") {
     return value
@@ -78,17 +85,31 @@ const projectFrontmatterSchema = z
     stage: project.stage ?? (project.status === "archived" ? "archived" : "live")
   }))
 
-const blogFrontmatterSchema = z.object({
-  title: z.string().min(1),
-  slug: z.string().min(1),
-  summary: z.string().min(1),
-  date: dateStringSchema,
-  updatedAt: dateStringSchema.optional(),
-  tags: z.array(z.string().min(1)).min(1),
-  coverImage: z.string().optional(),
-  canonicalUrl: safeExternalUrlSchema.optional(),
-  lang: z.enum(LOCALES)
-})
+const blogFrontmatterSchema = z
+  .object({
+    title: z.string().min(1),
+    slug: z.string().min(1),
+    summary: z.string().min(1),
+    date: dateStringSchema,
+    updatedAt: dateStringSchema.optional(),
+    tags: z.array(z.string().min(1)).min(1),
+    coverImage: safePublicPathSchema.optional(),
+    coverAlt: z.string().min(1).optional(),
+    pdfUrl: safePublicPathSchema
+      .refine((value) => value.endsWith(".pdf"), "PDF URL must end in .pdf")
+      .optional(),
+    canonicalUrl: safeExternalUrlSchema.optional(),
+    lang: z.enum(LOCALES)
+  })
+  .superRefine((post, context) => {
+    if (post.coverImage && !post.coverAlt) {
+      context.addIssue({
+        code: "custom",
+        path: ["coverAlt"],
+        message: "Posts with coverImage must include coverAlt"
+      })
+    }
+  })
 
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>
 export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>

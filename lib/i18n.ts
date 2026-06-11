@@ -25,9 +25,9 @@ export const DEFAULT_LOCALE: Locale = "en-US"
 export const LOCALE_COOKIE_NAME = "locale"
 
 export const RESUME_PDF_BY_LOCALE: Record<Locale, string> = {
-  "en-US": "/resume.en-US.pdf",
-  "pt-BR": "/resume.pt-BR.pdf",
-  "es-ES": "/resume.es-ES.pdf"
+  "en-US": "/downloads/resume.en-US.pdf",
+  "pt-BR": "/downloads/resume.pt-BR.pdf",
+  "es-ES": "/downloads/resume.es-ES.pdf"
 }
 
 const LOCALE_PATTERN = /^[a-z]{2}-[a-z]{2}$/i

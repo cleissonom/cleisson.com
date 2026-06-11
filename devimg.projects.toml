@@ -1,7 +1,7 @@
 [project]
 root = "."
-manifest = "public/images/devimg-manifest.json"
-report = ".devimg/devimg-report.md"
+manifest = "public/images/projects-manifest.json"
+report = ".devimg/projects-report.md"
 overwrite = false
 strip_metadata = true
 content_hash_filenames = true

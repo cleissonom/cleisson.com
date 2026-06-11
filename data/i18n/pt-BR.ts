@@ -290,6 +290,7 @@ export const ptBRDictionary: LocaleDictionary = {
       metadataDescription:
         "Conteúdos sobre desenvolvimento de software backend, infraestrutura em nuvem e arquitetura escalável.",
       lead: "Notas de trabalho em desenvolvimento de software: confiabilidade, infraestrutura, sistemas distribuídos e estratégia de entrega.",
+      downloadPdfLabel: "Baixar artigo em PDF",
       notFoundTitle: "Post não encontrado",
       notFoundDescription: "Post não encontrado para este idioma."
     },

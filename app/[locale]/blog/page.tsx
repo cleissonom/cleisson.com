@@ -14,6 +14,7 @@ import { JsonLd } from "@/components/json-ld"
 import { PostCard } from "@/components/post-card"
 import { getDictionary } from "@/data/i18n"
 import { getAllPosts } from "@/lib/content"
+import { contentDateYear } from "@/lib/display-date"
 import { isLocale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl, buildPageTitle, createMetadata } from "@/lib/metadata"
 import { breadcrumbJsonLd } from "@/lib/schema"
@@ -77,7 +78,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
             <dd>{ui.labels.topics}</dd>
           </div>
           <div>
-            <dt>{latestPost ? new Date(latestPost.date).getFullYear() : "-"}</dt>
+            <dt>{latestPost ? contentDateYear(latestPost.date) : "-"}</dt>
             <dd>{ui.labels.updated}</dd>
           </div>
         </dl>

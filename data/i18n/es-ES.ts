@@ -290,6 +290,7 @@ export const esESDictionary: LocaleDictionary = {
       metadataDescription:
         "Publicaciones sobre ingeniería backend, infraestructura cloud y arquitectura escalable.",
       lead: "Notas de trabajo en ingeniería de producción: fiabilidad, infraestructura, sistemas distribuidos y estrategia de entrega.",
+      downloadPdfLabel: "Descargar artículo en PDF",
       notFoundTitle: "Publicación no encontrada",
       notFoundDescription: "No se encontró la publicación para este idioma."
     },

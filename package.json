@@ -10,6 +10,7 @@
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
+    "test:content": "node --test tests/content/*.test.mjs",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
