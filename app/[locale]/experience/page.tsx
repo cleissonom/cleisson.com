@@ -63,7 +63,10 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
   return (
     <SectionStack>
       <JsonLd id="experience-breadcrumb-jsonld" data={breadcrumbs} />
-      <JsonLd id="experience-person-jsonld" data={personJsonLd(locale)} />
+      <JsonLd
+        id="experience-person-jsonld"
+        data={personJsonLd(locale, dictionary.content.about[0])}
+      />
 
       <Surface as="section" className="experience-hero" aria-labelledby="experience-title">
         <div className="experience-hero-grid">

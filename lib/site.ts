@@ -20,6 +20,11 @@ export const SITE_LINKS = {
   email: `mailto:${SITE_EMAIL_BY_LOCALE["en-US"]}`
 } as const
 
+export const SITE_IDENTITY_LINKS = [
+  "https://www.linkedin.com/in/cleissonom",
+  "https://github.com/cleissonom/"
+] as const
+
 export function siteEmailAddress(locale: Locale): string {
   return SITE_EMAIL_BY_LOCALE[locale]
 }

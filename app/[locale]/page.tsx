@@ -72,7 +72,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
 
   return (
     <>
-      <JsonLd id="person-jsonld" data={personJsonLd(locale)} />
+      <JsonLd id="person-jsonld" data={personJsonLd(locale, about[0])} />
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbs} />
 
       <Surface as="section" className="hero">

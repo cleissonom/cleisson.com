@@ -137,6 +137,9 @@ export function createMetadata(locale: Locale, input: MetadataInput): Metadata {
   if (input.canonicalUrl) {
     alternates.canonical = input.canonicalUrl
   }
+  alternates.types = {
+    "text/markdown": `${pageUrl}.md`
+  }
 
   const openGraphBase = {
     type: input.openGraphType ?? "website",

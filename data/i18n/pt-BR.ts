@@ -225,6 +225,65 @@ export const ptBRDictionary: LocaleDictionary = {
         "Produtos com IA"
       ]
     },
+    about: {
+      metadataTitle: "Sobre Cleisson de Oliveira Moura",
+      metadataDescription:
+        "Perfil profissional de Cleisson de Oliveira Moura, engenheiro de software sênior focado em sistemas backend, infraestrutura em nuvem e produtos escaláveis.",
+      lead: "Trajetória, foco técnico e links profissionais verificados de Cleisson de Oliveira Moura.",
+      profileHeading: "Perfil profissional",
+      focusHeading: "Áreas de especialidade",
+      linksHeading: "Perfis e trabalhos verificados"
+    },
+    contact: {
+      metadataTitle: "Contato com Cleisson de Oliveira Moura",
+      metadataDescription:
+        "Como entrar em contato com Cleisson de Oliveira Moura sobre oportunidades de engenharia de software sênior, colaboração técnica e assuntos profissionais.",
+      lead: "Use esta página para uma conversa profissional direta sobre engenharia de software sênior, colaboração ou o conteúdo publicado neste site.",
+      sections: [
+        {
+          heading: "Quando entrar em contato",
+          paragraphs: [
+            "As conversas mais adequadas são sobre posições de engenharia backend ou full-stack sênior, infraestrutura em nuvem, sistemas distribuídos, design de sistemas, ferramentas para desenvolvedores e produtos com IA. Recrutadores, lideranças de engenharia, fundadores e outros profissionais de software podem escrever quando houver uma vaga, projeto, questão técnica ou colaboração concreta para discutir.",
+            "Antes de entrar em contato, consulte a página de experiência para o histórico profissional, a página de projetos para trabalhos públicos de engenharia, o blog para textos técnicos e o currículo localizado para um registro profissional conciso. Essas páginas são a fonte de referência para as informações deste portfólio."
+          ]
+        },
+        {
+          heading: "O que incluir",
+          paragraphs: [
+            "Uma boa primeira mensagem identifica você ou sua organização, explica o motivo do contato e inclui a vaga ou o projeto relevante, prazo, local ou expectativas de trabalho remoto e um link quando fizer sentido. Não envie senhas, tokens de acesso, dados confidenciais de clientes, informações de saúde, documentos oficiais ou outros dados pessoais sensíveis.",
+            "O e-mail é o canal direto de contato. O LinkedIn também está disponível para contexto profissional, e o GitHub é o melhor lugar para consultar código público. Este site não possui formulário de contato, agendamento automático, telefone público nem prazo garantido de resposta."
+          ]
+        }
+      ]
+    },
+    privacy: {
+      metadataTitle: "Privacidade",
+      metadataDescription:
+        "Informações de privacidade do cleisson.com, incluindo cookies, analytics, logs de hospedagem, links externos e contato direto por e-mail.",
+      lead: "Este aviso explica as informações limitadas processadas quando você navega no cleisson.com ou entra em contato diretamente com Cleisson de Oliveira Moura.",
+      sections: [
+        {
+          heading: "Informações processadas pelo site",
+          paragraphs: [
+            "Este portfólio não oferece contas de usuário, comentários, pagamentos, perfis de publicidade ou formulário de contato na web. O site pode processar informações comuns de requisição necessárias para entregar uma página, como endereço IP, detalhes do navegador ou dispositivo, URL solicitada, referência, horários e eventos de diagnóstico ou segurança por meio da infraestrutura de hospedagem.",
+            "Se você optar por enviar um e-mail, a mensagem, os dados do remetente, anexos e demais informações incluídas serão processados pelos serviços de e-mail usados por você e por Cleisson. Envie apenas o necessário para o assunto profissional e evite credenciais confidenciais ou dados pessoais sensíveis."
+          ]
+        },
+        {
+          heading: "Cookies, analytics e desempenho",
+          paragraphs: [
+            "O site usa um cookie de idioma para apoiar a detecção e o roteamento de idioma, e um cookie de tema quando você escolhe o modo claro ou escuro. Cada um pode permanecer por até um ano. Eles atendem ao comportamento solicitado do site, e não à publicidade. Vercel Analytics e Speed Insights estão habilitados para entender uso agregado, entrega de páginas e desempenho; a Vercel pode processar informações técnicas da requisição e do dispositivo sob seus próprios termos.",
+            "Provedores de hospedagem e segurança podem manter logs operacionais conforme suas próprias políticas. Este site não vende informações pessoais nem adiciona rastreadores de publicidade de terceiros. Links para LinkedIn, GitHub e outros recursos externos deixam este site e seguem as práticas de privacidade desses serviços."
+          ]
+        },
+        {
+          heading: "Dúvidas e escolhas",
+          paragraphs: [
+            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 22 de agosto de 2026."
+          ]
+        }
+      ]
+    },
     experience: {
       metadataTitle: "Experiência",
       metadataDescription:

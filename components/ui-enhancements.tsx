@@ -3,9 +3,9 @@
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
 
+import { normalizePath, resolveLocaleSwitchPath, type SlugIndex } from "@/lib/locale-route"
 import { THEME_COOKIE_KEY, type Theme, parseTheme } from "@/lib/theme"
 
-type SlugIndex = Record<string, string[]>
 type ThemeToggleWindow = Window & {
   __themeToggleBound?: boolean
 }
@@ -16,81 +16,8 @@ type UiEnhancementsProps = {
   blogSlugsByLocale: SlugIndex
 }
 
-function normalizePath(pathname: string): string {
-  if (!pathname || pathname === "/") {
-    return "/"
-  }
-
-  const normalized = pathname.startsWith("/") ? pathname : `/${pathname}`
-  return normalized.length > 1 && normalized.endsWith("/") ? normalized.slice(0, -1) : normalized
-}
-
 function isLocale(value: string, locales: readonly string[]): boolean {
   return locales.includes(value)
-}
-
-function pathWithoutLocale(pathname: string, locales: readonly string[]): string {
-  const normalized = normalizePath(pathname)
-  const segments = normalized.split("/").filter(Boolean)
-
-  if (segments.length === 0) {
-    return "/"
-  }
-
-  if (isLocale(segments[0], locales)) {
-    return segments.length === 1 ? "/" : `/${segments.slice(1).join("/")}`
-  }
-
-  return normalized
-}
-
-function localePath(locale: string, path: string): string {
-  if (path === "/") {
-    return `/${locale}`
-  }
-
-  return `/${locale}${path}`
-}
-
-function resolveLocaleSwitchPath(
-  pathname: string,
-  targetLocale: string,
-  locales: readonly string[],
-  projectSlugsByLocale: SlugIndex,
-  blogSlugsByLocale: SlugIndex
-): string {
-  const path = pathWithoutLocale(pathname, locales)
-  if (path === "/") {
-    return localePath(targetLocale, "/")
-  }
-
-  const segments = path.split("/").filter(Boolean)
-  if (segments.length === 1) {
-    const top = segments[0]
-    if (top === "projects" || top === "blog" || top === "resume" || top === "experience") {
-      return localePath(targetLocale, `/${top}`)
-    }
-
-    return localePath(targetLocale, "/")
-  }
-
-  if (segments.length >= 2 && segments[0] === "projects") {
-    const projectSlug = segments[1]
-    const slugs = projectSlugsByLocale[targetLocale] ?? []
-    return slugs.includes(projectSlug)
-      ? localePath(targetLocale, `/projects/${projectSlug}`)
-      : localePath(targetLocale, "/")
-  }
-
-  if (segments.length >= 2 && segments[0] === "blog") {
-    const blogSlug = segments[1]
-    const slugs = blogSlugsByLocale[targetLocale] ?? []
-    return slugs.includes(blogSlug)
-      ? localePath(targetLocale, `/blog/${blogSlug}`)
-      : localePath(targetLocale, "/")
-  }
-
-  return localePath(targetLocale, "/")
 }
 
 function updateLocaleSwitcher(
@@ -115,13 +42,11 @@ function updateLocaleSwitcher(
 
     option.setAttribute(
       "href",
-      resolveLocaleSwitchPath(
-        pathname,
-        targetLocale,
+      resolveLocaleSwitchPath(pathname, targetLocale, {
         locales,
         projectSlugsByLocale,
         blogSlugsByLocale
-      )
+      })
     )
 
     const isCurrent = targetLocale === currentLocale

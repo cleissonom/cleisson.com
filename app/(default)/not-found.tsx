@@ -14,6 +14,12 @@ export default function GlobalNotFound() {
         <ButtonLink variant="ghost" href={`/${DEFAULT_LOCALE}/projects`}>
           Projects
         </ButtonLink>
+        <ButtonLink variant="ghost" href="/sitemap.xml">
+          Sitemap
+        </ButtonLink>
+        <ButtonLink variant="ghost" href="/llms.txt">
+          Agent instructions
+        </ButtonLink>
       </div>
     </Container>
   )

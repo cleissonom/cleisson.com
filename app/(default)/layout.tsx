@@ -12,6 +12,9 @@ export const metadata = rootMetadata
 export default function DefaultRootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-US" suppressHydrationWarning data-theme="light">
+      <head>
+        <link rel="describedby" href="/llms.txt" />
+      </head>
       <body>
         <ThemeScript />
         {children}

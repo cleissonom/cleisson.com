@@ -32,6 +32,12 @@ export default function LocaleNotFound({ params }: NotFoundProps) {
         <ButtonLink variant="ghost" href={`/${locale}/projects`}>
           {ui.nav.projects}
         </ButtonLink>
+        <ButtonLink variant="ghost" href="/sitemap.xml">
+          Sitemap
+        </ButtonLink>
+        <ButtonLink variant="ghost" href="/llms.txt">
+          Agent instructions
+        </ButtonLink>
       </div>
     </main>
   )
