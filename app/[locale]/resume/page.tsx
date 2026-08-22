@@ -51,7 +51,7 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
 
   return (
     <SectionStack>
-      <JsonLd id="resume-person-jsonld" data={personJsonLd(locale)} />
+      <JsonLd id="resume-person-jsonld" data={personJsonLd(locale, dictionary.content.about[0])} />
 
       <Surface as="section" className="resume-hub" aria-labelledby="resume-title">
         <div className="detail-hero-grid">

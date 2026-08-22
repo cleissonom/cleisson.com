@@ -61,14 +61,19 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning data-theme="light">
+      <head>
+        <link rel="describedby" href="/llms.txt" />
+      </head>
       <body>
         <ThemeScript />
         <Header locale={locale} ui={dictionary.ui} shortTitle={dictionary.site.shortTitle} />
         <SiteMain>{children}</SiteMain>
         <Footer
           locale={locale}
+          aboutLabel={dictionary.ui.sections.about}
           resumeLabel={dictionary.ui.nav.resume}
           contactLabel={dictionary.ui.cta.contact}
+          privacyLabel={dictionary.pages.privacy.metadataTitle}
           opensInNewTabLabel={dictionary.ui.labels.opensInNewTab}
         />
         <Analytics />

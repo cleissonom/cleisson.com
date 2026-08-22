@@ -2,16 +2,25 @@ import type { BlogEntry, ProjectEntry } from "@/lib/content"
 import { seoImageVariant } from "@/lib/devimg"
 import type { Locale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl } from "@/lib/metadata"
-import { SITE_LINKS, SITE_NAME, SITE_SHORT_TITLE, siteEmailAddress } from "@/lib/site"
+import {
+  SITE_IDENTITY_LINKS,
+  SITE_LINKS,
+  SITE_NAME,
+  SITE_SHORT_TITLE,
+  siteEmailAddress
+} from "@/lib/site"
 
-export function personJsonLd(locale: Locale) {
+export function personJsonLd(locale: Locale, description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": absoluteUrl("/#person"),
     name: SITE_NAME,
+    description,
     jobTitle: SITE_SHORT_TITLE,
     url: absoluteUrl(`/${locale}`),
-    sameAs: [SITE_LINKS.linkedin, SITE_LINKS.github, SITE_LINKS.website],
+    image: absoluteUrl("/about/profile.webp"),
+    sameAs: [...SITE_IDENTITY_LINKS, SITE_LINKS.website],
     email: siteEmailAddress(locale)
   }
 }

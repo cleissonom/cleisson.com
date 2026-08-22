@@ -41,6 +41,9 @@ App runs at `http://localhost:3000`.
 - `npm run dev`: Start dev server
 - `npm run build`: Build for production
 - `npm run start`: Run production server
+- `npm test`: Run content and agent-readiness tests
+- `npm run test:agent-readiness`: Run HTTP negotiation and public endpoint tests
+- `npm run test:content`: Run content and static asset tests
 - `npm run lint`: Run ESLint with `--max-warnings=0`
 - `npm run lint:fix`: Auto-fix lint issues
 - `npm run typecheck`: Run TypeScript type check
@@ -71,6 +74,9 @@ Supported locales are defined in `lib/i18n.ts`:
 All main routes are locale-prefixed:
 
 - `/{locale}`
+- `/{locale}/about`
+- `/{locale}/contact`
+- `/{locale}/privacy`
 - `/{locale}/projects`
 - `/{locale}/projects/{slug}`
 - `/{locale}/blog`
@@ -133,6 +139,7 @@ highlights:
 
 ## SEO and Feed Endpoints
 
+- `/llms.txt`
 - `/sitemap.xml`
 - `/robots.txt`
 - `/rss.xml`

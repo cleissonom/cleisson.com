@@ -23,6 +23,11 @@ export type Recommendation = {
 export type RecommendationLocalizedFields = Pick<Recommendation, "context" | "quote">
 export type RecommendationBaseFields = Omit<Recommendation, keyof RecommendationLocalizedFields>
 
+export type ContentSection = {
+  heading: string
+  paragraphs: string[]
+}
+
 export type UiDictionary = {
   nav: {
     home: string
@@ -94,6 +99,26 @@ export type LocaleDictionary = {
     home: {
       breadcrumbLabel: string
       keywords: string[]
+    }
+    about: {
+      metadataTitle: string
+      metadataDescription: string
+      lead: string
+      profileHeading: string
+      focusHeading: string
+      linksHeading: string
+    }
+    contact: {
+      metadataTitle: string
+      metadataDescription: string
+      lead: string
+      sections: ContentSection[]
+    }
+    privacy: {
+      metadataTitle: string
+      metadataDescription: string
+      lead: string
+      sections: ContentSection[]
     }
     experience: {
       metadataTitle: string

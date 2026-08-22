@@ -224,6 +224,65 @@ export const enUSDictionary: LocaleDictionary = {
         "AI-powered products"
       ]
     },
+    about: {
+      metadataTitle: "About Cleisson de Oliveira Moura",
+      metadataDescription:
+        "Professional profile of Cleisson de Oliveira Moura, a senior software engineer focused on backend systems, cloud infrastructure, and scalable products.",
+      lead: "Background, technical focus, and verified professional links for Cleisson de Oliveira Moura.",
+      profileHeading: "Professional profile",
+      focusHeading: "Areas of expertise",
+      linksHeading: "Verified profiles and work"
+    },
+    contact: {
+      metadataTitle: "Contact Cleisson de Oliveira Moura",
+      metadataDescription:
+        "How to contact Cleisson de Oliveira Moura about senior software engineering roles, technical collaboration, and professional inquiries.",
+      lead: "Use this page for a direct professional inquiry about senior software engineering work, collaboration, or the material published on this site.",
+      sections: [
+        {
+          heading: "When to get in touch",
+          paragraphs: [
+            "The best-fit conversations are about senior backend or full-stack engineering roles, cloud infrastructure, distributed systems, system design, developer tools, and AI-powered products. Recruiters, engineering leaders, founders, and other software professionals are welcome to write when there is a concrete role, project, technical question, or collaboration to discuss.",
+            "For context before contacting me, review the experience page for employment history, the projects page for public engineering work, the blog for technical writing, and the localized resume for a concise professional record. Those pages are the source of truth for claims made on this portfolio."
+          ]
+        },
+        {
+          heading: "What to include",
+          paragraphs: [
+            "A useful first message identifies you or your organization, explains why you are reaching out, and includes the relevant role, project, timeline, location or remote-work expectations, and a link where appropriate. Please do not send passwords, access tokens, confidential customer data, health information, government identifiers, or other sensitive personal information.",
+            "Email is the direct contact channel. LinkedIn is also available for professional context, and GitHub is the best place to inspect public code. There is no contact form, automated booking flow, public phone number, or guaranteed response time on this site."
+          ]
+        }
+      ]
+    },
+    privacy: {
+      metadataTitle: "Privacy",
+      metadataDescription:
+        "Privacy information for cleisson.com, including cookies, analytics, hosting logs, external links, and direct email contact.",
+      lead: "This notice explains the limited information processed when you browse cleisson.com or contact Cleisson de Oliveira Moura directly.",
+      sections: [
+        {
+          heading: "Information this site processes",
+          paragraphs: [
+            "This portfolio does not provide user accounts, comments, payments, advertising profiles, or a web contact form. The site may process ordinary request information needed to deliver a page, such as an IP address, browser or device details, requested URL, referral information, timestamps, and diagnostic or security events through its hosting infrastructure.",
+            "If you choose to send an email, the message, sender details, attachments, and any information you include are processed by the email services used by you and by Cleisson. Send only the information needed for the professional inquiry and avoid confidential credentials or sensitive personal data."
+          ]
+        },
+        {
+          heading: "Cookies, analytics, and performance",
+          paragraphs: [
+            "The site uses a locale cookie to support language detection and routing, and a theme cookie when you choose light or dark mode. Each can remain for up to one year. They support requested site behavior rather than advertising. Vercel Analytics and Speed Insights are enabled to understand aggregate usage, page delivery, and performance; Vercel may process technical request and device information under its own terms.",
+            "Hosting and security providers may retain operational logs according to their own policies. This site does not sell personal information and does not add third-party advertising trackers. Links to LinkedIn, GitHub, and other external resources leave this site and are governed by those services' privacy practices."
+          ]
+        },
+        {
+          heading: "Questions and choices",
+          paragraphs: [
+            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 22, 2026."
+          ]
+        }
+      ]
+    },
     experience: {
       metadataTitle: "Experience",
       metadataDescription:

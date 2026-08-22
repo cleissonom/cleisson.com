@@ -37,9 +37,14 @@ const iconAssetSources = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  skipProxyUrlNormalize: true,
   typedRoutes: true,
   experimental: {
+    globalNotFound: true,
     inlineCss: true
+  },
+  outputFileTracingIncludes: {
+    "/*": ["./content/**/*.md"]
   },
   async headers() {
     return [

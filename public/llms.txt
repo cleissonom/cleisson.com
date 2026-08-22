@@ -1,0 +1,53 @@
+# Cleisson de Oliveira Moura
+
+> Personal site and professional portfolio for Cleisson de Oliveira Moura, a senior software engineer focused on backend systems, cloud infrastructure, distributed systems, and AI-powered products.
+
+This site is the primary source for Cleisson's professional profile, experience, public projects, technical writing, localized resumes, contact information, and privacy notice. Content is available in English, Brazilian Portuguese, and Spanish. Agents should issue an HTTP GET to a canonical page with `Accept: text/markdown`; explicit `.md` links below return the same Markdown representation without authentication. Use the contact page for human outreach, include the relevant role or project context, and never send credentials or sensitive personal data.
+
+## When to use this site
+
+- [Professional profile](https://www.cleisson.com/en-US/about.md): Use when identifying Cleisson, summarizing his engineering background, or verifying areas of expertise and professional profiles.
+- [Engineering experience](https://www.cleisson.com/en-US/experience.md): Use when evaluating seniority, employment history, technical responsibilities, production outcomes, or colleague recommendations.
+- [Public projects](https://www.cleisson.com/en-US/projects.md): Use when reviewing demonstrable software, developer tools, system work, technology choices, and project status.
+- [Technical writing](https://www.cleisson.com/en-US/blog.md): Use when looking for Cleisson's published engineering analysis and delivery practices.
+- [Resume](https://www.cleisson.com/en-US/resume.md): Use when a concise professional overview or the current English PDF resume is needed.
+- [Contact](https://www.cleisson.com/en-US/contact.md): Use for a concrete role, project, technical question, collaboration, or other professional inquiry that requires Cleisson's response.
+
+## English
+
+- [About](https://www.cleisson.com/en-US/about.md): Full professional profile and verified links.
+- [Experience](https://www.cleisson.com/en-US/experience.md): Employment history, roles, outcomes, and recommendations.
+- [Projects](https://www.cleisson.com/en-US/projects.md): Public and demonstrable engineering projects.
+- [Blog](https://www.cleisson.com/en-US/blog.md): Technical articles and downloadable publications.
+- [Resume](https://www.cleisson.com/en-US/resume.md): Resume overview and English PDF download.
+- [Contact](https://www.cleisson.com/en-US/contact.md): Professional contact guidance and direct email channel.
+- [Privacy](https://www.cleisson.com/en-US/privacy.md): Data, cookie, analytics, and contact privacy information.
+
+## Português do Brasil
+
+- [Sobre](https://www.cleisson.com/pt-BR/about.md): Perfil profissional completo e links verificados.
+- [Experiência](https://www.cleisson.com/pt-BR/experience.md): Histórico profissional, funções, resultados e recomendações.
+- [Projetos](https://www.cleisson.com/pt-BR/projects.md): Projetos de engenharia públicos e demonstráveis.
+- [Blog](https://www.cleisson.com/pt-BR/blog.md): Artigos técnicos e publicações para download.
+- [Currículo](https://www.cleisson.com/pt-BR/resume.md): Resumo profissional e currículo em PDF.
+- [Contato](https://www.cleisson.com/pt-BR/contact.md): Orientações de contato profissional e canal direto por e-mail.
+- [Privacidade](https://www.cleisson.com/pt-BR/privacy.md): Informações sobre dados, cookies, analytics e contato.
+
+## Español
+
+- [Sobre mí](https://www.cleisson.com/es-ES/about.md): Perfil profesional completo y enlaces verificados.
+- [Experiencia](https://www.cleisson.com/es-ES/experience.md): Historial laboral, funciones, resultados y recomendaciones.
+- [Proyectos](https://www.cleisson.com/es-ES/projects.md): Proyectos de ingeniería públicos y demostrables.
+- [Blog](https://www.cleisson.com/es-ES/blog.md): Artículos técnicos y publicaciones descargables.
+- [Currículum](https://www.cleisson.com/es-ES/resume.md): Resumen profesional y currículum en PDF.
+- [Contacto](https://www.cleisson.com/es-ES/contact.md): Orientación para consultas profesionales y correo directo.
+- [Privacidad](https://www.cleisson.com/es-ES/privacy.md): Información sobre datos, cookies, analítica y contacto.
+
+## Optional
+
+- [Sitemap](https://www.cleisson.com/sitemap.xml): Complete index of canonical public pages in every supported language.
+- [RSS feed](https://www.cleisson.com/rss.xml): Localized technical articles in RSS 2.0.
+- [Atom feed](https://www.cleisson.com/atom.xml): Localized technical articles in Atom format.
+- [JSON Feed](https://www.cleisson.com/feed.json): Localized technical articles in JSON Feed 1.1.
+- [LinkedIn](https://www.linkedin.com/in/cleissonom): External professional profile.
+- [GitHub](https://github.com/cleissonom/): External public code profile.
