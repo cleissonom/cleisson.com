@@ -120,6 +120,16 @@ export type LocaleDictionary = {
       metadataDescription: string
       eyebrow: string
       lead: string
+      documentationLabel: string
+      apiHeading: string
+      apiDescription: string
+      openApiLabel: string
+      authenticationDescription: string
+      endpointsHeading: string
+      apiExamplesHeading: string
+      errorsHeading: string
+      errorsDescription: string
+      discoveryLabel: string
       endpointHeading: string
       endpointDescription: string
       configurationLabel: string

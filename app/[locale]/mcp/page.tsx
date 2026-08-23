@@ -10,9 +10,15 @@ import {
 } from "@/components/design-system"
 import { getDictionary } from "@/data/i18n"
 import type { LocaleDictionary } from "@/data/i18n/types"
+import {
+  MCP_DISCOVERY_EXAMPLE,
+  PROBLEM_EXAMPLE,
+  PUBLIC_API_ENDPOINTS,
+  REST_EXAMPLES
+} from "@/lib/api-docs"
 import { isLocale } from "@/lib/i18n"
 import { buildPageTitle, createMetadata } from "@/lib/metadata"
-import { MCP_ENDPOINT_URL, MCP_SERVER_NAME } from "@/lib/site"
+import { MCP_ENDPOINT_URL, MCP_SERVER_NAME, SITE_URL } from "@/lib/site"
 
 type McpPageCopy = LocaleDictionary["pages"]["mcp"]
 
@@ -21,6 +27,45 @@ const connectionConfig = JSON.stringify(
   null,
   2
 )
+
+function CodeBlocks({ items, label }: { items: readonly string[]; label: string }) {
+  return items.map((item) => (
+    <pre key={item} aria-label={label}>
+      <code>{item}</code>
+    </pre>
+  ))
+}
+
+function ApiSection({ page }: { page: McpPageCopy }) {
+  return (
+    <Surface aria-labelledby="public-api-title">
+      <h2 id="public-api-title">{page.apiHeading}</h2>
+      <p>{page.apiDescription}</p>
+      <p>{page.authenticationDescription}</p>
+      <p>
+        <code>{`${SITE_URL}/openapi.json`}</code>
+      </p>
+      <ButtonLink href="/openapi.json">{page.openApiLabel}</ButtonLink>
+      <h3>{page.endpointsHeading}</h3>
+      <ul className="markdown content-prose">
+        {PUBLIC_API_ENDPOINTS.map((endpoint) => (
+          <li key={endpoint}>
+            <code>{endpoint}</code>
+          </li>
+        ))}
+      </ul>
+      <div className="markdown content-prose">
+        <h3>{page.apiExamplesHeading}</h3>
+        <CodeBlocks items={REST_EXAMPLES} label={page.apiExamplesHeading} />
+        <h3>{page.errorsHeading}</h3>
+        <p>{page.errorsDescription}</p>
+        <pre aria-label={page.errorsHeading}>
+          <code>{PROBLEM_EXAMPLE}</code>
+        </pre>
+      </div>
+    </Surface>
+  )
+}
 
 function EndpointSection({ page }: { page: McpPageCopy }) {
   return (
@@ -34,6 +79,10 @@ function EndpointSection({ page }: { page: McpPageCopy }) {
         <h3>{page.configurationLabel}</h3>
         <pre aria-label={page.configurationLabel}>
           <code>{connectionConfig}</code>
+        </pre>
+        <h3>{page.discoveryLabel}</h3>
+        <pre aria-label={page.discoveryLabel}>
+          <code>{MCP_DISCOVERY_EXAMPLE}</code>
         </pre>
       </div>
     </Surface>
@@ -99,6 +148,7 @@ export default async function McpPage({ params }: { params: Promise<{ locale: st
           <Lead>{page.lead}</Lead>
         </PageHeader>
       </Surface>
+      <ApiSection page={page} />
       <EndpointSection page={page} />
       <ToolsSection page={page} />
       <ListSection id="mcp-examples-title" heading={page.examplesHeading} items={page.examples} />

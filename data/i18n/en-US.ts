@@ -264,7 +264,7 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Information this site processes",
           paragraphs: [
-            "This portfolio does not provide user accounts, comments, payments, advertising profiles, or a web contact form. The site may process ordinary request information needed to deliver a page, such as an IP address, browser or device details, requested URL, referral information, timestamps, and diagnostic or security events through its hosting infrastructure. Requests to the public Model Context Protocol (MCP) endpoint may also contain client metadata, tool or prompt names, a locale, search topics, or a project slug. The endpoint uses this information only to return public portfolio evidence; it has no account database or server-side language model.",
+            "This portfolio does not provide user accounts, comments, payments, advertising profiles, or a web contact form. The site may process ordinary request information needed to deliver a page, such as an IP address, browser or device details, requested URL, referral information, timestamps, and diagnostic or security events through its hosting infrastructure. Requests to the public REST API or Model Context Protocol (MCP) endpoint may also contain client metadata, operation, tool, or prompt names, a locale, search topics, or a project slug. These endpoints use this information only to operate and protect these read-only interfaces and return public portfolio evidence; they have no account database or server-side language model.",
             "If you choose to send an email, the message, sender details, attachments, and any information you include are processed by the email services used by you and by Cleisson. Send only the information needed for the professional inquiry and avoid confidential credentials or sensitive personal data."
           ]
         },
@@ -278,7 +278,7 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Questions and choices",
           paragraphs: [
-            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. MCP requests and their limited arguments may appear in ordinary hosting, rate-limit, diagnostic, or security logs; do not send a confidential job description, credentials, or sensitive personal data. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 23, 2026."
+            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. REST API and MCP requests and their limited arguments may appear in ordinary hosting, rate-limit, diagnostic, or security logs; do not send a confidential job description, credentials, or sensitive personal data. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 23, 2026."
           ]
         }
       ]
@@ -289,6 +289,19 @@ export const enUSDictionary: LocaleDictionary = {
         "Connect an AI agent to Cleisson de Oliveira Moura's read-only, source-linked professional evidence through the Model Context Protocol.",
       eyebrow: "Model Context Protocol",
       lead: "A public, read-only interface that helps agents retrieve professional evidence, distinguish text matches from missing public evidence, and cite the source.",
+      documentationLabel: "Public API and MCP documentation",
+      apiHeading: "Public REST API",
+      apiDescription:
+        "The versioned API exposes Cleisson's localized profile, topic-based evidence, and published project details as structured JSON.",
+      openApiLabel: "Open the OpenAPI specification",
+      authenticationDescription:
+        "No authentication is required. The API is public and read-only; do not send credentials, private job descriptions, or sensitive personal data.",
+      endpointsHeading: "REST endpoints",
+      apiExamplesHeading: "Example API requests",
+      errorsHeading: "Structured API errors",
+      errorsDescription:
+        "Errors use application/problem+json and include a stable code, a human-readable explanation, and a resolution hint.",
+      discoveryLabel: "Verify MCP runtime discovery",
       endpointHeading: "Connect your agent",
       endpointDescription:
         "Use the endpoint below with an MCP client that supports remote Streamable HTTP. No account or authentication is required, and the endpoint exposes only information already published on this site.",

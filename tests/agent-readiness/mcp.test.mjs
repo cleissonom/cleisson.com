@@ -62,11 +62,11 @@ function rawStatus(request, timeoutMessage) {
   })
 }
 
-function chunkedOversizedStatus() {
+function chunkedOversizedStatus(pathname = "/api/mcp") {
   const body = "x".repeat(70_000)
   const host = new URL(origin).host
   return rawStatus(
-    `POST /api/mcp HTTP/1.1\r\nHost: ${host}\r\nContent-Type: application/json\r\nTransfer-Encoding: chunked\r\nConnection: close\r\n\r\n${body.length.toString(16)}\r\n${body}\r\n`,
+    `POST ${pathname} HTTP/1.1\r\nHost: ${host}\r\nContent-Type: application/json\r\nTransfer-Encoding: chunked\r\nConnection: close\r\n\r\n${body.length.toString(16)}\r\n${body}\r\n`,
     "MCP did not reject an unfinished oversized body promptly"
   )
 }
@@ -76,6 +76,12 @@ function untrustedHostStatus() {
     "GET /api/mcp HTTP/1.1\r\nHost: untrusted.example\r\nConnection: close\r\n\r\n",
     "MCP did not reject an untrusted Host header promptly"
   )
+}
+
+async function assertToolValidationError(client, request) {
+  const result = await client.callTool(request)
+  assert.equal(result.isError, true)
+  assert.match(result.content[0]?.text ?? "", /input validation error/i)
 }
 
 before(
@@ -104,6 +110,57 @@ before(
 
 after(stopServer)
 
+test("the MCP exposes modern runtime discovery at its documented endpoint", async () => {
+  const client = new Client(
+    { name: "agent-readiness-modern", version: "1.0.0" },
+    { versionNegotiation: { mode: { pin: "2026-07-28" } } }
+  )
+  await client.connect(new StreamableHTTPClientTransport(new URL("/api/mcp", origin)))
+
+  try {
+    assert.equal(client.getProtocolEra(), "modern")
+    assert.ok(client.getDiscoverResult()?.supportedVersions.includes("2026-07-28"))
+    assert.equal(client.getServerVersion()?.name, "cleisson-professional-evidence")
+  } finally {
+    await client.close()
+  }
+})
+
+test("the /mcp alias returns JSON for every GET client and serves protocol clients", async () => {
+  const browser = await fetch(`${origin}/mcp`, {
+    redirect: "manual",
+    headers: { Accept: "text/html" }
+  })
+  assert.equal(browser.status, 405)
+  assert.match(browser.headers.get("content-type") ?? "", /^application\/json\b/i)
+  assert.equal(browser.headers.get("cache-control"), "no-store")
+  assert.equal(browser.headers.get("allow"), "OPTIONS, POST")
+  assert.equal((await browser.json()).jsonrpc, "2.0")
+
+  const protocolGet = await fetch(`${origin}/mcp`, { redirect: "manual" })
+  assert.equal(protocolGet.status, 405)
+  assert.match(protocolGet.headers.get("content-type") ?? "", /^application\/json\b/i)
+  assert.equal(protocolGet.headers.get("allow"), "OPTIONS, POST")
+  const protocolError = await protocolGet.json()
+  assert.equal(protocolError.jsonrpc, "2.0")
+  assert.equal(protocolError.id, null)
+  assert.equal(typeof protocolError.error.code, "number")
+  assert.match(protocolError.error.message, /method not allowed/i)
+  assert.match(protocolError.error.data.resolution, /POST/)
+
+  const client = new Client(
+    { name: "agent-readiness-alias", version: "1.0.0" },
+    { versionNegotiation: { mode: { pin: "2026-07-28" } } }
+  )
+  await client.connect(new StreamableHTTPClientTransport(new URL("/mcp", origin)))
+  try {
+    assert.equal(client.getProtocolEra(), "modern")
+    assert.ok((await client.listTools()).tools.length >= 3)
+  } finally {
+    await client.close()
+  }
+})
+
 test("the MCP exposes read-only evidence tools, resources, and prompts", async () => {
   const client = new Client({ name: "agent-readiness", version: "1.0.0" })
   await client.connect(new StreamableHTTPClientTransport(new URL("/api/mcp", origin)))
@@ -114,6 +171,12 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
       tools.map(({ name }) => name).sort(),
       ["find_evidence", "get_profile", "get_project"].sort()
     )
+    const specification = await fetch(`${origin}/openapi.json`).then((response) => response.json())
+    const operationIds = Object.values(specification.paths)
+      .map((pathItem) => pathItem.get?.operationId)
+      .filter(Boolean)
+      .sort()
+    assert.deepEqual(operationIds, tools.map(({ name }) => name).sort())
     for (const tool of tools) {
       assert.equal(tool.annotations?.readOnlyHint, true)
       assert.equal(tool.annotations?.destructiveHint, false)
@@ -128,6 +191,10 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
     assert.equal(profile.structuredContent?.locale, "en-US")
     assert.match(profile.structuredContent?.sourceUrl ?? "", /\/en-US\/about$/)
     assert.match(profile.structuredContent?.currentRole?.sourceUrl ?? "", /\/en-US\/experience$/)
+    const restProfile = await fetch(`${origin}/api/v1/profile?locale=en-US`).then((response) =>
+      response.json()
+    )
+    assert.deepEqual(restProfile, profile.structuredContent)
     const portugueseProfile = await client.callTool({
       name: "get_profile",
       arguments: { locale: "pt-BR" }
@@ -187,6 +254,15 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
     assert.match(project.structuredContent?.project?.sourceUrl ?? "", /\/projects\/devimg$/)
     assert.ok(project.structuredContent?.project?.artifactUrls.length > 0)
 
+    await assertToolValidationError(client, {
+      name: "find_evidence",
+      arguments: { topics: [` ${"K".repeat(79)} `], locale: "en-US" }
+    })
+    await assertToolValidationError(client, {
+      name: "get_project",
+      arguments: { slug: " devimg ", locale: "en-US" }
+    })
+
     const unpublishedProject = await client.callTool({
       name: "get_project",
       arguments: { slug: "accesstrace", locale: "en-US" }
@@ -196,6 +272,8 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
     assert.match(unpublishedProject.structuredContent?.sourceUrl ?? "", /\/en-US\/projects$/)
 
     const { resources } = await client.listResources()
+    assert.ok(resources.some(({ uri }) => uri === "https://www.cleisson.com/en-US/mcp.md"))
+    assert.ok(resources.every(({ uri }) => !uri.includes("/developers")))
     const experienceUri = "https://www.cleisson.com/en-US/experience.md"
     const experienceResource = resources.find(({ uri }) => uri === experienceUri)
     assert.ok(experienceResource)
@@ -242,13 +320,66 @@ test("the MCP rejects untrusted browser origins and oversized requests", async (
   })
   assert.equal(oversized.status, 413)
   assert.equal(await chunkedOversizedStatus(), 413)
+
+  const aliasOrigin = await fetch(`${origin}/mcp`, {
+    headers: { Origin: "https://untrusted.example" }
+  })
+  assert.equal(aliasOrigin.status, 403)
+  const aliasHtmlOrigin = await fetch(`${origin}/mcp`, {
+    headers: { Accept: "text/html", Origin: "https://untrusted.example" }
+  })
+  assert.equal(aliasHtmlOrigin.status, 403)
+  const aliasOversized = await fetch(`${origin}/mcp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ value: "x".repeat(70_000) })
+  })
+  assert.equal(aliasOversized.status, 413)
+  assert.equal(await chunkedOversizedStatus("/mcp"), 413)
+})
+
+test("unsupported MCP HTTP methods return actionable JSON-RPC errors", async () => {
+  for (const method of ["GET", "DELETE", "PUT"]) {
+    const response = await fetch(`${origin}/api/mcp`, { method })
+    assert.equal(response.status, 405)
+    assert.match(response.headers.get("content-type") ?? "", /^application\/json\b/i)
+    assert.equal(response.headers.get("allow"), "OPTIONS, POST")
+    const body = await response.json()
+    assert.equal(body.error.code, -32000)
+    assert.match(body.error.message, /method not allowed/i)
+    assert.match(body.error.data.resolution, /POST/)
+  }
+
+  for (const [pathname, allow] of [
+    ["/api/mcp", "OPTIONS, POST"],
+    ["/mcp", "OPTIONS, POST"]
+  ]) {
+    const options = await fetch(`${origin}${pathname}`, { method: "OPTIONS" })
+    assert.equal(options.status, 204)
+    assert.equal(options.headers.get("allow"), allow)
+    assert.equal(options.headers.get("cache-control"), "no-store")
+    assert.equal(await options.text(), "")
+    assert.doesNotMatch(options.headers.get("allow") ?? "", /PATCH|PUT/)
+
+    const rejected = await fetch(`${origin}${pathname}`, {
+      method: "OPTIONS",
+      headers: { Origin: "https://untrusted.example" }
+    })
+    assert.equal(rejected.status, 403)
+  }
 })
 
 test("the MCP rate limits repeated requests from one caller", async () => {
   let response
   for (let attempt = 0; attempt < 65; attempt += 1) {
     response = await fetch(`${origin}/api/mcp`, {
-      headers: { "X-Forwarded-For": "198.51.100.42" }
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/event-stream",
+        "Content-Type": "application/json",
+        "X-Forwarded-For": "198.51.100.42"
+      },
+      body: JSON.stringify({ jsonrpc: "2.0", id: attempt, method: "ping" })
     })
     if (response.status === 429) break
   }
@@ -257,7 +388,13 @@ test("the MCP rate limits repeated requests from one caller", async () => {
   assert.ok(Number(response?.headers.get("retry-after")) > 0)
 
   const otherCaller = await fetch(`${origin}/api/mcp`, {
-    headers: { "X-Forwarded-For": "203.0.113.8" }
+    method: "POST",
+    headers: {
+      Accept: "application/json, text/event-stream",
+      "Content-Type": "application/json",
+      "X-Forwarded-For": "203.0.113.8"
+    },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "ping" })
   })
   assert.notEqual(otherCaller.status, 429)
 })

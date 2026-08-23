@@ -13,3 +13,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Treat agents and AI systems as first-class consumers of this site. Every canonical public page must remain useful without client-side JavaScript through complete semantic server-rendered HTML and an equivalent Markdown representation via `Accept: text/markdown` content negotiation and an explicit `.md` URL.
 
 When public content or routes change, keep `llms.txt`, sitemap entries, discovery links and metadata, locale routing, structured data where applicable, and agent-readiness tests in sync. Keep machine-facing claims factual, localized, source-linked, and explicit about provenance, uncertainty, limitations, and missing public evidence.
+
+Keep the REST API, OpenAPI document, public API documentation, and equivalent MCP tools synchronized whenever public professional evidence changes.

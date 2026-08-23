@@ -13,6 +13,7 @@ test("locale switching preserves every localized public information route", () =
   for (const page of ["about", "contact", "privacy", "mcp"]) {
     assert.equal(resolveLocaleSwitchPath(`/en-US/${page}`, "pt-BR", options), `/pt-BR/${page}`)
   }
+  assert.equal(resolveLocaleSwitchPath("/en-US/developers", "pt-BR", options), "/pt-BR")
 })
 
 test("locale switching preserves available detail routes and recovers from missing ones", () => {

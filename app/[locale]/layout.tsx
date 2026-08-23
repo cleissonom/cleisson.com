@@ -63,6 +63,8 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning data-theme="light">
       <head>
         <link rel="describedby" href="/llms.txt" />
+        <link rel="service-desc" href="/openapi.json" type="application/json" />
+        <link rel="service-doc" href={`/${locale}/mcp`} />
       </head>
       <body>
         <ThemeScript />

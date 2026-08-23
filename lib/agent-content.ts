@@ -9,6 +9,12 @@ import {
   getProjectBySlug,
   type ProjectEntry
 } from "@/lib/content"
+import {
+  MCP_DISCOVERY_EXAMPLE,
+  PROBLEM_EXAMPLE,
+  PUBLIC_API_ENDPOINTS,
+  REST_EXAMPLES
+} from "@/lib/api-docs"
 import { DEFAULT_LOCALE, isLocale, resumePdfPath, type Locale } from "@/lib/i18n"
 import { isProjectDetailAvailable } from "@/lib/project-state"
 import {
@@ -49,7 +55,8 @@ function homeMarkdown(locale: Locale): string {
     `## ${dictionary.ui.sections.focusAreas}\n\n${bulletList(dictionary.content.focusAreas)}`,
     projectIndex(locale, projects),
     postIndex(locale, posts),
-    `[${dictionary.ui.cta.contact}](/${locale}/contact)`
+    `[${dictionary.ui.cta.contact}](/${locale}/contact)`,
+    `[${dictionary.pages.mcp.documentationLabel}](/${locale}/mcp)`
   )
 }
 
@@ -221,10 +228,23 @@ function mcpMarkdown(locale: Locale): string {
   return document(
     `# ${page.metadataTitle}`,
     `> ${page.lead}`,
+    `## ${page.apiHeading}`,
+    page.apiDescription,
+    page.authenticationDescription,
+    `[${page.openApiLabel}](/openapi.json)`,
+    `### ${page.endpointsHeading}\n\n${bulletList(
+      PUBLIC_API_ENDPOINTS.map((endpoint) => `\`${endpoint}\``)
+    )}`,
+    `### ${page.apiExamplesHeading}`,
+    ...REST_EXAMPLES.map((example) => `\`\`\`bash\n${example}\n\`\`\``),
+    `### ${page.errorsHeading}`,
+    page.errorsDescription,
+    `\`\`\`json\n${PROBLEM_EXAMPLE}\n\`\`\``,
     `## ${page.endpointHeading}`,
     page.endpointDescription,
     `**Endpoint:** \`${MCP_ENDPOINT_URL}\``,
     `### ${page.configurationLabel}\n\n\`\`\`json\n${configuration}\n\`\`\``,
+    `### ${page.discoveryLabel}\n\n\`\`\`bash\n${MCP_DISCOVERY_EXAMPLE}\n\`\`\``,
     `## ${page.toolsHeading}`,
     ...page.tools.map((tool) => `### \`${tool.name}\`\n\n${tool.description}`),
     page.capabilitiesNote,
