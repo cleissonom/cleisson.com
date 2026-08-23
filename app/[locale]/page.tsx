@@ -65,6 +65,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
   const posts = allPosts.slice(0, 2)
   const currentCompany = fullExperienceTimeline[0]
   const currentRole = currentCompany?.roles[0]
+  const bestFitSummary = dictionary.pages.contact.sections[0]?.paragraphs[0]
 
   const breadcrumbs = breadcrumbJsonLd([
     { name: dictionary.pages.home.breadcrumbLabel, url: absoluteUrl(`/${locale}`) }
@@ -122,9 +123,10 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
 
           <div className="snapshot-grid">
             <div className="snapshot-copy">
-              {about.slice(0, 3).map((paragraph) => (
+              {about.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
+              {bestFitSummary ? <p>{bestFitSummary}</p> : null}
             </div>
             <dl className="metric-grid">
               <div>
