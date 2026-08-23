@@ -74,12 +74,7 @@ export type UiDictionary = {
 
 export type ProjectStatus = "active" | "archived"
 export type ProjectType =
-  | "product"
-  | "developer-tool"
-  | "website"
-  | "systems-lab"
-  | "game"
-  | "experiment"
+  "product" | "developer-tool" | "website" | "systems-lab" | "game" | "experiment"
 export type ProjectStage = "live" | "in-progress" | "maintained" | "lab" | "archived"
 export type ProjectLinkKey = "repo" | "live" | "caseStudy" | "demo" | "package"
 

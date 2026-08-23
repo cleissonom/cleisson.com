@@ -93,6 +93,9 @@ function assertNegotiatedHeaders(response, contentType) {
 function assertHtmlHeaders(response) {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i)
   assert.ok(varyTokens(response).includes("rsc"), "Next.js RSC variance should be preserved")
+  if (response.headers.has("x-vercel-id")) {
+    assert.ok(varyTokens(response).includes("accept"), "Vercel Vary should include Accept")
+  }
   assert.ok(varyTokens(response).includes("accept-encoding"))
   assert.match(response.headers.get("link") ?? "", /rel="alternate"; type="text\/markdown"/)
   assert.match(response.headers.get("link") ?? "", /rel="describedby"/)
@@ -137,9 +140,43 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
   const { response, body } = await fetchText("/")
   const main = mainHtml(body)
   const levels = headingLevels(main)
+  const sectionTags = [...main.matchAll(/<section\b[^>]*>/gi)].map((match) => match[0])
+  const sectionHeadingIds = [
+    "home-snapshot-title",
+    "home-focus-title",
+    "home-experience-title",
+    "home-projects-title",
+    "home-blog-title"
+  ]
 
   assert.equal(response.status, 200)
   assertHtmlHeaders(response)
+  assert.match(body, /<title>Cleisson de Oliveira Moura \| Senior Software Engineer<\/title>/i)
+  assert.match(
+    body,
+    /<meta\b(?=[^>]*\bname="application-name")(?=[^>]*\bcontent="Cleisson de Oliveira Moura")[^>]*>/i
+  )
+  assert.match(
+    body,
+    /<meta\b(?=[^>]*\bproperty="og:site_name")(?=[^>]*\bcontent="Cleisson de Oliveira Moura")[^>]*>/i
+  )
+  assert.match(
+    body,
+    /<link\b(?=[^>]*\brel="canonical")(?=[^>]*\bhref="https:\/\/www\.cleisson\.com\/en-US")[^>]*>/i
+  )
+  for (const locale of locales) {
+    assert.match(
+      body,
+      new RegExp(
+        `<link\\b(?=[^>]*\\brel="alternate")(?=[^>]*\\bhrefLang="${locale}")(?=[^>]*\\bhref="https://www\\.cleisson\\.com/${locale}")[^>]*>`,
+        "i"
+      )
+    )
+  }
+  assert.match(
+    body,
+    /<link\b(?=[^>]*\brel="alternate")(?=[^>]*\bhrefLang="x-default")(?=[^>]*\bhref="https:\/\/www\.cleisson\.com\/en-US")[^>]*>/i
+  )
   assert.match(main, /<h1\b[^>]*>Cleisson de Oliveira Moura<\/h1>/i)
   assert.match(body, /<link rel="alternate" type="text\/markdown" href="[^"]+\.md"\s*\/?>/i)
   assert.match(body, /<link rel="describedby" href="\/llms\.txt"\s*\/?>/i)
@@ -150,6 +187,17 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
   assert.ok(visibleText(main).length >= 500, "homepage main content should exceed 500 characters")
   assert.deepEqual([...new Set(levels)].slice(0, 3), [1, 2, 3])
   assert.equal(levels.filter((level) => level === 1).length, 1)
+  assert.ok(sectionTags.length >= sectionHeadingIds.length)
+  for (const tag of sectionTags) {
+    assert.match(tag, /\baria-labelledby="[^"]+"/)
+  }
+  for (const id of sectionHeadingIds) {
+    assert.ok(
+      sectionTags.some((tag) => tag.includes(`aria-labelledby="${id}"`)),
+      `${id} should label one homepage section`
+    )
+    assert.match(main, new RegExp(`<h2\\b[^>]*id="${id}"`))
+  }
   for (let index = 1; index < levels.length; index += 1) {
     assert.ok(levels[index] - levels[index - 1] <= 1, "heading levels should not skip downward")
   }
@@ -370,7 +418,20 @@ test("localized resume endpoints serve the supplied PDFs", async () => {
   const { createHash } = await import("node:crypto")
 
   for (const locale of locales) {
-    const response = await fetch(`${origin}/downloads/resume.${locale}.pdf`)
+    const downloadPath = `/downloads/resume.${locale}.pdf`
+    const html = await fetchText(`/${locale}/resume`)
+    assert.equal(html.response.status, 200, `${locale} resume HTML`)
+    assertHtmlHeaders(html.response)
+    assert.match(mainHtml(html.body), new RegExp(`href="${downloadPath.replaceAll(".", "\\.")}"`))
+
+    const markdown = await fetchText(`/${locale}/resume`, {
+      headers: { Accept: "text/markdown" }
+    })
+    assert.equal(markdown.response.status, 200, `${locale} resume Markdown`)
+    assertNegotiatedHeaders(markdown.response, /^text\/markdown;\s*charset=utf-8$/i)
+    assert.match(markdown.body, new RegExp(`\\(${downloadPath.replaceAll(".", "\\.")}\\)`))
+
+    const response = await fetch(`${origin}${downloadPath}`)
     assert.equal(response.status, 200)
     assert.match(response.headers.get("content-type") ?? "", /^application\/pdf\b/i)
     const digest = createHash("sha256")

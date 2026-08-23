@@ -69,7 +69,10 @@ export function preferredRepresentation(header: string | null): Representation |
 
   candidates.sort((left, right) => {
     const qualityOrder = right.preference!.quality - left.preference!.quality
-    return qualityOrder || left.preference!.position - right.preference!.position
+    const specificityOrder = right.preference!.specificity - left.preference!.specificity
+    return (
+      qualityOrder || specificityOrder || left.preference!.position - right.preference!.position
+    )
   })
 
   return candidates[0]?.type ?? null

@@ -1,7 +1,22 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "git": {
     "deploymentEnabled": {
       "main": false
     }
-  }
+  },
+  "routes": [
+    {
+      "src": "^/(?!_next(?:/|$)|_vercel(?:/|$)|api(?:/|$))(?!.*\\.[^/]+$).*$",
+      "transforms": [
+        {
+          "type": "response.headers",
+          "op": "append",
+          "target": { "key": "Vary" },
+          "args": ["Accept", "Accept-Encoding"]
+        }
+      ],
+      "continue": true
+    }
+  ]
 }

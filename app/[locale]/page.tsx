@@ -75,7 +75,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       <JsonLd id="person-jsonld" data={personJsonLd(locale, about[0])} />
       <JsonLd id="home-breadcrumb-jsonld" data={breadcrumbs} />
 
-      <Surface as="section" className="hero">
+      <Surface as="div" className="hero">
         <div className="hero-layout">
           <div className="hero-copy">
             <Eyebrow>{dictionary.site.shortTitle}</Eyebrow>
@@ -110,7 +110,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
         </div>
       </Surface>
 
-      <SectionStack>
+      <SectionStack as="div">
         <Surface as="section" className="home-snapshot" aria-labelledby="home-snapshot-title">
           <div className="section-heading-row">
             <div>
@@ -139,9 +139,9 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
           </div>
         </Surface>
 
-        <Surface as="section">
+        <Surface as="section" aria-labelledby="home-focus-title">
           <div className="section-heading-row">
-            <h2>{ui.sections.focusAreas}</h2>
+            <h2 id="home-focus-title">{ui.sections.focusAreas}</h2>
           </div>
           <ChipRow>
             {focusAreas.map((area) => (
@@ -168,9 +168,13 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
           />
         </Surface>
 
-        <SectionStack as="section" className="preview-section">
+        <SectionStack
+          as="section"
+          className="preview-section"
+          aria-labelledby="home-projects-title"
+        >
           <PageHeader as="div" className="section-heading-row">
-            <h2>{ui.sections.projects}</h2>
+            <h2 id="home-projects-title">{ui.sections.projects}</h2>
             <InlineLink href={`/${locale}/projects`}>{ui.nav.projects}</InlineLink>
           </PageHeader>
           <Grid>
@@ -189,9 +193,9 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
           </Grid>
         </SectionStack>
 
-        <SectionStack as="section" className="preview-section">
+        <SectionStack as="section" className="preview-section" aria-labelledby="home-blog-title">
           <PageHeader as="div" className="section-heading-row">
-            <h2>{ui.sections.blog}</h2>
+            <h2 id="home-blog-title">{ui.sections.blog}</h2>
             <InlineLink href={`/${locale}/blog`}>{ui.nav.blog}</InlineLink>
           </PageHeader>
           <Grid>
