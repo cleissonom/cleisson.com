@@ -40,8 +40,7 @@ const nextConfig = {
   skipProxyUrlNormalize: true,
   typedRoutes: true,
   experimental: {
-    globalNotFound: true,
-    inlineCss: true
+    globalNotFound: true
   },
   outputFileTracingIncludes: {
     "/*": ["./content/**/*.md"]

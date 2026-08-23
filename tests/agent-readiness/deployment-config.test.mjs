@@ -2,7 +2,17 @@ import assert from "node:assert/strict"
 import { readFileSync } from "node:fs"
 import test from "node:test"
 
+import nextConfig from "../../next.config.mjs"
+
 const config = JSON.parse(readFileSync("vercel.json", "utf8"))
+
+test("production keeps reusable CSS outside the semantic HTML prefix", () => {
+  assert.notEqual(
+    nextConfig.experimental?.inlineCss,
+    true,
+    "bounded crawlers should reach the homepage heading hierarchy before large stylesheets"
+  )
+})
 
 test("Vercel appends negotiation tokens to the final response Vary header", () => {
   const route = config.routes?.find(

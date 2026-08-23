@@ -76,6 +76,10 @@ function visibleText(html) {
     .trim()
 }
 
+function agentReadableText(html) {
+  return visibleText(html.replace(/<(noscript|nav|footer|header)\b[\s\S]*?<\/\1>/gi, " "))
+}
+
 function headingLevels(html) {
   return [...html.matchAll(/<h([1-6])\b/gi)].map((match) => Number(match[1]))
 }
@@ -140,6 +144,7 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
   const { response, body } = await fetchText("/")
   const main = mainHtml(body)
   const levels = headingLevels(main)
+  const readableTextDensity = agentReadableText(body).length / body.length
   const sectionTags = [...main.matchAll(/<section\b[^>]*>/gi)].map((match) => match[0])
   const sectionHeadingIds = [
     "home-snapshot-title",
@@ -151,6 +156,12 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
 
   assert.equal(response.status, 200)
   assertHtmlHeaders(response)
+  if (configuredOrigin) {
+    assert.ok(
+      readableTextDensity > 0.052,
+      `agent-readable text density should stay safely above 5% (received ${(readableTextDensity * 100).toFixed(2)}%)`
+    )
+  }
   assert.match(body, /<title>Cleisson de Oliveira Moura \| Senior Software Engineer<\/title>/i)
   assert.match(
     body,
