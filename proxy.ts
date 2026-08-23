@@ -268,5 +268,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|_vercel).*)"]
+  matcher: ["/((?!_next/static|_next/image|_vercel|api/mcp).*)"]
 }

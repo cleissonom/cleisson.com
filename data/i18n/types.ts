@@ -115,6 +115,23 @@ export type LocaleDictionary = {
       lead: string
       sections: ContentSection[]
     }
+    mcp: {
+      metadataTitle: string
+      metadataDescription: string
+      eyebrow: string
+      lead: string
+      endpointHeading: string
+      endpointDescription: string
+      configurationLabel: string
+      toolsHeading: string
+      tools: Array<{ name: string; description: string }>
+      capabilitiesNote: string
+      examplesHeading: string
+      examples: string[]
+      boundariesHeading: string
+      boundaries: string[]
+      contactLabel: string
+    }
     experience: {
       metadataTitle: string
       metadataDescription: string

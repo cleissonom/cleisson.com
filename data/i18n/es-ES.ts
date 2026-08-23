@@ -265,7 +265,7 @@ export const esESDictionary: LocaleDictionary = {
         {
           heading: "Información que procesa el sitio",
           paragraphs: [
-            "Este portafolio no ofrece cuentas de usuario, comentarios, pagos, perfiles publicitarios ni un formulario web de contacto. El sitio puede procesar información común de las solicitudes necesaria para entregar una página, como la dirección IP, detalles del navegador o dispositivo, URL solicitada, referencia, marcas de tiempo y eventos de diagnóstico o seguridad mediante su infraestructura de alojamiento.",
+            "Este portafolio no ofrece cuentas de usuario, comentarios, pagos, perfiles publicitarios ni un formulario web de contacto. El sitio puede procesar información común de las solicitudes necesaria para entregar una página, como la dirección IP, detalles del navegador o dispositivo, URL solicitada, referencia, marcas de tiempo y eventos de diagnóstico o seguridad mediante su infraestructura de alojamiento. Las solicitudes al endpoint público de Model Context Protocol (MCP) también pueden contener metadatos del cliente, nombres de herramientas o prompts, idioma, temas de búsqueda o el slug de un proyecto. El endpoint usa esa información únicamente para devolver evidencia pública del portafolio; no tiene una base de datos de cuentas ni un modelo de lenguaje en el servidor.",
             "Si decides enviar un correo, el mensaje, los datos del remitente, los archivos adjuntos y cualquier información incluida serán procesados por los servicios de correo utilizados por ti y por Cleisson. Envía únicamente lo necesario para la consulta profesional y evita credenciales confidenciales o datos personales sensibles."
           ]
         },
@@ -279,10 +279,57 @@ export const esESDictionary: LocaleDictionary = {
         {
           heading: "Preguntas y opciones",
           paragraphs: [
-            "Puedes borrar las cookies de idioma y tema en tu navegador, bloquear funciones opcionales del cliente o consultar el contenido renderizado por el servidor sin JavaScript. Para una pregunta de privacidad sobre este sitio o sobre un correo que enviaste anteriormente, utiliza la página de contacto y describe la solicitud sin añadir más información sensible. Este aviso se actualizó el 22 de agosto de 2026."
+            "Puedes borrar las cookies de idioma y tema en tu navegador, bloquear funciones opcionales del cliente o consultar el contenido renderizado por el servidor sin JavaScript. Las solicitudes MCP y sus argumentos limitados pueden aparecer en registros ordinarios de alojamiento, límites de uso, diagnóstico o seguridad; no envíes una descripción confidencial de un puesto, credenciales ni datos personales sensibles. Para una pregunta de privacidad sobre este sitio o sobre un correo que enviaste anteriormente, utiliza la página de contacto y describe la solicitud sin añadir más información sensible. Este aviso se actualizó el 23 de agosto de 2026."
           ]
         }
       ]
+    },
+    mcp: {
+      metadataTitle: "MCP de evidencia profesional",
+      metadataDescription:
+        "Conecta un agente de IA con la evidencia profesional pública, de solo lectura y vinculada a fuentes de Cleisson de Oliveira Moura mediante Model Context Protocol.",
+      eyebrow: "Model Context Protocol",
+      lead: "Una interfaz pública y de solo lectura para que los agentes consulten evidencia profesional, distingan coincidencias textuales de la evidencia pública ausente y citen la fuente.",
+      endpointHeading: "Conecta tu agente",
+      endpointDescription:
+        "Usa el endpoint siguiente con un cliente MCP compatible con Streamable HTTP remoto. No se requiere cuenta ni autenticación, y el endpoint solo expone información ya publicada en este sitio.",
+      configurationLabel: "Ejemplo de configuración MCP remota (el formato varía según el cliente)",
+      toolsHeading: "Herramientas disponibles",
+      tools: [
+        {
+          name: "get_profile",
+          description:
+            "Devuelve un resumen profesional localizado, áreas de enfoque, el rol actual publicado en este sitio y enlaces verificados."
+        },
+        {
+          name: "find_evidence",
+          description:
+            "Encuentra evidencia pública vinculada a fuentes para temas concisos sin generar una puntuación de candidato."
+        },
+        {
+          name: "get_project",
+          description:
+            "Devuelve los hechos publicados y artefactos públicos de un caso de estudio disponible."
+        }
+      ],
+      capabilitiesNote:
+        "Los clientes también pueden leer recursos Markdown localizados y usar los prompts assess_role_fit y prepare_interview.",
+      examplesHeading: "Preguntas para probar",
+      examples: [
+        "Encuentra evidencia de Kubernetes, sistemas basados en eventos y responsabilidad de arquitectura.",
+        "Mapea los requisitos de este puesto con evidencia directa, adyacente o pública ausente.",
+        "Prepara preguntas de entrevista que validen alcance, decisiones e impacto en producción."
+      ],
+      boundariesHeading: "Límites de confianza",
+      boundaries: [
+        "El MCP es una fuente de información del portafolio; no es Cleisson ni habla en su nombre.",
+        "Los resultados diferencian declaraciones del candidato, artefactos inspeccionables, textos publicados y testimonios republicados.",
+        "Directa y adyacente describen relevancia textual, no verificación independiente; usa evidenceType y los enlaces de origen para evaluar la procedencia.",
+        "Sin evidencia pública solo significa que este sitio no encontró una coincidencia; no demuestra ausencia de experiencia.",
+        "No envíes descripciones confidenciales de puestos, credenciales ni datos personales sensibles; detalles limitados de la solicitud pueden aparecer en registros de alojamiento o seguridad.",
+        "El servidor no envía correos, reserva reuniones, consulta URLs arbitrarias, acepta archivos ni conserva un perfil privado del reclutador."
+      ],
+      contactLabel: "Contactar directamente con Cleisson"
     },
     experience: {
       metadataTitle: "Experiencia",

@@ -265,7 +265,7 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Informações processadas pelo site",
           paragraphs: [
-            "Este portfólio não oferece contas de usuário, comentários, pagamentos, perfis de publicidade ou formulário de contato na web. O site pode processar informações comuns de requisição necessárias para entregar uma página, como endereço IP, detalhes do navegador ou dispositivo, URL solicitada, referência, horários e eventos de diagnóstico ou segurança por meio da infraestrutura de hospedagem.",
+            "Este portfólio não oferece contas de usuário, comentários, pagamentos, perfis de publicidade ou formulário de contato na web. O site pode processar informações comuns de requisição necessárias para entregar uma página, como endereço IP, detalhes do navegador ou dispositivo, URL solicitada, referência, horários e eventos de diagnóstico ou segurança por meio da infraestrutura de hospedagem. Requisições ao endpoint público do Model Context Protocol (MCP) também podem conter metadados do cliente, nomes de ferramentas ou prompts, idioma, tópicos de busca ou o slug de um projeto. O endpoint usa essas informações apenas para devolver evidências públicas do portfólio; ele não possui banco de contas nem modelo de linguagem no servidor.",
             "Se você optar por enviar um e-mail, a mensagem, os dados do remetente, anexos e demais informações incluídas serão processados pelos serviços de e-mail usados por você e por Cleisson. Envie apenas o necessário para o assunto profissional e evite credenciais confidenciais ou dados pessoais sensíveis."
           ]
         },
@@ -279,10 +279,57 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Dúvidas e escolhas",
           paragraphs: [
-            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 22 de agosto de 2026."
+            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Requisições MCP e seus argumentos limitados podem aparecer em logs comuns de hospedagem, limite de uso, diagnóstico ou segurança; não envie uma descrição confidencial de vaga, credenciais ou dados pessoais sensíveis. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 23 de agosto de 2026."
           ]
         }
       ]
+    },
+    mcp: {
+      metadataTitle: "MCP de evidências profissionais",
+      metadataDescription:
+        "Conecte um agente de IA às evidências profissionais públicas, somente leitura e ligadas às fontes de Cleisson de Oliveira Moura pelo Model Context Protocol.",
+      eyebrow: "Model Context Protocol",
+      lead: "Uma interface pública e somente leitura para agentes consultarem evidências profissionais, distinguirem correspondências textuais de evidência pública ausente e citarem a fonte.",
+      endpointHeading: "Conecte seu agente",
+      endpointDescription:
+        "Use o endpoint abaixo em um cliente MCP compatível com Streamable HTTP remoto. Nenhuma conta ou autenticação é necessária, e o endpoint expõe apenas informações já publicadas neste site.",
+      configurationLabel: "Exemplo de configuração MCP remota (o formato varia por cliente)",
+      toolsHeading: "Ferramentas disponíveis",
+      tools: [
+        {
+          name: "get_profile",
+          description:
+            "Retorna um resumo profissional localizado, áreas de foco, a função atual publicada neste site e links verificados."
+        },
+        {
+          name: "find_evidence",
+          description:
+            "Encontra evidências públicas ligadas às fontes para tópicos concisos, sem gerar uma nota de candidato."
+        },
+        {
+          name: "get_project",
+          description:
+            "Retorna os fatos publicados e artefatos públicos de um estudo de caso disponível."
+        }
+      ],
+      capabilitiesNote:
+        "Os clientes também podem ler recursos Markdown localizados e usar os prompts assess_role_fit e prepare_interview.",
+      examplesHeading: "Perguntas para testar",
+      examples: [
+        "Encontre evidências de Kubernetes, sistemas orientados a eventos e responsabilidade por arquitetura.",
+        "Mapeie os requisitos desta vaga para evidências diretas, adjacentes ou públicas ausentes.",
+        "Prepare perguntas de entrevista que validem escopo, decisões e impacto em produção."
+      ],
+      boundariesHeading: "Limites de confiança",
+      boundaries: [
+        "O MCP é uma fonte de informações do portfólio; ele não é Cleisson e não fala em nome dele.",
+        "Os resultados diferenciam declarações do candidato, artefatos verificáveis, textos publicados e recomendações republicadas.",
+        "Direta e adjacente descrevem relevância textual, não verificação independente; use evidenceType e os links de fonte para avaliar a procedência.",
+        "Nenhuma evidência pública significa apenas que este site não encontrou correspondência; isso não prova ausência de experiência.",
+        "Não envie descrições confidenciais de vagas, credenciais ou dados pessoais sensíveis; detalhes limitados da requisição podem aparecer em logs de hospedagem ou segurança.",
+        "O servidor não envia e-mails, agenda reuniões, consulta URLs arbitrárias, recebe uploads nem mantém um perfil privado do recrutador."
+      ],
+      contactLabel: "Falar diretamente com Cleisson"
     },
     experience: {
       metadataTitle: "Experiência",

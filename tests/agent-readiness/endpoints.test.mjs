@@ -6,7 +6,7 @@ import { after, before, test } from "node:test"
 
 const root = process.cwd()
 const locales = ["en-US", "pt-BR", "es-ES"]
-const trustPaths = ["about", "contact", "privacy"]
+const publicInfoPaths = ["about", "contact", "privacy", "mcp"]
 const expectedResumeSha256 = {
   "en-US": "49c29a9874a37bc39de8588f997a24e869e44756e943b2009965de02f2084982",
   "pt-BR": "97944ab0ab2192a40a742180a7d7e0aa7be8331381732c324be34d8a777d599a",
@@ -191,8 +191,8 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
   assert.match(main, /<h1\b[^>]*>Cleisson de Oliveira Moura<\/h1>/i)
   assert.match(body, /<link rel="alternate" type="text\/markdown" href="[^"]+\.md"\s*\/?>/i)
   assert.match(body, /<link rel="describedby" href="\/llms\.txt"\s*\/?>/i)
-  for (const trustPath of trustPaths) {
-    assert.match(footerHtml(body), new RegExp(`href="/en-US/${trustPath}"`))
+  for (const publicInfoPath of publicInfoPaths) {
+    assert.match(footerHtml(body), new RegExp(`href="/en-US/${publicInfoPath}"`))
   }
   assert.doesNotMatch(footerHtml(body), /href="mailto:/i)
   assert.ok(visibleText(main).length >= 500, "homepage main content should exceed 500 characters")
@@ -333,10 +333,10 @@ test("explicit and nested missing routes use the recovery 404", async () => {
   assert.match(mainHtml(unacceptable.body), /href="\/sitemap\.xml"/)
 })
 
-test("localized trust pages have substantive HTML and Markdown", async () => {
+test("localized public information pages have substantive HTML and Markdown", async () => {
   for (const locale of locales) {
-    for (const trustPath of trustPaths) {
-      const pathname = `/${locale}/${trustPath}`
+    for (const publicInfoPath of publicInfoPaths) {
+      const pathname = `/${locale}/${publicInfoPath}`
       const html = await fetchText(pathname)
       assert.equal(html.response.status, 200, pathname)
       assertHtmlHeaders(html.response)
@@ -355,6 +355,36 @@ test("localized trust pages have substantive HTML and Markdown", async () => {
         `${pathname} Markdown should be substantive`
       )
     }
+  }
+})
+
+test("the MCP landing page is localized and explains the public endpoint", async () => {
+  const redirect = await fetch(`${origin}/mcp`, {
+    redirect: "manual",
+    headers: { "Accept-Language": "pt-BR" }
+  })
+  assert.match(redirect.headers.get("location") ?? "", /\/pt-BR\/mcp$/)
+
+  const html = await fetchText("/en-US/mcp")
+  const content = visibleText(mainHtml(html.body))
+  assert.match(content, /https:\/\/www\.cleisson\.com\/api\/mcp/)
+  for (const tool of ["get_profile", "find_evidence", "get_project"]) {
+    assert.match(content, new RegExp(tool))
+  }
+
+  const markdown = await fetchText("/en-US/mcp.md")
+  assert.equal(markdown.response.status, 200)
+  assert.match(markdown.body, /https:\/\/www\.cleisson\.com\/api\/mcp/)
+  assert.match(markdown.body, /\[Privacy[^\]]*\]\(\/en-US\/privacy\)/i)
+  for (const tool of ["get_profile", "find_evidence", "get_project"]) {
+    assert.match(markdown.body, new RegExp(tool))
+  }
+})
+
+test("localized privacy notices disclose MCP request processing", async () => {
+  for (const locale of locales) {
+    const { body } = await fetchText(`/${locale}/privacy`)
+    assert.match(visibleText(mainHtml(body)), /\b(?:MCP|Model Context Protocol)\b/i)
   }
 })
 
@@ -388,6 +418,8 @@ test("llms.txt follows the published file-list format and gives concrete usage g
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/about/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/contact/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/privacy/)
+  assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/mcp\.md/)
+  assert.match(body, /https:\/\/www\.cleisson\.com\/api\/mcp/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/sitemap\.xml/)
 })
 
@@ -396,8 +428,11 @@ test("sitemap, robots, feeds, and manifest remain machine-readable", async () =>
   assert.equal(sitemap.response.status, 200)
   assert.match(sitemap.response.headers.get("content-type") ?? "", /xml/i)
   for (const locale of locales) {
-    for (const trustPath of trustPaths) {
-      assert.match(sitemap.body, new RegExp(`https://www\\.cleisson\\.com/${locale}/${trustPath}`))
+    for (const publicInfoPath of publicInfoPaths) {
+      assert.match(
+        sitemap.body,
+        new RegExp(`https://www\\.cleisson\\.com/${locale}/${publicInfoPath}`)
+      )
     }
   }
 

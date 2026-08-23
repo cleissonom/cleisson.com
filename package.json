@@ -25,6 +25,7 @@
     "precommit:checks": "npm run precommit:secrets && npm run precommit:lint"
   },
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "gray-matter": "^4.0.3",
@@ -36,6 +37,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "^2.0.0",
     "@next/bundle-analyzer": "^16.3.2",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
