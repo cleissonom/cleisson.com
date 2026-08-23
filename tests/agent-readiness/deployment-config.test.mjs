@@ -5,6 +5,16 @@ import test from "node:test"
 import nextConfig from "../../next.config.mjs"
 
 const config = JSON.parse(readFileSync("vercel.json", "utf8"))
+const agentInstructions = readFileSync("AGENTS.md", "utf8")
+
+test("project policy treats agents and AI systems as first-class consumers", () => {
+  assert.match(agentInstructions, /agents and AI systems as first-class consumers/i)
+  assert.match(agentInstructions, /semantic server-rendered HTML/i)
+  assert.match(agentInstructions, /text\/markdown/i)
+  assert.match(agentInstructions, /llms\.txt/i)
+  assert.match(agentInstructions, /source-linked/i)
+  assert.match(agentInstructions, /agent-readiness tests/i)
+})
 
 test("production keeps reusable CSS outside the semantic HTML prefix", () => {
   assert.notEqual(

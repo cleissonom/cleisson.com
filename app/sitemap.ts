@@ -13,7 +13,8 @@ const staticPaths = [
   "/experience",
   "/projects",
   "/blog",
-  "/resume"
+  "/resume",
+  "/mcp"
 ] as const
 
 function toValidDate(value: string | undefined, fallback: Date): Date {

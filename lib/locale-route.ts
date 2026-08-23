@@ -13,7 +13,8 @@ const STATIC_PAGES = new Set([
   "projects",
   "blog",
   "resume",
-  "experience"
+  "experience",
+  "mcp"
 ])
 
 export function isStaticPageSegment(segment: string): boolean {

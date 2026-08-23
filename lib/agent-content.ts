@@ -11,7 +11,13 @@ import {
 } from "@/lib/content"
 import { DEFAULT_LOCALE, isLocale, resumePdfPath, type Locale } from "@/lib/i18n"
 import { isProjectDetailAvailable } from "@/lib/project-state"
-import { SITE_LINKS, SITE_NAME, siteEmailAddress } from "@/lib/site"
+import {
+  MCP_ENDPOINT_URL,
+  MCP_SERVER_NAME,
+  SITE_LINKS,
+  SITE_NAME,
+  siteEmailAddress
+} from "@/lib/site"
 
 export type AgentContent = {
   body: string
@@ -203,6 +209,32 @@ function resumeMarkdown(locale: Locale): string {
   )
 }
 
+function mcpMarkdown(locale: Locale): string {
+  const dictionary = getDictionary(locale)
+  const page = dictionary.pages.mcp
+  const configuration = JSON.stringify(
+    { mcpServers: { [MCP_SERVER_NAME]: { url: MCP_ENDPOINT_URL } } },
+    null,
+    2
+  )
+
+  return document(
+    `# ${page.metadataTitle}`,
+    `> ${page.lead}`,
+    `## ${page.endpointHeading}`,
+    page.endpointDescription,
+    `**Endpoint:** \`${MCP_ENDPOINT_URL}\``,
+    `### ${page.configurationLabel}\n\n\`\`\`json\n${configuration}\n\`\`\``,
+    `## ${page.toolsHeading}`,
+    ...page.tools.map((tool) => `### \`${tool.name}\`\n\n${tool.description}`),
+    page.capabilitiesNote,
+    `## ${page.examplesHeading}\n\n${bulletList(page.examples)}`,
+    `## ${page.boundariesHeading}\n\n${bulletList(page.boundaries)}`,
+    `[${page.contactLabel}](/${locale}/contact)`,
+    `[${dictionary.pages.privacy.metadataTitle}](/${locale}/privacy)`
+  )
+}
+
 function notFoundMarkdown(locale: Locale): AgentContent {
   const dictionary = getDictionary(locale)
   return {
@@ -229,6 +261,7 @@ function staticMarkdown(locale: Locale, page?: string): string | null {
   if (page === "projects") return projectsMarkdown(locale)
   if (page === "blog") return blogMarkdown(locale)
   if (page === "resume") return resumeMarkdown(locale)
+  if (page === "mcp") return mcpMarkdown(locale)
   return null
 }
 

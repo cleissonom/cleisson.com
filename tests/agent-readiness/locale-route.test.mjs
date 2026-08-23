@@ -9,8 +9,8 @@ const options = {
   blogSlugsByLocale: { "pt-BR": ["known-post"] }
 }
 
-test("locale switching preserves every localized trust route", () => {
-  for (const page of ["about", "contact", "privacy"]) {
+test("locale switching preserves every localized public information route", () => {
+  for (const page of ["about", "contact", "privacy", "mcp"]) {
     assert.equal(resolveLocaleSwitchPath(`/en-US/${page}`, "pt-BR", options), `/pt-BR/${page}`)
   }
 })

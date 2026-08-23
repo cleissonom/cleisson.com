@@ -74,6 +74,7 @@ export default async function LocaleLayout({
           resumeLabel={dictionary.ui.nav.resume}
           contactLabel={dictionary.ui.cta.contact}
           privacyLabel={dictionary.pages.privacy.metadataTitle}
+          mcpLabel={dictionary.pages.mcp.metadataTitle}
           opensInNewTabLabel={dictionary.ui.labels.opensInNewTab}
         />
         <Analytics />

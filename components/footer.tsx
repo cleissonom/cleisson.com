@@ -10,6 +10,7 @@ export function Footer({
   resumeLabel,
   contactLabel,
   privacyLabel,
+  mcpLabel,
   opensInNewTabLabel
 }: {
   locale: Locale
@@ -17,6 +18,7 @@ export function Footer({
   resumeLabel: string
   contactLabel: string
   privacyLabel: string
+  mcpLabel: string
   opensInNewTabLabel: string
 }) {
   const year = new Date().getFullYear()
@@ -39,6 +41,7 @@ export function Footer({
           </a>
           <Link href={`/${locale}/contact` as Route}>{contactLabel}</Link>
           <Link href={`/${locale}/privacy` as Route}>{privacyLabel}</Link>
+          <Link href={`/${locale}/mcp` as Route}>{mcpLabel}</Link>
           <a href="/rss.xml">RSS</a>
           <a href="/atom.xml">Atom</a>
           <a href="/feed.json">JSON Feed</a>

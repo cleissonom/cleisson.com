@@ -264,7 +264,7 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Information this site processes",
           paragraphs: [
-            "This portfolio does not provide user accounts, comments, payments, advertising profiles, or a web contact form. The site may process ordinary request information needed to deliver a page, such as an IP address, browser or device details, requested URL, referral information, timestamps, and diagnostic or security events through its hosting infrastructure.",
+            "This portfolio does not provide user accounts, comments, payments, advertising profiles, or a web contact form. The site may process ordinary request information needed to deliver a page, such as an IP address, browser or device details, requested URL, referral information, timestamps, and diagnostic or security events through its hosting infrastructure. Requests to the public Model Context Protocol (MCP) endpoint may also contain client metadata, tool or prompt names, a locale, search topics, or a project slug. The endpoint uses this information only to return public portfolio evidence; it has no account database or server-side language model.",
             "If you choose to send an email, the message, sender details, attachments, and any information you include are processed by the email services used by you and by Cleisson. Send only the information needed for the professional inquiry and avoid confidential credentials or sensitive personal data."
           ]
         },
@@ -278,10 +278,57 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Questions and choices",
           paragraphs: [
-            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 22, 2026."
+            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. MCP requests and their limited arguments may appear in ordinary hosting, rate-limit, diagnostic, or security logs; do not send a confidential job description, credentials, or sensitive personal data. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 23, 2026."
           ]
         }
       ]
+    },
+    mcp: {
+      metadataTitle: "Professional Evidence MCP",
+      metadataDescription:
+        "Connect an AI agent to Cleisson de Oliveira Moura's read-only, source-linked professional evidence through the Model Context Protocol.",
+      eyebrow: "Model Context Protocol",
+      lead: "A public, read-only interface that helps agents retrieve professional evidence, distinguish text matches from missing public evidence, and cite the source.",
+      endpointHeading: "Connect your agent",
+      endpointDescription:
+        "Use the endpoint below with an MCP client that supports remote Streamable HTTP. No account or authentication is required, and the endpoint exposes only information already published on this site.",
+      configurationLabel: "Example remote MCP configuration (client formats vary)",
+      toolsHeading: "Available tools",
+      tools: [
+        {
+          name: "get_profile",
+          description:
+            "Return a localized professional overview, focus areas, the current role published on this site, and verified links."
+        },
+        {
+          name: "find_evidence",
+          description:
+            "Find source-linked public evidence for concise topics without generating a candidate score."
+        },
+        {
+          name: "get_project",
+          description:
+            "Return the published facts and public artifacts for an available project case study."
+        }
+      ],
+      capabilitiesNote:
+        "Clients can also read localized Markdown resources and use the assess_role_fit and prepare_interview prompts.",
+      examplesHeading: "Questions to try",
+      examples: [
+        "Find evidence of Kubernetes, event-driven systems, and architecture ownership.",
+        "Map this role's requirements to direct, adjacent, or missing public evidence.",
+        "Prepare interview questions that validate project scope, decisions, and production impact."
+      ],
+      boundariesHeading: "Trust boundaries",
+      boundaries: [
+        "The MCP is a portfolio information source; it is not Cleisson and does not speak on his behalf.",
+        "Results separate candidate-authored claims, inspectable artifacts, published writing, and republished testimonials.",
+        "Direct and adjacent describe textual relevance, not independent verification; use evidenceType and source links to evaluate provenance.",
+        "No public evidence means only that this site did not provide a match; it does not prove an absence of experience.",
+        "Do not send confidential job descriptions, credentials, or sensitive personal data; limited request details may appear in hosting or security logs.",
+        "The server cannot send email, book meetings, fetch arbitrary URLs, accept uploads, or retain a private recruiter profile."
+      ],
+      contactLabel: "Contact Cleisson directly"
     },
     experience: {
       metadataTitle: "Experience",
