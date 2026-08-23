@@ -265,7 +265,7 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Informações processadas pelo site",
           paragraphs: [
-            "Este portfólio não oferece contas de usuário, comentários, pagamentos, perfis de publicidade ou formulário de contato na web. O site pode processar informações comuns de requisição necessárias para entregar uma página, como endereço IP, detalhes do navegador ou dispositivo, URL solicitada, referência, horários e eventos de diagnóstico ou segurança por meio da infraestrutura de hospedagem. Requisições ao endpoint público do Model Context Protocol (MCP) também podem conter metadados do cliente, nomes de ferramentas ou prompts, idioma, tópicos de busca ou o slug de um projeto. O endpoint usa essas informações apenas para devolver evidências públicas do portfólio; ele não possui banco de contas nem modelo de linguagem no servidor.",
+            "Este portfólio não oferece contas de usuário, comentários, pagamentos, perfis de publicidade ou formulário de contato na web. O site pode processar informações comuns de requisição necessárias para entregar uma página, como endereço IP, detalhes do navegador ou dispositivo, URL solicitada, referência, horários e eventos de diagnóstico ou segurança por meio da infraestrutura de hospedagem. Requisições à API REST pública ou ao endpoint do Model Context Protocol (MCP) também podem conter metadados do cliente, nomes de operações, ferramentas ou prompts, idioma, tópicos de busca ou o slug de um projeto. Esses endpoints usam as informações apenas para operar e proteger essas interfaces somente leitura e devolver evidências públicas do portfólio; eles não possuem banco de contas nem modelo de linguagem no servidor.",
             "Se você optar por enviar um e-mail, a mensagem, os dados do remetente, anexos e demais informações incluídas serão processados pelos serviços de e-mail usados por você e por Cleisson. Envie apenas o necessário para o assunto profissional e evite credenciais confidenciais ou dados pessoais sensíveis."
           ]
         },
@@ -279,7 +279,7 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Dúvidas e escolhas",
           paragraphs: [
-            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Requisições MCP e seus argumentos limitados podem aparecer em logs comuns de hospedagem, limite de uso, diagnóstico ou segurança; não envie uma descrição confidencial de vaga, credenciais ou dados pessoais sensíveis. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 23 de agosto de 2026."
+            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Requisições à API REST e ao MCP, com seus argumentos limitados, podem aparecer em logs comuns de hospedagem, limite de uso, diagnóstico ou segurança; não envie uma descrição confidencial de vaga, credenciais ou dados pessoais sensíveis. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 23 de agosto de 2026."
           ]
         }
       ]
@@ -290,6 +290,19 @@ export const ptBRDictionary: LocaleDictionary = {
         "Conecte um agente de IA às evidências profissionais públicas, somente leitura e ligadas às fontes de Cleisson de Oliveira Moura pelo Model Context Protocol.",
       eyebrow: "Model Context Protocol",
       lead: "Uma interface pública e somente leitura para agentes consultarem evidências profissionais, distinguirem correspondências textuais de evidência pública ausente e citarem a fonte.",
+      documentationLabel: "Documentação da API pública e do MCP",
+      apiHeading: "API REST pública",
+      apiDescription:
+        "A API versionada oferece o perfil localizado de Cleisson, evidências por tópico e detalhes de projetos publicados em JSON estruturado.",
+      openApiLabel: "Abrir a especificação OpenAPI",
+      authenticationDescription:
+        "Nenhuma autenticação é necessária. A API é pública e somente leitura; não envie credenciais, descrições confidenciais de vagas ou dados pessoais sensíveis.",
+      endpointsHeading: "Endpoints REST",
+      apiExamplesHeading: "Exemplos de requisições à API",
+      errorsHeading: "Erros estruturados da API",
+      errorsDescription:
+        "Os erros usam application/problem+json e incluem um código estável, uma explicação legível e uma orientação para resolver o problema.",
+      discoveryLabel: "Verificar a descoberta MCP em tempo de execução",
       endpointHeading: "Conecte seu agente",
       endpointDescription:
         "Use o endpoint abaixo em um cliente MCP compatível com Streamable HTTP remoto. Nenhuma conta ou autenticação é necessária, e o endpoint expõe apenas informações já publicadas neste site.",

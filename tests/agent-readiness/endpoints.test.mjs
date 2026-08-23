@@ -103,6 +103,8 @@ function assertHtmlHeaders(response) {
   assert.ok(varyTokens(response).includes("accept-encoding"))
   assert.match(response.headers.get("link") ?? "", /rel="alternate"; type="text\/markdown"/)
   assert.match(response.headers.get("link") ?? "", /rel="describedby"/)
+  assert.match(response.headers.get("link") ?? "", /rel="service-desc"/)
+  assert.match(response.headers.get("link") ?? "", /rel="service-doc"/)
 }
 
 async function fetchText(pathname, options) {
@@ -191,6 +193,12 @@ test("the raw homepage is complete, structured server-rendered HTML", async () =
   assert.match(main, /<h1\b[^>]*>Cleisson de Oliveira Moura<\/h1>/i)
   assert.match(body, /<link rel="alternate" type="text\/markdown" href="[^"]+\.md"\s*\/?>/i)
   assert.match(body, /<link rel="describedby" href="\/llms\.txt"\s*\/?>/i)
+  assert.match(
+    body,
+    /<link rel="service-desc" href="\/openapi\.json" type="application\/json"\s*\/?>/i
+  )
+  assert.match(body, /<link rel="service-doc" href="\/en-US\/mcp"\s*\/?>/i)
+  assert.match(main, /href="\/en-US\/mcp"/)
   for (const publicInfoPath of publicInfoPaths) {
     assert.match(footerHtml(body), new RegExp(`href="/en-US/${publicInfoPath}"`))
   }
@@ -316,7 +324,8 @@ test("explicit and nested missing routes use the recovery 404", async () => {
     "/en-US/404",
     "/en-US/blog/does-not-exist",
     "/en-US/projects/does-not-exist",
-    "/projects/does-not-exist"
+    "/projects/does-not-exist",
+    "/mcp/does-not-exist"
   ]) {
     const { response, body } = await fetchText(pathname, { redirect: "manual" })
     assert.equal(response.status, 404, pathname)
@@ -358,33 +367,48 @@ test("localized public information pages have substantive HTML and Markdown", as
   }
 })
 
-test("the MCP landing page is localized and explains the public endpoint", async () => {
-  const redirect = await fetch(`${origin}/mcp`, {
-    redirect: "manual",
-    headers: { "Accept-Language": "pt-BR" }
-  })
-  assert.match(redirect.headers.get("location") ?? "", /\/pt-BR\/mcp$/)
+test("the MCP landing page documents both public protocols in every locale", async () => {
+  for (const locale of locales) {
+    const html = await fetchText(`/${locale}/mcp`)
+    const content = visibleText(mainHtml(html.body))
+    assert.equal(html.response.status, 200)
+    assert.match(content, /\/openapi\.json/)
+    assert.match(content, /\/api\/v1\/profile/)
+    assert.match(content, /\/api\/v1\/evidence/)
+    assert.match(content, /\/api\/v1\/projects\/\{slug\}/)
+    assert.match(content, /https:\/\/www\.cleisson\.com\/api\/mcp/)
+    assert.match(
+      content,
+      /(?:no authentication|nenhuma autentica[cç][aã]o|no se requiere autenticaci[oó]n)/i
+    )
+    for (const tool of ["get_profile", "find_evidence", "get_project"]) {
+      assert.match(content, new RegExp(tool))
+    }
 
-  const html = await fetchText("/en-US/mcp")
-  const content = visibleText(mainHtml(html.body))
-  assert.match(content, /https:\/\/www\.cleisson\.com\/api\/mcp/)
-  for (const tool of ["get_profile", "find_evidence", "get_project"]) {
-    assert.match(content, new RegExp(tool))
-  }
-
-  const markdown = await fetchText("/en-US/mcp.md")
-  assert.equal(markdown.response.status, 200)
-  assert.match(markdown.body, /https:\/\/www\.cleisson\.com\/api\/mcp/)
-  assert.match(markdown.body, /\[Privacy[^\]]*\]\(\/en-US\/privacy\)/i)
-  for (const tool of ["get_profile", "find_evidence", "get_project"]) {
-    assert.match(markdown.body, new RegExp(tool))
+    const markdown = await fetchText(`/${locale}/mcp.md`)
+    assert.equal(markdown.response.status, 200)
+    assert.match(markdown.body, /\/openapi\.json/)
+    assert.match(markdown.body, /server\/discover/)
+    assert.doesNotMatch(markdown.body, /^\+/m)
+    assert.match(markdown.body, /application\/problem\+json/)
+    assert.match(markdown.body, /"instance": "\/api\/v1\/profile"/)
+    assert.doesNotMatch(markdown.body, /"instance": "[^"]+\?locale=/)
   }
 })
 
-test("localized privacy notices disclose MCP request processing", async () => {
+test("the removed developers routes stay unpublished", async () => {
+  for (const pathname of ["/developers", "/en-US/developers", "/en-US/developers.md"]) {
+    const response = await fetch(`${origin}${pathname}`, { redirect: "manual" })
+    assert.equal(response.status, 404, pathname)
+  }
+})
+
+test("localized privacy notices disclose public API request processing", async () => {
   for (const locale of locales) {
     const { body } = await fetchText(`/${locale}/privacy`)
-    assert.match(visibleText(mainHtml(body)), /\b(?:MCP|Model Context Protocol)\b/i)
+    const content = visibleText(mainHtml(body))
+    assert.match(content, /\b(?:REST|API)\b/i)
+    assert.match(content, /\b(?:MCP|Model Context Protocol)\b/i)
   }
 })
 
@@ -419,6 +443,8 @@ test("llms.txt follows the published file-list format and gives concrete usage g
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/contact/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/privacy/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/en-US\/mcp\.md/)
+  assert.doesNotMatch(body, /\/developers(?:\.md)?/)
+  assert.match(body, /https:\/\/www\.cleisson\.com\/openapi\.json/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/api\/mcp/)
   assert.match(body, /https:\/\/www\.cleisson\.com\/sitemap\.xml/)
 })

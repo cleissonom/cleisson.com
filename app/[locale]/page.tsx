@@ -127,6 +127,11 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
                 <p key={paragraph}>{paragraph}</p>
               ))}
               {bestFitSummary ? <p>{bestFitSummary}</p> : null}
+              <p>
+                <InlineLink href={`/${locale}/mcp`}>
+                  {dictionary.pages.mcp.documentationLabel}
+                </InlineLink>
+              </p>
             </div>
             <dl className="metric-grid">
               <div>

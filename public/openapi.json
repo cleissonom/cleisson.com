@@ -1,0 +1,497 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "Cleisson.com Professional Evidence API",
+    "version": "1.0.0",
+    "description": "A public, read-only API for retrieving Cleisson de Oliveira Moura's candidate-authored professional profile, source-linked portfolio evidence, and published project details. No authentication is required."
+  },
+  "servers": [{ "url": "https://www.cleisson.com", "description": "Canonical production server" }],
+  "externalDocs": {
+    "description": "Authentication, limits, examples, provenance, and integration guidance",
+    "url": "https://www.cleisson.com/en-US/mcp"
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Professional evidence",
+      "description": "Anonymous, read-only access to public professional information and its canonical sources."
+    }
+  ],
+  "paths": {
+    "/api/v1/profile": {
+      "get": {
+        "operationId": "get_profile",
+        "summary": "Get the professional profile",
+        "description": "Returns a localized, candidate-authored professional overview, current public role, verified profile links, contact page, and canonical sources. This operation is read-only and requires no authentication.",
+        "tags": ["Professional evidence"],
+        "parameters": [{ "$ref": "#/components/parameters/Locale" }],
+        "responses": {
+          "200": {
+            "description": "The localized public professional profile.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProfessionalProfile" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/ProfileBadRequest" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/api/v1/evidence": {
+      "get": {
+        "operationId": "find_evidence",
+        "summary": "Find source-linked professional evidence",
+        "description": "Searches the public portfolio for one concise requirement per topic and returns direct, adjacent, or no-public-evidence results without generating a candidate score. This operation is read-only and requires no authentication.",
+        "tags": ["Professional evidence"],
+        "parameters": [
+          {
+            "name": "topics",
+            "in": "query",
+            "required": true,
+            "description": "One to ten topics to search. Repeat the query parameter for multiple topics. Each raw value must be 1-80 characters and, after trimming, contain a Unicode letter, number, +, or #.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 10,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "[\\p{L}\\p{N}+#]"
+              }
+            }
+          },
+          { "$ref": "#/components/parameters/Locale" },
+          {
+            "name": "limitPerTopic",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of evidence items returned for each topic.",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 5, "default": 5 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Source-linked search results for each requested topic.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EvidenceSearchResult" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/EvidenceBadRequest" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    },
+    "/api/v1/projects/{slug}": {
+      "get": {
+        "operationId": "get_project",
+        "summary": "Get a published public project",
+        "description": "Returns published facts, highlights, canonical sources, and artifact links for a project whose detail page is publicly available. This operation is read-only and requires no authentication.",
+        "tags": ["Professional evidence"],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "The lowercase, hyphen-separated slug of a published project.",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            }
+          },
+          { "$ref": "#/components/parameters/Locale" }
+        ],
+        "responses": {
+          "200": {
+            "description": "The published project's public details and sources.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ProjectResult" } }
+            }
+          },
+          "400": { "$ref": "#/components/responses/ProjectBadRequest" },
+          "404": { "$ref": "#/components/responses/ProjectNotFound" },
+          "405": { "$ref": "#/components/responses/MethodNotAllowed" },
+          "500": { "$ref": "#/components/responses/InternalServerError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Locale": {
+        "name": "locale",
+        "in": "query",
+        "required": false,
+        "description": "Locale used for returned prose and source links.",
+        "schema": {
+          "type": "string",
+          "enum": ["en-US", "pt-BR", "es-ES"],
+          "default": "en-US"
+        }
+      }
+    },
+    "responses": {
+      "ProfileBadRequest": {
+        "description": "The locale query parameter is invalid.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "EvidenceBadRequest": {
+        "description": "A topic, locale, or per-topic limit is invalid.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "ProjectBadRequest": {
+        "description": "The project slug or locale is invalid.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "ProjectNotFound": {
+        "description": "No publicly available project matched the slug.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "The HTTP method is not supported by this read-only endpoint.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "An unexpected server error prevented the response.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ProfessionalProfile": {
+        "type": "object",
+        "description": "A localized professional profile with public identity and provenance links.",
+        "additionalProperties": false,
+        "required": [
+          "locale",
+          "name",
+          "headline",
+          "about",
+          "focusAreas",
+          "currentRole",
+          "verifiedLinks",
+          "contactUrl",
+          "sourceUrl",
+          "sourceMarkdownUrl"
+        ],
+        "properties": {
+          "locale": { "$ref": "#/components/schemas/Locale" },
+          "name": { "type": "string", "description": "The candidate's public full name." },
+          "headline": { "type": "string", "description": "The localized professional headline." },
+          "about": {
+            "type": "array",
+            "description": "Candidate-authored overview paragraphs.",
+            "items": { "type": "string" }
+          },
+          "focusAreas": {
+            "type": "array",
+            "description": "Publicly stated areas of professional focus.",
+            "items": { "type": "string" }
+          },
+          "currentRole": {
+            "description": "The current publicly listed role, or null when none is published.",
+            "anyOf": [{ "$ref": "#/components/schemas/CurrentRole" }, { "type": "null" }]
+          },
+          "verifiedLinks": {
+            "type": "array",
+            "description": "Public identity links controlled or verified by the candidate.",
+            "items": { "type": "string", "format": "uri" }
+          },
+          "contactUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "Canonical localized contact page."
+          },
+          "sourceUrl": { "$ref": "#/components/schemas/SourceUrl" },
+          "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" }
+        }
+      },
+      "CurrentRole": {
+        "type": "object",
+        "description": "A role currently listed on the public experience page.",
+        "additionalProperties": false,
+        "required": ["company", "title", "period", "location", "sourceUrl", "sourceMarkdownUrl"],
+        "properties": {
+          "company": { "type": "string", "description": "Public company or organization name." },
+          "title": { "type": "string", "description": "Public role title." },
+          "period": { "type": "string", "description": "Human-readable role period." },
+          "location": { "type": "string", "description": "Publicly stated role location." },
+          "sourceUrl": { "$ref": "#/components/schemas/SourceUrl" },
+          "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" }
+        }
+      },
+      "EvidenceSearchResult": {
+        "type": "object",
+        "description": "Localized, source-linked evidence grouped by requested topic.",
+        "additionalProperties": false,
+        "required": ["locale", "disclaimer", "topics"],
+        "properties": {
+          "locale": { "$ref": "#/components/schemas/Locale" },
+          "disclaimer": {
+            "type": "string",
+            "description": "Scope and verification guidance for interpreting the results."
+          },
+          "topics": {
+            "type": "array",
+            "description": "Evidence result for each unique requested topic.",
+            "items": { "$ref": "#/components/schemas/TopicEvidence" }
+          }
+        }
+      },
+      "TopicEvidence": {
+        "type": "object",
+        "description": "Match status and evidence for one requested topic.",
+        "additionalProperties": false,
+        "required": ["topic", "status", "totalMatches", "evidence"],
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "The normalized display form of the requested topic."
+          },
+          "status": {
+            "type": "string",
+            "description": "The strongest public match found for this topic.",
+            "enum": ["direct", "adjacent", "no_public_evidence"]
+          },
+          "totalMatches": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Total matching public records before the per-topic limit."
+          },
+          "evidence": {
+            "type": "array",
+            "description": "Ranked evidence items, bounded by limitPerTopic.",
+            "items": { "$ref": "#/components/schemas/EvidenceItem" }
+          }
+        }
+      },
+      "EvidenceItem": {
+        "type": "object",
+        "description": "A source-linked public statement or inspectable artifact.",
+        "additionalProperties": false,
+        "required": [
+          "evidenceType",
+          "matchStatus",
+          "claim",
+          "context",
+          "sourceUrl",
+          "sourceMarkdownUrl",
+          "artifactUrls"
+        ],
+        "properties": {
+          "evidenceType": {
+            "type": "string",
+            "description": "The provenance category of the evidence.",
+            "enum": [
+              "self_reported_profile",
+              "self_reported_experience",
+              "self_reported_project",
+              "inspectable_public_artifact",
+              "published_writing",
+              "republished_testimonial"
+            ]
+          },
+          "matchStatus": {
+            "type": "string",
+            "description": "Whether the evidence directly or adjacently matches the topic.",
+            "enum": ["direct", "adjacent"]
+          },
+          "claim": { "type": "string", "description": "Public claim or artifact label." },
+          "context": {
+            "type": "string",
+            "description": "Public context needed to interpret the claim."
+          },
+          "sourceUrl": { "$ref": "#/components/schemas/SourceUrl" },
+          "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" },
+          "artifactUrls": {
+            "type": "array",
+            "description": "Inspectable public artifact links supporting the item, when available.",
+            "items": { "type": "string", "format": "uri" }
+          }
+        }
+      },
+      "ProjectResult": {
+        "type": "object",
+        "description": "A successful response for a published project.",
+        "additionalProperties": false,
+        "required": ["locale", "found", "message", "project", "sourceUrl", "sourceMarkdownUrl"],
+        "properties": {
+          "locale": { "$ref": "#/components/schemas/Locale" },
+          "found": {
+            "type": "boolean",
+            "const": true,
+            "description": "Always true for a successful 200 response."
+          },
+          "message": {
+            "type": "null",
+            "description": "Always null for a successful 200 response."
+          },
+          "project": { "$ref": "#/components/schemas/PublicProject" },
+          "sourceUrl": { "$ref": "#/components/schemas/SourceUrl" },
+          "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" }
+        }
+      },
+      "PublicProject": {
+        "type": "object",
+        "description": "Published facts and source links for one public project.",
+        "additionalProperties": false,
+        "required": [
+          "slug",
+          "title",
+          "summary",
+          "role",
+          "status",
+          "type",
+          "stage",
+          "tags",
+          "stack",
+          "highlights",
+          "artifactUrls",
+          "sourceUrl",
+          "sourceMarkdownUrl"
+        ],
+        "properties": {
+          "slug": { "type": "string", "description": "Canonical lowercase project slug." },
+          "title": { "type": "string", "description": "Public project title." },
+          "summary": {
+            "type": "string",
+            "description": "Candidate-authored public project summary."
+          },
+          "role": {
+            "type": "string",
+            "description": "The candidate's stated role on the project."
+          },
+          "status": {
+            "type": "string",
+            "description": "Current public lifecycle status.",
+            "enum": ["active", "archived"]
+          },
+          "type": { "type": "string", "description": "Public project category." },
+          "stage": {
+            "type": "string",
+            "description": "Publicly stated maturity or delivery stage."
+          },
+          "tags": {
+            "type": "array",
+            "description": "Public topic tags.",
+            "items": { "type": "string" }
+          },
+          "stack": {
+            "type": "array",
+            "description": "Publicly stated technology stack.",
+            "items": { "type": "string" }
+          },
+          "highlights": {
+            "type": "array",
+            "description": "Candidate-authored project highlights.",
+            "items": { "type": "string" }
+          },
+          "artifactUrls": {
+            "type": "array",
+            "description": "Inspectable public artifacts associated with the project.",
+            "items": { "type": "string", "format": "uri" }
+          },
+          "sourceUrl": { "$ref": "#/components/schemas/SourceUrl" },
+          "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" }
+        }
+      },
+      "Locale": {
+        "type": "string",
+        "description": "Locale used for returned prose and source links.",
+        "enum": ["en-US", "pt-BR", "es-ES"]
+      },
+      "SourceUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "Canonical human-readable source page for the returned public record."
+      },
+      "SourceMarkdownUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "Markdown representation of the canonical source page."
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "description": "An actionable RFC 9457 problem detail with stable agent-facing extensions.",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "instance",
+          "code",
+          "message",
+          "resolution"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "const": "about:blank",
+            "description": "RFC 9457's standard problem type; title uses the HTTP status reason phrase."
+          },
+          "title": { "type": "string", "description": "Stable problem summary." },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599,
+            "description": "HTTP status code generated for this occurrence."
+          },
+          "detail": {
+            "type": "string",
+            "description": "Human-readable explanation specific to this occurrence."
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "URI reference identifying the request occurrence."
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "description": "Stable machine-readable error code."
+          },
+          "message": { "type": "string", "description": "Concise agent-readable error message." },
+          "resolution": {
+            "type": "string",
+            "description": "Actionable guidance for correcting or safely retrying the request."
+          }
+        }
+      }
+    }
+  }
+}

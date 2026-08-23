@@ -102,9 +102,9 @@ function jsonResult(structuredContent: Record<string, unknown>) {
 function registerEvidenceTool(server: McpServer) {
   const topicSchema = z
     .string()
+    .max(80)
     .trim()
     .min(1)
-    .max(80)
     .refine((topic) => /[\p{L}\p{N}+#]/u.test(topic), "Topic must contain a searchable term")
 
   server.registerTool(
@@ -154,7 +154,6 @@ function registerProjectTool(server: McpServer) {
         .object({
           slug: z
             .string()
-            .trim()
             .min(1)
             .max(80)
             .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
@@ -176,7 +175,7 @@ const staticResources = [
   ["resume", "Resume overview", 0.9],
   ["contact", "Professional contact guidance", 0.8],
   ["privacy", "Privacy and data handling", 0.7],
-  ["mcp", "MCP connection and trust guidance", 0.8]
+  ["mcp", "Public API, MCP connection, and trust guidance", 0.8]
 ] as const
 
 function registerMarkdownResource(

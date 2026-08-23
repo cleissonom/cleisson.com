@@ -14,6 +14,8 @@ export default function DefaultRootLayout({ children }: { children: ReactNode })
     <html lang="en-US" suppressHydrationWarning data-theme="light">
       <head>
         <link rel="describedby" href="/llms.txt" />
+        <link rel="service-desc" href="/openapi.json" type="application/json" />
+        <link rel="service-doc" href="/en-US/mcp" />
       </head>
       <body>
         <ThemeScript />

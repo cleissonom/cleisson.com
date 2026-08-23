@@ -44,10 +44,25 @@ const deploymentHosts = [
 const allowedHosts = [...new Set([...deploymentHosts, ...localhostAllowedHostnames()])]
 const allowedOrigins = [...new Set([...deploymentHosts, ...localhostAllowedOrigins()])]
 
-function jsonError(status: number, message: string, headers?: HeadersInit): Response {
+function jsonError(
+  status: number,
+  message: string,
+  options: { headers?: HeadersInit; resolution?: string } = {}
+): Response {
   return Response.json(
-    { jsonrpc: "2.0", id: null, error: { code: -32000, message } },
-    { status, headers: { "Cache-Control": "no-store", ...headers } }
+    {
+      jsonrpc: "2.0",
+      id: null,
+      error: {
+        code: -32000,
+        message,
+        data: {
+          resolution:
+            options.resolution ?? "Review the MCP endpoint documentation and retry the request."
+        }
+      }
+    },
+    { status, headers: { "Cache-Control": "no-store", ...options.headers } }
   )
 }
 
@@ -77,7 +92,10 @@ function rateLimitResponse(request: Request): Response | null {
   const bucket = existing ?? { count: 0, resetAt: now + RATE_WINDOW_MS }
   if (bucket.count >= RATE_LIMIT) {
     const retryAfter = Math.max(1, Math.ceil((bucket.resetAt - now) / 1_000))
-    return jsonError(429, "Too many MCP requests", { "Retry-After": `${retryAfter}` })
+    return jsonError(429, "Too many MCP requests", {
+      headers: { "Retry-After": `${retryAfter}` },
+      resolution: `Retry after ${retryAfter} seconds.`
+    })
   }
   bucket.count += 1
   rateBuckets.set(key, bucket)
@@ -133,4 +151,27 @@ async function handle(request: Request): Promise<Response> {
   return noStore(await mcp.fetch(request))
 }
 
-export { handle as DELETE, handle as GET, handle as POST }
+function methodNotAllowed(request: Request): Response {
+  const rejected = securityResponse(request)
+  if (rejected) return noStore(rejected)
+  return jsonError(405, "Method not allowed. Use POST for MCP requests.", {
+    headers: { Allow: "OPTIONS, POST" },
+    resolution: "Send the MCP JSON-RPC message with HTTP POST."
+  })
+}
+
+function options(request: Request): Response {
+  const rejected = securityResponse(request)
+  if (rejected) return noStore(rejected)
+  return new Response(null, {
+    status: 204,
+    headers: {
+      Allow: "OPTIONS, POST",
+      "Cache-Control": "no-store"
+    }
+  })
+}
+
+export { methodNotAllowed as DELETE, methodNotAllowed as GET, methodNotAllowed as PATCH }
+export { handle as POST, methodNotAllowed as PUT }
+export { options as OPTIONS }

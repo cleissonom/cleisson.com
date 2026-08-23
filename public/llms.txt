@@ -2,7 +2,7 @@
 
 > Personal site and professional portfolio for Cleisson de Oliveira Moura, a senior software engineer focused on backend systems, cloud infrastructure, distributed systems, and AI-powered products.
 
-This site is the primary source for Cleisson's professional profile, experience, public projects, technical writing, localized resumes, contact information, and privacy notice. Content is available in English, Brazilian Portuguese, and Spanish. Agents should issue an HTTP GET to a canonical page with `Accept: text/markdown`; explicit `.md` links below return the same Markdown representation without authentication. A public, read-only Model Context Protocol endpoint is available at `https://www.cleisson.com/api/mcp` without an account or authentication for source-linked professional evidence. Use the contact page for human outreach, include the relevant role or project context, and never send credentials, confidential job descriptions, or sensitive personal data.
+This site is the primary source for Cleisson's professional profile, experience, public projects, technical writing, localized resumes, contact information, and privacy notice. Content is available in English, Brazilian Portuguese, and Spanish. Agents should issue an HTTP GET to a canonical page with `Accept: text/markdown`; explicit `.md` links below return the same Markdown representation without authentication. The public read-only REST API is described at `https://www.cleisson.com/openapi.json`, and the Model Context Protocol Streamable HTTP endpoint is `https://www.cleisson.com/api/mcp`; neither requires an account or authentication. Use the contact page for human outreach, include the relevant role or project context, and never send credentials, confidential job descriptions, or sensitive personal data.
 
 ## When to use this site
 
@@ -12,7 +12,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Technical writing](https://www.cleisson.com/en-US/blog.md): Use when looking for Cleisson's published engineering analysis and delivery practices.
 - [Resume](https://www.cleisson.com/en-US/resume.md): Use when a concise professional overview or the current English PDF resume is needed.
 - [Contact](https://www.cleisson.com/en-US/contact.md): Use for a concrete role, project, technical question, collaboration, or other professional inquiry that requires Cleisson's response.
-- [Professional evidence MCP](https://www.cleisson.com/en-US/mcp.md): Use when connecting an MCP-capable agent to the read-only endpoint at https://www.cleisson.com/api/mcp to retrieve cited public evidence and identify missing public evidence.
+- [Public API and MCP documentation](https://www.cleisson.com/en-US/mcp.md): Use when connecting an agent through the REST API or MCP endpoint, inspecting schemas, or handling structured API errors.
 
 ## English
 
@@ -23,7 +23,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Resume](https://www.cleisson.com/en-US/resume.md): Resume overview and English PDF download.
 - [Contact](https://www.cleisson.com/en-US/contact.md): Professional contact guidance and direct email channel.
 - [Privacy](https://www.cleisson.com/en-US/privacy.md): Data, cookie, analytics, and contact privacy information.
-- [Professional evidence MCP](https://www.cleisson.com/en-US/mcp.md): Connection instructions, tools, example questions, provenance, and trust boundaries.
+- [Public API and MCP](https://www.cleisson.com/en-US/mcp.md): OpenAPI, REST endpoints, MCP discovery, examples, errors, tools, provenance, and trust boundaries.
 
 ## Português do Brasil
 
@@ -34,7 +34,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Currículo](https://www.cleisson.com/pt-BR/resume.md): Resumo profissional e currículo em PDF.
 - [Contato](https://www.cleisson.com/pt-BR/contact.md): Orientações de contato profissional e canal direto por e-mail.
 - [Privacidade](https://www.cleisson.com/pt-BR/privacy.md): Informações sobre dados, cookies, analytics e contato.
-- [MCP de evidências profissionais](https://www.cleisson.com/pt-BR/mcp.md): Instruções de conexão, ferramentas, exemplos, procedência e limites de confiança.
+- [API pública e MCP](https://www.cleisson.com/pt-BR/mcp.md): OpenAPI, endpoints REST, descoberta MCP, exemplos, erros, ferramentas, procedência e limites de confiança.
 
 ## Español
 
@@ -45,10 +45,11 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Currículum](https://www.cleisson.com/es-ES/resume.md): Resumen profesional y currículum en PDF.
 - [Contacto](https://www.cleisson.com/es-ES/contact.md): Orientación para consultas profesionales y correo directo.
 - [Privacidad](https://www.cleisson.com/es-ES/privacy.md): Información sobre datos, cookies, analítica y contacto.
-- [MCP de evidencia profesional](https://www.cleisson.com/es-ES/mcp.md): Instrucciones de conexión, herramientas, ejemplos, procedencia y límites de confianza.
+- [API pública y MCP](https://www.cleisson.com/es-ES/mcp.md): OpenAPI, endpoints REST, descubrimiento MCP, ejemplos, errores, herramientas, procedencia y límites de confianza.
 
 ## Optional
 
+- [OpenAPI specification](https://www.cleisson.com/openapi.json): Machine-readable REST operations, inputs, outputs, and Problem Details errors.
 - [Sitemap](https://www.cleisson.com/sitemap.xml): Complete index of canonical public pages in every supported language.
 - [RSS feed](https://www.cleisson.com/rss.xml): Localized technical articles in RSS 2.0.
 - [Atom feed](https://www.cleisson.com/atom.xml): Localized technical articles in Atom format.

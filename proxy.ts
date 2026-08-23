@@ -119,9 +119,16 @@ function markdownSibling(pathname: string): string {
 
 function withAgentDiscovery(response: NextResponse, pathname: string): NextResponse {
   appendNegotiationVary(response.headers)
+  const pathLocale = pathname.split("/").filter(Boolean)[0]
+  const serviceDoc = `/${isLocale(pathLocale) ? pathLocale : DEFAULT_LOCALE}/mcp`
   response.headers.set(
     "Link",
-    `<${markdownSibling(pathname)}>; rel="alternate"; type="text/markdown", </llms.txt>; rel="describedby"`
+    [
+      `<${markdownSibling(pathname)}>; rel="alternate"; type="text/markdown"`,
+      '</llms.txt>; rel="describedby"',
+      '</openapi.json>; rel="service-desc"; type="application/json"',
+      `<${serviceDoc}>; rel="service-doc"`
+    ].join(", ")
   )
   return response
 }
@@ -207,6 +214,7 @@ function shouldBypass(pathname: string): boolean {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/_vercel") ||
     pathname.startsWith("/api") ||
+    pathname === "/mcp" ||
     pathname.endsWith(`/${NOT_FOUND_SEGMENT}`) ||
     pathname === "/favicon.ico"
   )
@@ -268,5 +276,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|_vercel|api/mcp).*)"]
+  matcher: ["/((?!_next/static|_next/image|_vercel|api(?:/|$)|mcp$).*)"]
 }
