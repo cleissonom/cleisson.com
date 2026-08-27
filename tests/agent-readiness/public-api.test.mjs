@@ -272,6 +272,19 @@ test("all documented REST operations are reachable and source-linked", async () 
   assert.match(project.body.sourceUrl, /\/en-US\/projects\/devimg$/)
   assertPublishedSchema(specification, "ProjectResult", project.body)
 
+  const jiraTogglProject = await fetchJson("/api/v1/projects/jira-toggl-quickstart?locale=pt-BR")
+  assert.equal(jiraTogglProject.response.status, 200)
+  assert.equal(jiraTogglProject.body.found, true)
+  assert.equal(jiraTogglProject.body.project.slug, "jira-toggl-quickstart")
+  assert.equal(jiraTogglProject.body.project.stage, "live")
+  assert.match(jiraTogglProject.body.sourceUrl, /\/pt-BR\/projects\/jira-toggl-quickstart$/)
+  assert.ok(
+    jiraTogglProject.body.project.artifactUrls.some((url) =>
+      url.startsWith("https://chromewebstore.google.com/")
+    )
+  )
+  assertPublishedSchema(specification, "ProjectResult", jiraTogglProject.body)
+
   const boundaryTopics = new URLSearchParams({ topics: "K".repeat(80) })
   for (let index = 0; index < 9; index += 1) boundaryTopics.append("topics", `topic-${index}`)
   const boundaryEvidence = await fetchJson(`/api/v1/evidence?${boundaryTopics}`)

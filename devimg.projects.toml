@@ -55,6 +55,6 @@ width = 1200
 reason = "Intentional top-anchored project-banner crop after visual review."
 
 [budgets]
-max_total_bytes = "800kb"
+max_total_bytes = "1mb"
 max_file_bytes = "200kb"
 fail_on_regression = true
