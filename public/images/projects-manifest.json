@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generated_at": "unix:1781146694",
+  "generated_at": "unix:1787790766",
   "config_path": "devimg.projects.toml",
-  "config_hash": "blake3:8a4e0c8013ef4ba3ab627d1427dfa5e913cf92bafddd4852e48f6262e3e70c2d",
+  "config_hash": "blake3:f5c71f0401e499938bfc954dc36a435d765684f234e586545caffdcd2850c2e1",
   "outputs": [
     {
       "source_path": "public/projects/accesstrace-overview.png",
@@ -101,6 +101,38 @@
       "operation_hash": "blake3:23a1f7f8188c84dca944d3453505b3f3651fd1d6e5c1a8159a5ca8cc0f569367"
     },
     {
+      "source_path": "public/projects/jira-toggl-quickstart.png",
+      "source_hash": "blake3:26f6ad88586c1dcdd3aecdda5401dd1c4946c605783396501f9d7f402ceb6449",
+      "source_width": 2796,
+      "source_height": 1648,
+      "source_bytes": 683070,
+      "output_path": "public/images/generated/projects/jira-toggl-quickstart.project-banner.1200.37170b15baab.jpeg",
+      "preset": "project-banner",
+      "fit": "cover",
+      "width": 1200,
+      "height": 630,
+      "format": "jpeg",
+      "bytes": 111399,
+      "hash": "blake3:37170b15baab614351fa0bdd7063dd15b3b62d24ff43a394424ed4c0ace075cd",
+      "operation_hash": "blake3:29a62264fa5f93b8effca3b5f9d17519cc845d6c08972bee81fa9e5671e881dc"
+    },
+    {
+      "source_path": "public/projects/jira-toggl-quickstart.png",
+      "source_hash": "blake3:26f6ad88586c1dcdd3aecdda5401dd1c4946c605783396501f9d7f402ceb6449",
+      "source_width": 2796,
+      "source_height": 1648,
+      "source_bytes": 683070,
+      "output_path": "public/images/generated/projects/jira-toggl-quickstart.project-card.640.e3efb5f1a9b8.jpeg",
+      "preset": "project-card",
+      "fit": "cover",
+      "width": 640,
+      "height": 360,
+      "format": "jpeg",
+      "bytes": 41568,
+      "hash": "blake3:e3efb5f1a9b8c9c2e0b66534383eaa36eb0052f95402f668da68dedcf430f162",
+      "operation_hash": "blake3:d217361d4b6efa17b032fde27974dd93e1a95358c4039722b9ff3bff2b064f8f"
+    },
+    {
       "source_path": "public/projects/website.webp",
       "source_hash": "blake3:afa14f6f21d5d2bb7a5660eee7005ce244ef8be052ed19ebb40d8bb9e3291fa6",
       "source_width": 2796,
@@ -134,7 +166,7 @@
     }
   ],
   "totals": {
-    "source_bytes": 3296843,
-    "output_bytes": 760862
+    "source_bytes": 3979913,
+    "output_bytes": 913829
   }
 }
