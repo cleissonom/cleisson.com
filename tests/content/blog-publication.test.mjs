@@ -111,7 +111,7 @@ test("the real post has localized content, image metadata, and a PDF download", 
     assert.equal(post.frontmatter.coverAlt, expectedCoverAltByLocale[locale])
     assert.equal(post.frontmatter.pdfUrl, expectedPdfUrlByLocale[locale])
     assert.equal(post.frontmatter.date, "2026-06-09")
-    assert.equal(post.frontmatter.updatedAt, "2026-06-11")
+    assert.equal(post.frontmatter.updatedAt, "2026-09-05")
     assert.ok(post.body.includes(`](${expectedMarkdownImageByLocale[locale]})`))
     assert.ok(post.body.length > 3000, `${post.filePath} should contain the translated article`)
   }

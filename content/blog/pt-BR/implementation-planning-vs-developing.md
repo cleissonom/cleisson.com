@@ -3,7 +3,7 @@ title: "Planejamento de Implementação vs. Desenvolvimento: Um Modelo Mental ao
 slug: implementation-planning-vs-developing
 summary: "Uma reflexão prática sobre como o planejamento de implementação pode reduzir esforço de desenvolvimento, sem fingir que o gráfico é um modelo científico."
 date: 2026-06-09
-updatedAt: 2026-06-11
+updatedAt: 2026-09-05
 tags:
   - Desenvolvimento de Software
   - Planejamento
@@ -14,174 +14,94 @@ pdfUrl: /downloads/blog/implementation-planning-vs-desenvolvimento.pt-BR.pdf
 lang: pt-BR
 ---
 
-Isto não é um estudo. Não é um benchmark. E definitivamente não sou eu tentando fingir que um gráfico consegue explicar toda decisão de engenharia.
+No projeto em que atuo, passamos a criar tarefas separadas para planos de implementação. Em alguns casos, a tarefa de desenvolvimento só era criada, refinada ou dividida depois que a tarefa de planejamento terminava.
 
-É apenas um modelo mental ao qual eu volto com frequência depois de trabalhar em funcionalidades, refatorações, integrações, migrações e mudanças maiores em que o desafio real não era apenas escrever o código, mas entender o que aquele código estava prestes a tocar.
+No começo, eu queria ir direto para o código. É ali que as coisas parecem concretas. Mas, depois de acompanhar esse processo algumas vezes, passei a valorizar o tempo para entender o que uma mudança afetaria antes de escolher uma abordagem. Em funcionalidades, refatorações, integrações e migrações, chegar a esse entendimento pode dar mais trabalho do que o ticket sugere.
 
-A ideia ficou mais clara para mim depois de uma mudança na forma como nosso time começou a organizar alguns trabalhos. No projeto em que atuo, passamos a criar tarefas específicas para **planos de implementação** antes de iniciar as tarefas reais de desenvolvimento. Em alguns casos, a tarefa de desenvolvimento só era criada, refinada ou quebrada corretamente depois que a tarefa de planejamento de implementação terminava.
+Minha regra é planejar enquanto essa for a forma menos custosa de responder a uma pergunta capaz de mudar a implementação. Quando um experimento pequeno e reversível puder ensinar mais, é hora de construir. Avalio o plano pelo esforço e pelo risco que ele poupa ao longo da mudança inteira, incluindo o tempo gasto planejando.
 
-No começo, essa separação me pareceu um pouco incomum. Uma parte do meu cérebro queria ir direto para o código, porque é ali que as coisas parecem concretas. Mas depois de ver esse processo acontecer algumas vezes, comecei a entender o valor de tratar o plano como uma peça própria de trabalho. Não como burocracia. Não como cerimônia. Mais como uma pausa para entender o terreno antes de se comprometer com uma rota.
+Por planejamento de implementação, entendo ler o código existente, compreender as fronteiras do sistema, checar premissas e definir a estrutura, os testes e os passos manuais de que a mudança precisa. Desenvolvimento inclui escrever código, ajustar testes, revisar, integrar, depurar, fazer deploy e lidar com o que descobrimos pelo caminho.
 
-Quando digo **Planejamento de Implementação**, quero dizer o trabalho que acontece antes da construção prática: entender o impacto, verificar fronteiras do sistema, pensar na estrutura, ler código existente, identificar padrões, listar casos de teste e expor os passos manuais chatos, mas importantes, que podem surpreender o time depois.
-
-Quando digo **Desenvolvimento**, quero dizer a parte prática: escrever código, ajustar testes, revisar, integrar, depurar, fazer deploy e lidar com as coisas que só ficam visíveis quando a mudança começa a existir.
-
-A forma como eu imagino essa relação se parece com isto:
-
-![Planejamento de Implementação vs. Desenvolvimento - curva de retornos decrescentes](/images/blog/implementation-planning-vs-desenvolvimento.pt-BR.svg)
-
-Os números não são o ponto. Eles são unidades relativas e ilustrativas. O formato da curva é a parte útil.
-
-## A ideia simples
-
-Quanto mais planejamento de implementação útil fazemos, menos esforço desnecessário de desenvolvimento normalmente criamos depois.
-
-Não menos esforço de desenvolvimento no sentido de que programar fica magicamente fácil. Não fica.
-
-Mas menos esforço desperdiçado em confusão evitável.
-
-Menos retrabalho causado por uma regra de negócio escondida. Menos idas e vindas porque a propriedade de um fluxo não estava clara. Menos descoberta tardia de um detalhe de integração. Menos _"ah, isso também afeta aquele outro serviço"_. Menos tentativa de adivinhar enquanto já estamos dentro da implementação.
-
-É aí que o planejamento ajuda muito.
-
-Um bom plano de implementação não é um contrato com o futuro. Ele se parece mais com um mapa. Não remove toda surpresa do caminho, mas ajuda o time a evitar andar em círculos.
+Essas atividades se sobrepõem. Um pequeno spike de implementação pode fazer parte do planejamento, e o código funcionando pode mostrar que o plano estava errado. Tarefas separadas ajudam a organizar o trabalho; elas não fazem o aprendizado acontecer em linha reta.
 
 ## Por que uma tarefa separada de planejamento pode ajudar
 
-Uma coisa que gosto em ter uma tarefa dedicada de planejamento de implementação é que ela dá ao time permissão para desacelerar pelo motivo certo.
+Sem uma etapa explícita de planejamento, a investigação costuma se espalhar por comentários em tickets, conversas no Slack e descobertas durante o desenvolvimento. Para uma mudança pequena, isso pode bastar. Para uma maior, quero que essas descobertas estejam em um lugar onde o time consiga usá-las antes de o trabalho depender de uma premissa não verificada.
 
-Sem esse passo explícito, o planejamento costuma acontecer em fragmentos: um comentário rápido aqui, uma conversa no Slack ali, uma pequena investigação durante o desenvolvimento e alguns detalhes importantes descobertos só depois que o trabalho já começou. Às vezes isso é suficiente. Mas, para mudanças maiores, essas descobertas espalhadas podem ficar caras sem fazer barulho.
+Uma tarefa dedicada torna essa investigação visível. Dá ao engenheiro tempo para ler o código, perguntar quem é responsável por um fluxo e verificar se um padrão existente resolve parte do problema. O resultado pode ser uma nota curta com as áreas afetadas, uma sequência de implementação e os riscos que o time precisa discutir.
 
-Uma tarefa separada de planejamento cria um pequeno contêiner para as incertezas. Dá ao engenheiro tempo para ler o código, fazer perguntas, checar premissas e transformar uma tarefa vaga de desenvolvimento em algo sobre o qual o time consegue raciocinar.
+A tarefa de desenvolvimento que vem depois pode ter limites e expectativas de teste mais claros. Também pode incluir aqueles passos manuais chatos que são fáceis de esquecer até o dia do release.
 
-Às vezes o resultado não é um documento enorme. Pode ser um plano curto, uma lista de áreas afetadas, uma sequência proposta de implementação ou alguns riscos que precisam de alinhamento. O valor não está em produzir um plano bonito. O valor está em tornar a próxima tarefa menos cega.
+Eu ajustaria o plano às consequências de errar na mudança. Uma alteração local e fácil de desfazer talvez precise apenas de uma nota no ticket. Uma migração com dependências e comportamentos legados merece uma investigação mais cuidadosa. Uma tarefa separada de planejamento é útil quando abre espaço para esse trabalho; eu não a tornaria obrigatória para toda alteração de código.
 
-Nesse sentido, a tarefa de desenvolvimento que vem depois do plano costuma nascer melhor definida. Ela tem limites mais claros, expectativas de teste melhores, menos passos manuais escondidos e uma compreensão mais honesta do que pode dar errado.
+## O que quero que um plano descubra
 
-## O que o planejamento está tentando descobrir
+Um ticket raramente contém toda a história de um sistema. Regras de negócio, concessões antigas e áreas marcadas como _"não mexa nisso a menos que você saiba o motivo"_ podem mudar a abordagem.
 
-Para mim, a parte mais valiosa do planejamento não é criar um documento longo. É forçar as perguntas certas a aparecerem antes que o custo de mudar de direção fique alto demais.
+Quero que o plano responda a algumas perguntas práticas:
 
-Uma funcionalidade ou uma mudança técnica grande normalmente carrega mais contexto do que o ticket mostra. Existem fronteiras de sistema, regras de negócio, decisões legadas, padrões de código, compromissos históricos, detalhes de rollout e, às vezes, algumas áreas do tipo _"não mexa nisso a menos que você saiba o motivo"_.
+- O que vai mudar, o que está fora do escopo e quais sistemas, módulos, jobs, eventos ou APIs serão afetados? Quem é responsável pelos fluxos envolvidos?
+- Quais regras de negócio e comportamentos legados precisam ser preservados? Quais padrões de código existentes devemos seguir ou evitar?
+- Que estrutura e sequência de implementação fazem sentido, e quais premissas poderiam nos obrigar a mudá-las?
+- Quais testes e casos de borda vão mostrar se a mudança funciona? O que podemos automatizar e o que ainda precisa de verificação humana?
+- O que precisa acontecer em torno do release, incluindo scripts, migrações, backfills, feature flags, configuração e ordem de deploy? Quem cuida dos passos manuais, o que verificamos depois e como nos recuperamos se algo der errado?
 
-O planejamento de implementação é o momento em que tento trazer esses detalhes para mais perto da superfície.
+As respostas podem caber em um ticket. Em uma mudança complicada, algumas talvez precisem de investigação própria. Importa mais saber se elas ajudam o próximo engenheiro a tomar uma decisão do que a quantidade de documentação produzida.
 
-Coisas como:
+## O que a curva explica bem
 
-- Quais sistemas, módulos, jobs, eventos ou APIs serão afetados?
-- Qual é a estrutura proposta de implementação?
-- Quais padrões de código existentes devem guiar a solução?
-- Quais padrões provavelmente devem ser evitados?
-- Quais regras de negócio ou comportamentos legados podem mudar a direção do trabalho?
-- Quais casos de teste precisam ser cobertos?
-- Quais casos de borda são fáceis de esquecer?
-- Quais passos manuais estão envolvidos?
-- Existem scripts, migrações, backfills, feature flags, mudanças de configuração ou etapas de rollout?
-- O que precisa ser verificado depois do release?
-- O que pode ser automatizado e o que ainda precisa de verificação humana?
+É assim que imagino a relação entre o planejamento útil e o esforço de desenvolvimento que vem depois:
 
-Quanto mais complexo o sistema, mais esses detalhes importam.
+![Planejamento de Implementação vs. Desenvolvimento - curva de retornos decrescentes](/images/blog/implementation-planning-vs-desenvolvimento.pt-BR.svg)
 
-Em uma base de código limpa e isolada, talvez o plano possa ser muito pequeno. Mas em um produto real, com história, dependências, lógica legada, regras específicas do negócio e decisões técnicas anteriores, o planejamento de implementação passa a ser menos sobre _escrever um plano_ e mais sobre reduzir a quantidade de surpresas caras.
+As unidades são ilustrativas. Este é um modelo mental baseado em experiência, não um estudo ou benchmark.
 
-## Por que a primeira parte da curva cai rápido
+A queda acentuada no início representa o trabalho evitável que uma investigação curta pode revelar. Podemos descobrir que um fluxo já existe, que um campo tem um significado de negócio escondido ou que uma dependência se comporta de forma diferente em produção. Entender por que uma mudança parecida causou problemas pode alterar a abordagem antes que tenhamos muito código para desfazer. Uma hora procurando uma solução existente pode poupar horas implementando uma substituta.
 
-No começo, o planejamento costuma ter um retorno alto.
+É esse tipo de economia que tenho em mente: menos descobertas tardias, menos idas e vindas sobre quem é responsável por um fluxo e menos _"ah, isso também afeta aquele outro serviço"_.
 
-Mesmo uma conversa curta, uma pequena nota de design ou uma exploração rápida do código pode remover uma quantidade surpreendente de incerteza.
+Mas parte do trabalho só muda de momento. Ler um módulo durante o planejamento, em vez de durante o desenvolvimento, continua tomando tempo. Uma tarefa de desenvolvimento mais curta, por si só, não mostra que o time economizou esforço. A economia aparece quando esse entendimento antecipado evita trabalho que precisaríamos refazer ou nos ajuda a escolher uma implementação mais simples.
 
-Às vezes uma hora de planejamento economiza muitas horas de desenvolvimento porque impede o time de começar na direção errada.
+Em algum momento, a curva achata. Alguém ainda precisa escrever, testar, revisar, integrar e fazer deploy da mudança. Algumas perguntas também precisam de código funcionando para serem respondidas. Um documento mais longo pode nos deixar mais confiantes sem resolver essas perguntas.
 
-Essa é a parte íngreme da curva.
+## O custo que falta no gráfico
 
-O time descobre que um fluxo já existe. Ou que um campo tem um significado escondido. Ou que uma dependência se comporta de forma diferente em produção. Ou que uma mudança parecida causou problemas antes. Ou que a implementação pode ser muito mais simples se seguir um padrão existente.
-
-Esse é o tipo de planejamento que parece valioso imediatamente. Ele transforma _"vamos começar a codar e ver o que acontece"_ em _"conhecemos o caminho principal, os riscos principais e as primeiras decisões"_.
-
-## Por que a curva eventualmente achata
-
-Mas planejamento tem limites.
-
-Em algum ponto, mais planejamento ainda ajuda, mas o ganho fica menor. Essa é a parte em que a curva achata.
-
-Existem alguns motivos para isso.
-
-Primeiro, desenvolvimento nunca chega a zero. Mesmo com um ótimo plano, alguém ainda precisa escrever o código, testá-lo, revisá-lo, integrá-lo, fazer deploy e corrigir as coisas que só aparecem quando o sistema é exercitado.
-
-Segundo, algumas incertezas não são removíveis antecipadamente. Algumas perguntas só se tornam reais quando o código encontra o sistema existente. Você pode ler, inspecionar e discutir bastante, mas às vezes a resposta honesta é: precisamos construir uma parte pequena e validar.
-
-Terceiro, planejamento demais pode começar a dar ao time uma falsa sensação de certeza. O documento fica maior, mas o risco não necessariamente diminui no mesmo ritmo.
-
-Por isso, não vejo planejamento como algo a maximizar.
-
-Vejo como algo a calibrar.
-
-## Uma pequena equação para o modelo mental
-
-Gosto desta equação como uma forma simples de representar a ideia:
+Uma forma de esboçar a curva é a equação à qual sempre volto:
 
 ```text
 Desenvolvimento(P) = D_min + (D0 - D_min) * e^(-kP)
 ```
 
-Onde:
+Aqui, `P` é o esforço de planejamento e `Desenvolvimento(P)` é o esforço esperado de desenvolvimento depois dele. `D0` é o esforço de desenvolvimento sem planejamento, enquanto `D_min` é o mínimo prático que permanece mesmo depois de um planejamento útil. O parâmetro `k` controla a velocidade com que a curva se aproxima desse mínimo; ele representa o quanto o planejamento reduz incerteza e retrabalho.
 
-- `P` é o esforço de planejamento de implementação
-- `Desenvolvimento(P)` é o esforço esperado de desenvolvimento
-- `D0` é o esforço de desenvolvimento quando o planejamento está perto de zero
-- `D_min` é o mínimo prático de esforço de desenvolvimento
-- `k` é o quanto o planejamento reduz incerteza e retrabalho
+Com `D0 > D_min` e `k > 0`, a curva sempre cai. Olhar apenas para ela faz parecer que mais planejamento é sempre melhor. Mas planejar também tem um custo.
 
-Esta não é uma fórmula que eu usaria para estimar uma sprint real.
+Para um escopo fixo, com planejamento e desenvolvimento medidos nas mesmas unidades de esforço, a conta mais completa é `Total(P) = P + Desenvolvimento(P)`. Cada atividade entra em apenas um lado dessa soma: um spike exploratório contabilizado como planejamento não deve entrar também como desenvolvimento.
 
-Eu não colocaria esses números em uma planilha fingindo que são precisos.
+Nesse modelo simplificado, mais uma hora de planejamento só reduz o esforço total se economizar mais de uma hora depois. Quando a economia fica abaixo disso, o planejamento adicional aumenta o total, mesmo que a estimativa de desenvolvimento continue caindo. Em uma mudança que já entendemos bem, o planejamento adicional pode nem compensar o esforço gasto. Isso dá uma consequência prática ao achatamento da curva: precisamos de um motivo para continuar planejando.
 
-A equação só é útil porque captura o formato da intuição: o planejamento reduz o esforço de desenvolvimento rapidamente no início, e depois o retorno fica menor com o tempo.
+Eu não usaria essa equação para estimar uma sprint ou calcular uma porcentagem de planejamento. Não tenho valores medidos para esses parâmetros. Ela pressupõe planejamento útil e escopo fixo, enquanto o planejamento real pode revelar trabalho que faltava e aumentar uma estimativa. Essa descoberta pode evitar um release incompleto; a estimativa menor teria sido enganosa.
 
-## As duas armadilhas
+O esforço também é só parte da decisão. Em uma mudança com consequências graves em caso de falha, eu dedicaria mais tempo a validar a recuperação, mesmo que isso não encurtasse a implementação. Um plano ainda precisa atender às necessidades de segurança e correção da mudança.
 
-A primeira armadilha é planejar de menos.
+## Escolha o próximo passo pelo que ele pode ensinar
 
-Isso acontece quando o time começa a desenvolver antes de entender o suficiente sobre impacto, dependências, estrutura, testes, rollout e restrições específicas do sistema. O planejamento que faltou não desaparece. Ele se desloca para a fase de desenvolvimento, onde vira interrupções, retrabalho e descobertas de última hora.
+Considere uma migração hipotética de um campo. Antes de alterar o schema, eu gostaria de saber quais jobs e serviços dependem desse campo, quais comportamentos legados precisam ser preservados e que ordem de deploy manteria esses consumidores funcionando. As respostas poderiam mudar a sequência de implementação.
 
-A segunda armadilha é planejar demais.
+Agora suponha que a dúvida restante seja como um backfill se comportará com dados representativos. Um teste limitado, em um ambiente seguro, pode ensinar mais do que outra discussão de design. O plano pode definir o que testar e qual resultado nos faria reconsiderar a abordagem. Então podemos executar o experimento e revisar o plano.
 
-Isso acontece quando o time tenta responder todas as perguntas possíveis antes de construir qualquer coisa. O plano fica mais longo, mas o time nem sempre fica proporcionalmente mais seguro. Às vezes o próximo passo útil de aprendizado não é mais uma reunião ou mais um diagrama. É um pequeno spike de implementação, um teste ou a validação de uma premissa no código.
+A mesma mudança pode precisar de mais investigação em uma área e de código funcionando em outra. Eu dedicaria mais esforço de planejamento a uma decisão difícil de reverter e usaria pequenos experimentos onde fosse possível aprender sem comprometer o restante do sistema.
 
-As duas armadilhas são compreensíveis.
+É por isso que eu também revisitaria o plano durante o desenvolvimento. Quando a implementação expõe uma premissa errada, atualizar o plano ajuda a próxima tarefa a aproveitar o que aprendemos. Seguir a sequência original só porque a tarefa de planejamento está fechada perderia o propósito.
 
-Planejar de menos costuma vir da pressão para se mover rápido. Planejar demais costuma vir do desejo de evitar erros.
+## Como decido que já planejamos o suficiente
 
-Já fiz os dois. A maioria dos times provavelmente também.
+Já planejei de menos e de mais. A pressão para avançar rápido pode deixar perguntas básicas sobre impacto, testes ou rollout para interromper o desenvolvimento. O desejo de evitar erros pode nos manter buscando no documento respostas que precisam de um experimento.
 
-A parte difícil é encontrar o meio.
+Para mim, o ponto ideal continua em algum lugar entre caos e teatro. Quero que o time consiga dizer qual é a próxima mudança pequena e delimitada, explicar por que faz sentido começar por ela e descrever como vamos verificá-la. Os principais riscos e passos manuais do release devem estar visíveis, mesmo quando alguns detalhes ainda precisam de validação.
 
-## Como "planejamento suficiente" se parece
+As incertezas restantes devem ser explícitas. Precisamos distinguir o que deve ser resolvido antes do release daquilo que podemos aprender com segurança durante a implementação, e combinar o que nos faria parar ou mudar de direção. Isso é mais útil do que perguntar se todos estão confiantes.
 
-Para mim, planejamento suficiente normalmente se parece com isto:
+Antes de gastar mais tempo em um plano, quero perguntar: _"Que decisão o próximo passo de planejamento vai mudar, e por que planejar é a melhor forma de responder a essa pergunta?"_
 
-O time entende o caminho principal. As áreas de risco estão visíveis. A estrutura de implementação não é um mistério. Os padrões de código são conhecidos. A estratégia de testes está clara o bastante. Os passos manuais estão listados. O rollout não depende de esperança. As incertezas que continuam existindo são aceitáveis e intencionais.
-
-Essa última parte importa: aceitáveis e intencionais.
-
-Um bom plano não elimina toda incerteza. Ele torna as incertezas restantes explícitas o suficiente para que o time decida carregá-las para o desenvolvimento.
-
-Essa sensação é muito diferente de descobri-las por acidente depois.
-
-## Minha conclusão atual
-
-Planejamento de implementação é uma forma de mover a incerteza para mais cedo, quando geralmente é mais barato discutir, questionar e ajustar.
-
-Ele ajuda o desenvolvimento a ficar mais focado, mas tem retornos decrescentes. O objetivo não é criar o plano mais completo possível. O objetivo é criar clareza suficiente para construir com confiança.
-
-Para mim, o ponto ideal fica em algum lugar entre caos e teatro.
-
-Não _"vamos só codar e descobrir no caminho"_.
-
-Não _"vamos planejar até que nada pareça incerto"_.
-
-Mais como:
-
-_"Vamos entender o suficiente para tomar as próximas decisões com responsabilidade, e então deixar a implementação nos ensinar o resto."_
-
-Esse é o equilíbrio que ainda estou tentando melhorar.
+Quando conseguimos apontar uma premissa que seria cara se estivesse errada e uma forma útil de verificá-la, vale continuar planejando. Quando a próxima resposta precisa de código funcionando, é hora de construir a menor parte capaz de nos dar essa resposta e levar o aprendizado de volta ao plano.

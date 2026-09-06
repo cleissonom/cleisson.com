@@ -3,7 +3,7 @@ title: "Implementation Planning vs. Developing: A Mental Model I Keep Coming Bac
 slug: implementation-planning-vs-developing
 summary: "A practical reflection on how implementation planning can reduce development effort, without pretending the chart is a scientific model."
 date: 2026-06-09
-updatedAt: 2026-06-11
+updatedAt: 2026-09-05
 tags:
   - Software Development
   - Planning
@@ -14,174 +14,94 @@ pdfUrl: /downloads/blog/implementation-planning-vs-developing.en-US.pdf
 lang: en-US
 ---
 
-This is not a study. It is not a benchmark. It is definitely not me pretending that a chart can explain every engineering decision.
+On the project I work on, we started creating separate tasks for implementation plans. Sometimes the development task would only be created, refined, or broken down after the planning task was finished.
 
-It is just a mental model I keep coming back to after working on features, refactors, integrations, migrations, and larger changes where the real challenge was not only writing the code, but understanding what the code was about to touch.
+At first, I wanted to jump straight into the code. That is where things feel concrete. But after seeing this process a few times, I came to appreciate having time to understand what a change would touch before committing to an approach. In features, refactors, integrations, and migrations, that understanding can take more work than the ticket suggests.
 
-The idea became clearer to me after a change in the way our team started organizing some work. On the project I work on, we began creating tasks specifically for **implementation plans** before starting the actual development tasks. In some cases, the development task would only be created, refined, or properly broken down after the implementation planning task was finished.
+My working rule is to plan while it is the cheaper way to answer a question that could change the implementation. Once a small, reversible experiment would teach us more, it is time to build. I judge the plan by the effort and risk it saves across the whole change, including the time spent planning.
 
-At first, that separation felt a bit unusual to me. Part of my brain wanted to jump straight into the code, because that is where things feel concrete. But after seeing this process happen a few times, I started to understand the value of treating the plan as its own piece of work. Not as bureaucracy. Not as a ceremony. More like a pause to understand the terrain before committing to a route.
+By implementation planning, I mean reading existing code, understanding system boundaries, checking assumptions, and working out the structure, tests, and manual steps a change needs. Developing covers writing code, adjusting tests, reviewing, integrating, debugging, deploying, and handling what we discover along the way.
 
-When I say **Implementation Planning**, I mean the work that happens before the actual hands-on building: understanding the impact, checking system boundaries, thinking through the structure, reading existing code, identifying patterns, listing test cases, and exposing the boring-but-important manual steps that can surprise the team later.
-
-When I say **Developing**, I mean the hands-on part: writing code, adjusting tests, reviewing, integrating, debugging, deploying, and dealing with the things that only become visible once the change starts to exist.
-
-The way I picture the relationship looks something like this:
-
-![Implementation Planning vs. Developing - diminishing returns curve](/images/blog/implementation-planning-vs-developing.en-US.svg)
-
-The numbers are not the point. They are relative, illustrative units. The shape is the useful part.
-
-## The simple idea
-
-The more useful implementation planning we do, the less unnecessary developing effort we usually create later.
-
-Not less developing effort in the sense that coding becomes magically easy. It does not.
-
-But less effort wasted on avoidable confusion.
-
-Less rework caused by a hidden business rule. Less back-and-forth because the ownership of a flow was unclear. Less late discovery of an integration detail. Less _"oh, this also affects that other service."_ Less guessing while already inside the implementation.
-
-That is where planning helps a lot.
-
-A good implementation plan is not a contract with the future. It is more like a map. It does not remove every surprise from the road, but it helps the team avoid walking in circles.
+These activities overlap. A small implementation spike can be part of planning, and working code can invalidate a plan. Separate tickets help organize the work; they do not make learning happen in a straight line.
 
 ## Why a separate planning task can help
 
-One thing I like about having a dedicated implementation planning task is that it gives the team permission to slow down for the right reason.
+Without an explicit planning step, investigation often gets scattered across ticket comments, Slack threads, and discoveries made during development. For a small change, that may be enough. For a larger one, I want those findings somewhere the team can use them before work depends on an untested assumption.
 
-Without that explicit step, planning often happens in fragments: a quick comment here, a Slack thread there, a small investigation during development, and a few important details discovered only after the work has already started. Sometimes that is fine. But for larger changes, those scattered discoveries can quietly become expensive.
+A dedicated task makes that investigation visible. It gives an engineer time to read the code, ask who owns a flow, and check whether an existing pattern solves part of the problem. The result might be a short note with affected areas, an implementation sequence, and risks the team needs to discuss.
 
-A separate planning task creates a small container for the unknowns. It gives the engineer time to read the code, ask questions, check assumptions, and turn a vague development task into something the team can actually reason about.
+The development task that follows can then have clearer boundaries and test expectations. It can also include the boring manual steps that are easy to leave out until release day.
 
-Sometimes the output is not a huge document. It might be a short plan, a list of affected areas, a proposed implementation sequence, or a few risks that need alignment. The value is not in producing a beautiful plan. The value is in making the next task less blind.
+I would scale the plan to the consequences of getting the change wrong. A local change that is easy to undo may need only a note in the ticket. A migration with dependencies and legacy behavior deserves closer investigation. A separate planning task is useful when it gives that work room to happen; I would not make it a requirement for every code change.
 
-In that sense, the development task that comes after the plan is usually better shaped. It has clearer boundaries, better test expectations, fewer hidden manual steps, and a more honest understanding of what might go wrong.
+## What I want a plan to uncover
 
-## What planning is actually trying to uncover
+A ticket rarely contains the whole history of a system. Business rules, old compromises, and areas marked _"please do not touch this unless you know why"_ can all change the approach.
 
-For me, the most valuable part of planning is not creating a long document. It is forcing the right questions to appear before the cost of changing direction gets too high.
+I want the plan to answer a few practical questions:
 
-A feature or a large technical change usually carries more context than the ticket shows. There are system boundaries, business rules, legacy decisions, code patterns, historical compromises, rollout details, and sometimes a few _"please do not touch this unless you know why"_ areas.
+- What is changing, what is out of scope, and which systems, modules, jobs, events, or APIs are affected? Who owns the flows involved?
+- Which business rules and legacy behaviors must survive? Which existing code patterns should we follow or avoid?
+- What structure and implementation sequence make sense, and which assumptions could force us to change them?
+- Which tests and edge cases will tell us whether the change works? What can we automate, and what still needs human verification?
+- What has to happen around release, including scripts, migrations, backfills, feature flags, configuration, and deployment order? Who owns the manual steps, what do we check afterward, and how do we recover if something goes wrong?
 
-Implementation planning is the moment where I try to pull those details closer to the surface.
+The answers can fit in a ticket. For a complicated change, some may need their own investigation. I care about whether they help the next engineer make a decision, rather than how much documentation they produce.
 
-Things like:
+## What the curve gets right
 
-- What systems, modules, jobs, events, or APIs will be affected?
-- What is the proposed implementation structure?
-- Which existing code patterns should guide the solution?
-- Which patterns should probably be avoided?
-- What business rules or legacy behaviors can change the direction of the work?
-- What test cases need to be covered?
-- What edge cases are easy to miss?
-- What manual steps are involved?
-- Are there scripts, migrations, backfills, feature flags, config changes, or rollout steps?
-- What needs to be checked after the release?
-- What can be automated, and what still needs human verification?
+This is how I picture the relationship between useful planning and the development effort that follows:
 
-The more complex the system, the more these details matter.
+![Implementation Planning vs. Developing - diminishing returns curve](/images/blog/implementation-planning-vs-developing.en-US.svg)
 
-In a clean and isolated codebase, maybe the plan can be very small. But in a real product with history, dependencies, legacy logic, business-specific rules, and previous technical decisions, implementation planning becomes less about _writing a plan_ and more about reducing the number of expensive surprises.
+The units are illustrative. This is a mental model drawn from experience, not a study or a benchmark.
 
-## Why the first part of the curve drops fast
+The steep early drop represents the avoidable work a short investigation can expose. We might discover that a flow already exists, a field has a hidden business meaning, or a dependency behaves differently in production. Learning why a similar change caused problems can alter the approach before we have much code to undo. An hour spent finding an existing solution can spare hours of implementing a replacement.
 
-At the beginning, planning tends to have a high return.
+That is the kind of saving I have in mind: fewer late discoveries, less back-and-forth over ownership, and less _"oh, this also affects that other service."_
 
-Even a short conversation, a small design note, or a quick exploration of the code can remove a surprising amount of uncertainty.
+But some work merely moves earlier. Reading a module during planning instead of during development still takes time. A shorter development task does not, by itself, show that the team saved effort. The saving comes when that earlier understanding avoids work we would otherwise have to redo, or helps us choose a simpler implementation.
 
-Sometimes one hour of planning saves many hours of developing because it prevents the team from starting in the wrong direction.
+Eventually the curve flattens. Someone still has to write, test, review, integrate, and deploy the change. Some questions also need working code before we can answer them. A longer document can make us feel more certain without resolving those questions.
 
-That is the steep part of the curve.
+## The cost missing from the chart
 
-The team discovers that a flow already exists. Or that a field has a hidden meaning. Or that a dependency behaves differently in production. Or that a similar change caused problems before. Or that the implementation can be much simpler if it follows an existing pattern.
-
-This is the kind of planning that feels valuable immediately. It turns _"let's start coding and see what happens"_ into _"we know the main path, the main risks, and the first few decisions."_
-
-## Why the curve eventually flattens
-
-But planning has limits.
-
-At some point, more planning still helps, but the gain becomes smaller. That is the flattening part of the curve.
-
-There are a few reasons for that.
-
-First, developing can never go to zero. Even with a great plan, someone still needs to write the code, test it, review it, integrate it, deploy it, and fix the things that only show up when the system is exercised.
-
-Second, some uncertainty is not removable upfront. Some questions only become real when the code meets the existing system. You can read, inspect, and discuss a lot, but sometimes the honest answer is: we need to build a small part and validate it.
-
-Third, too much planning can start giving the team a false sense of certainty. The document gets bigger, but the risk is not necessarily getting smaller at the same pace.
-
-That is why I do not see planning as something to maximize.
-
-I see it as something to calibrate.
-
-## A small equation for the mental model
-
-I like this equation as a simple way to represent the idea:
+One way to sketch the curve is the equation I keep coming back to:
 
 ```text
 Developing(P) = D_min + (D0 - D_min) * e^(-kP)
 ```
 
-Where:
+Here, `P` is planning effort and `Developing(P)` is the expected development effort afterward. `D0` is development effort with no planning, while `D_min` is the practical minimum that remains even after useful planning. The parameter `k` controls how quickly the curve approaches that minimum; it stands in for how strongly planning reduces uncertainty and rework.
 
-- `P` is the implementation planning effort
-- `Developing(P)` is the expected developing effort
-- `D0` is the developing effort when planning is close to zero
-- `D_min` is the practical minimum developing effort
-- `k` is how strongly planning reduces uncertainty and rework
+With `D0 > D_min` and `k > 0`, the curve always slopes down. Looking only at that curve makes more planning look better indefinitely. But planning has a cost too.
 
-This is not a formula I would use to estimate a real sprint.
+For a fixed scope, with planning and development measured in the same effort units, the fuller picture is `Total(P) = P + Developing(P)`. Each activity belongs on one side of that sum, so an exploratory spike counted as planning should not also be counted as development.
 
-I would not put these numbers in a spreadsheet and pretend they are precise.
+In this simplified model, another hour of planning reduces total effort only if it saves more than an hour downstream. Once the saving falls below that, additional planning increases the total even though the development estimate keeps shrinking. For a well-understood change, extra planning may not pay for itself at all. That gives the flattening curve a practical consequence: we need a reason to keep planning.
 
-The equation is useful only because it captures the shape of the intuition: planning reduces developing effort quickly at first, then the return gets smaller over time.
+I would not use this equation to estimate a sprint or calculate a planning percentage. I have no measured values for these parameters. It assumes useful planning and a fixed scope, while actual planning can uncover missing work and make an estimate grow. That discovery may prevent an incomplete release; a smaller estimate would have been misleading.
 
-## The two traps
+Effort is only part of the decision, too. For a change with serious failure consequences, I would spend more time validating recovery even if it did not shorten the implementation. A plan still has to meet the safety and correctness needs of the change.
 
-The first trap is under-planning.
+## Choose the next step by what it can teach you
 
-This is when the team starts developing before understanding enough of the impact, dependencies, structure, tests, rollout, and system-specific constraints. The missing planning does not disappear. It moves into the development phase, where it becomes interruptions, rework, and last-minute discoveries.
+Consider a hypothetical field migration. Before changing the schema, I would want to know which jobs and services depend on the field, which legacy behavior must survive, and what deployment order would keep those consumers working. Those answers could change the implementation sequence.
 
-The second trap is over-planning.
+Now suppose the remaining question is how a backfill will behave on representative data. A bounded test in a safe environment may teach us more than another design discussion. The plan can specify what to test and what result would force us to reconsider the approach. Then we can run the experiment and revise the plan.
 
-This is when the team tries to answer every possible question before building anything. The plan gets longer, but the team is not always getting proportionally safer. Sometimes the next useful learning step is not another meeting or another diagram. It is a small implementation spike, a test, or validating an assumption in the code.
+The same change can need more investigation in one area and working code in another. I would spend more planning effort on a decision that is hard to reverse, and use small experiments where we can learn without committing the rest of the system.
 
-Both traps are understandable.
+This is also why I would revisit the plan during development. When implementation exposes a wrong assumption, updating the plan helps the next task use what we have learned. Continuing with the original sequence just because the planning ticket is closed would defeat the purpose.
 
-Under-planning often comes from pressure to move fast. Over-planning often comes from a desire to avoid mistakes.
+## How I decide we have planned enough
 
-I have done both. Most teams probably have.
+I have both under-planned and over-planned. The pressure to move fast can leave basic questions about impact, tests, or rollout to interrupt development. The desire to avoid mistakes can keep us asking a document for answers that need an experiment.
 
-The hard part is finding the middle.
+For me, the sweet spot is still somewhere between chaos and theater. I want the team to be able to name the next bounded change, explain why it is a sensible place to start, and describe how we will check it. The main risks and manual release steps should be visible, even when some details still need validation.
 
-## What "enough planning" feels like
+The remaining unknowns should be explicit. We need to distinguish what must be resolved before release from what we can safely learn during implementation, and agree on what would make us stop or change direction. That is more useful than asking everyone whether they feel confident.
 
-For me, enough planning usually feels like this:
+Before spending more time on a plan, I want to ask: _"What decision will the next planning step change, and why is planning the best way to answer that question?"_
 
-The team understands the main path. The risky areas are visible. The implementation structure is not a mystery. The code patterns are known. The test strategy is clear enough. The manual steps are listed. The rollout does not depend on hope. The unknowns that remain are acceptable and intentional.
-
-That last part matters: acceptable and intentional.
-
-A good plan does not eliminate every unknown. It makes the remaining unknowns explicit enough that the team can decide to carry them into developing.
-
-That is a very different feeling from discovering them by accident later.
-
-## My current takeaway
-
-Implementation planning is a way to move uncertainty earlier, when it is usually cheaper to discuss, challenge, and adjust.
-
-It helps developing become more focused, but it has diminishing returns. The goal is not to create the most complete plan possible. The goal is to create enough clarity to build with confidence.
-
-For me, the sweet spot is somewhere between chaos and theater.
-
-Not _"let's just code and figure it out."_
-
-Not _"let's plan until nothing feels uncertain."_
-
-More like:
-
-_"Let's understand enough to make the next decisions responsibly, and then let the implementation teach us the rest."_
-
-That is the balance I am still trying to get better at.
+When we can name an expensive assumption and a useful way to check it, keep planning. When the next answer needs working code, build the smallest part that can give us that answer and bring what we learn back into the plan.
