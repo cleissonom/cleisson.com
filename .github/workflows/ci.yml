@@ -150,6 +150,9 @@ jobs:
       - name: Tests
         run: npm test
 
+      - name: Check blog PDFs
+        run: npm run blog:pdf:check
+
       - name: Typecheck
         run: npm run typecheck
 
