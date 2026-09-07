@@ -6,3 +6,8 @@ node_modules
 package-lock.json
 *.tsbuildinfo
 https-*.json
+output/playwright/
+# Vendored upstream files must retain their original bytes.
+.agents/skills/humanizer/SKILL.md
+.agents/skills/humanizer/README.md
+.agents/skills/humanizer/agents/openai.yaml

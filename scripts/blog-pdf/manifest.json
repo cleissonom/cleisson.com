@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "entries": {
+    "/downloads/blog/implementation-planning-vs-desarrollo.es-ES.pdf": {
+      "source": "content/blog/es-ES/implementation-planning-vs-developing.md",
+      "pdfUrl": "/downloads/blog/implementation-planning-vs-desarrollo.es-ES.pdf",
+      "inputHash": "479f4ec7391b1e9b8507a4d88d0af119679151ed2d3990e1b17a51d78a48cfa8",
+      "pdfHash": "4efb58a28db48decec62c424ab79564c9872024de4c33341c38ea8ed3b3da5e5",
+      "renderer": {
+        "browser": "153.0.8010.12",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.20.0",
+        "channel": "chromium"
+      }
+    },
+    "/downloads/blog/implementation-planning-vs-desenvolvimento.pt-BR.pdf": {
+      "source": "content/blog/pt-BR/implementation-planning-vs-developing.md",
+      "pdfUrl": "/downloads/blog/implementation-planning-vs-desenvolvimento.pt-BR.pdf",
+      "inputHash": "5d5bd8de94557c26ef758c07488e10f806191e12b50c85633dd63479ed01cba4",
+      "pdfHash": "b7d672f6b9b21e81cda9d21374991395c6b8674aec49c9998c8aead220abe436",
+      "renderer": {
+        "browser": "153.0.8010.12",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.20.0",
+        "channel": "chromium"
+      }
+    },
+    "/downloads/blog/implementation-planning-vs-developing.en-US.pdf": {
+      "source": "content/blog/en-US/implementation-planning-vs-developing.md",
+      "pdfUrl": "/downloads/blog/implementation-planning-vs-developing.en-US.pdf",
+      "inputHash": "b48a0583503a67c671aacce5793643676b654996122c3b413294cc01acfdcbe8",
+      "pdfHash": "1b0cf0020c3778ceb9e24cfc62ca0e9ff074f8f1471fe6b2841e0b1505728ec9",
+      "renderer": {
+        "browser": "153.0.8010.12",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.20.0",
+        "channel": "chromium"
+      }
+    }
+  }
+}

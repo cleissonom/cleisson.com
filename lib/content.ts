@@ -2,41 +2,21 @@ import "server-only"
 
 import fs from "node:fs"
 import path from "node:path"
-import matter from "gray-matter"
 import { z } from "zod"
 
 import type { ProjectStage, ProjectType } from "@/data/i18n/types"
 import { LOCALES, type Locale } from "@/lib/i18n"
+import {
+  dateStringSchema,
+  safeExternalUrlSchema,
+  readMarkdownFile,
+  readBlogSource,
+  type BlogFrontmatter
+} from "@/lib/content-source"
+
+export type { BlogFrontmatter } from "@/lib/content-source"
 
 const contentRoot = path.join(process.cwd(), "content")
-const allowedExternalProtocols = new Set(["http:", "https:"])
-
-const safeExternalUrlSchema = z
-  .string()
-  .url()
-  .refine((value) => {
-    try {
-      return allowedExternalProtocols.has(new URL(value).protocol)
-    } catch {
-      return false
-    }
-  }, "URL must use http or https protocol")
-
-const safePublicPathSchema = z
-  .string()
-  .startsWith("/")
-  .refine((value) => !value.startsWith("//"), "Path must be an internal public path")
-  .refine((value) => !value.includes("\\"), "Path must use URL separators")
-  .refine((value) => !value.split(/[?#]/, 1)[0]?.includes(".."), "Path cannot traverse directories")
-
-const dateStringSchema = z.union([z.string().min(1), z.date()]).transform((value) => {
-  if (typeof value === "string") {
-    return value
-  }
-
-  return value.toISOString()
-})
-
 const projectTypeSchema = z.enum([
   "product",
   "developer-tool",
@@ -85,34 +65,7 @@ const projectFrontmatterSchema = z
     stage: project.stage ?? (project.status === "archived" ? "archived" : "live")
   }))
 
-const blogFrontmatterSchema = z
-  .object({
-    title: z.string().min(1),
-    slug: z.string().min(1),
-    summary: z.string().min(1),
-    date: dateStringSchema,
-    updatedAt: dateStringSchema.optional(),
-    tags: z.array(z.string().min(1)).min(1),
-    coverImage: safePublicPathSchema.optional(),
-    coverAlt: z.string().min(1).optional(),
-    pdfUrl: safePublicPathSchema
-      .refine((value) => value.endsWith(".pdf"), "PDF URL must end in .pdf")
-      .optional(),
-    canonicalUrl: safeExternalUrlSchema.optional(),
-    lang: z.enum(LOCALES)
-  })
-  .superRefine((post, context) => {
-    if (post.coverImage && !post.coverAlt) {
-      context.addIssue({
-        code: "custom",
-        path: ["coverAlt"],
-        message: "Posts with coverImage must include coverAlt"
-      })
-    }
-  })
-
 export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>
-export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>
 
 export type ProjectEntry = ProjectFrontmatter & {
   locale: Locale
@@ -140,25 +93,6 @@ function listMarkdownFiles(dir: string): string[] {
     .sort()
 }
 
-function readMarkdownFile(filePath: string): {
-  frontmatter: Record<string, unknown>
-  body: string
-} {
-  const source = fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/, "")
-  const firstLine = source.split(/\r?\n/, 1)[0]?.trim() ?? ""
-
-  // `gray-matter` supports `---js` frontmatter and evaluates it with `eval`.
-  // Reject non-YAML frontmatter markers to prevent code execution paths.
-  if (firstLine.startsWith("---") && firstLine !== "---") {
-    throw new Error(
-      `Unsupported frontmatter language in ${filePath}. Only YAML frontmatter is allowed.`
-    )
-  }
-
-  const { data, content } = matter(source)
-  return { frontmatter: data, body: content.trim() }
-}
-
 function readProjectFile(filePath: string, locale: Locale): ProjectEntry {
   const { frontmatter, body } = readMarkdownFile(filePath)
   const parsed = projectFrontmatterSchema.parse(frontmatter)
@@ -170,20 +104,8 @@ function readProjectFile(filePath: string, locale: Locale): ProjectEntry {
 }
 
 function readBlogFile(filePath: string, locale: Locale): BlogEntry {
-  const { frontmatter, body } = readMarkdownFile(filePath)
-  const parsed = blogFrontmatterSchema.parse(frontmatter)
-  if (parsed.lang !== locale) {
-    throw new Error(
-      `Locale mismatch in ${filePath}. Expected lang ${locale}, received ${parsed.lang}.`
-    )
-  }
-
-  return {
-    ...parsed,
-    locale,
-    body,
-    readingTimeMinutes: estimateReadingTime(body)
-  }
+  const post = readBlogSource(filePath, locale)
+  return { ...post, readingTimeMinutes: estimateReadingTime(post.body) }
 }
 
 function toTimeValue(value: string | undefined): number {

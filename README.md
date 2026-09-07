@@ -44,6 +44,11 @@ App runs at `http://localhost:3000`.
 - `npm test`: Run content and agent-readiness tests
 - `npm run test:agent-readiness`: Run HTTP negotiation and public endpoint tests
 - `npm run test:content`: Run content and static asset tests
+- `npm run test:blog-pdf`: Run PDF mapping, validation and freshness tests
+- `npm run test:blog-pdf:render`: Exercise real PDF generation and repeatability (Chromium required)
+- `npm run blog:pdf`: Generate missing or outdated published blog PDFs
+- `npm run blog:pdf:check`: Check PDF inputs, downloads and mappings without writes
+- `npm run blog:pdf:review`: Prepare HTML/text expectations for actual PDF page review
 - `npm run test:browser`: Run responsive/accessibility interaction regressions against a running production server
 - `npm run test:performance`: Collect three cold-browser mobile samples per representative route and check payload budgets
 - `npm run lint`: Run ESLint with `--max-warnings=0`
@@ -111,6 +116,15 @@ tags:
 lang: en-US
 ---
 ```
+
+### Blog PDFs and writing skills
+
+Blog downloads are generated statically from the complete Markdown in all three locales.
+See [Blog PDFs and local writing skills](docs/blog-pdfs.md) for setup, single-post and
+batch commands, freshness checks, PDF validation and troubleshooting. Invoke the local
+skills with `$blog-to-pdf Refresh all published blog PDFs` or `$humanizer Edit my new
+draft, preserving facts, citations, code, frontmatter and link targets`. Humanizer is
+installed for future editorial work and never runs during PDF generation or builds.
 
 ### Projects
 
