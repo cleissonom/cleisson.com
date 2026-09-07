@@ -11,6 +11,7 @@
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
+    "images:check": "bash scripts/check-images.sh",
     "test": "npm run test:content && npm run test:agent-readiness",
     "test:agent-readiness": "node --test --test-concurrency=1 tests/agent-readiness/*.test.mjs",
     "test:content": "node --test tests/content/*.test.mjs",

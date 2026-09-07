@@ -61,32 +61,11 @@ jobs:
         env:
           DEVIMG_BIN: ${{ steps.devimg.outputs.binary-path }}
         run: |
-          "$DEVIMG_BIN" check \
-            --config devimg.blog.toml \
-            --fail-on-warning \
-            --no-report
-          "$DEVIMG_BIN" manifest export \
-            --manifest public/images/blog-manifest.json \
-            --strip-prefix public \
-            --url-prefix / \
-            --format typescript \
-            --output lib/devimg-blog.generated.ts \
-            --check
+          bash scripts/check-images.sh blog seo
           "$DEVIMG_BIN" review \
             --manifest public/images/blog-manifest.json \
             --output .devimg/blog-review.html \
             --force
-          "$DEVIMG_BIN" check \
-            --config devimg.seo.toml \
-            --fail-on-warning \
-            --no-report
-          "$DEVIMG_BIN" manifest export \
-            --manifest public/images/seo-manifest.json \
-            --strip-prefix public \
-            --url-prefix / \
-            --format typescript \
-            --output lib/devimg-seo.generated.ts \
-            --check
           "$DEVIMG_BIN" review \
             --manifest public/images/seo-manifest.json \
             --output .devimg/seo-review.html \
