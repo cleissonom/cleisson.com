@@ -1,5 +1,7 @@
 # Blog PDFs and local writing skills
 
+[README](../README.md) · [Development](development.md) · [Architecture](architecture.md)
+
 Both skills are versioned in `.agents/skills/`, which Codex discovers for this
 repository. They need no user-level settings, global installation, website runtime
 dependency or build hook. A new turn picks them up; restart Codex if they are absent.
@@ -18,7 +20,8 @@ diffs for facts and citations as well as unchanged code, metadata and link targe
 
 ## Setup and commands
 
-Use the project's Node 24 and npm versions from `package.json` / `.nvmrc`:
+Use the [development prerequisites](development.md#setup-and-sources-of-truth): Node
+from `.nvmrc`, within `package.json`'s supported range, and npm with the committed lockfile:
 
 ```bash
 npm ci

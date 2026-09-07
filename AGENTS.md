@@ -29,3 +29,11 @@ Humanizer is vendored with pinned provenance for future editorial tasks. Preserv
 its upstream files and license when updating it. Never invoke it during PDF
 conversion or builds; editorial use must preserve facts, citations, code,
 frontmatter and link targets.
+
+## Maintainer reference
+
+Start with [README.md](README.md). Maintainer architecture, development/tooling, and deployment/operations guides live in `docs/`; published content and machine-consumed contracts stay in `content/` and `public/`.
+
+Use the commands and maintenance checklist in [docs/development.md](docs/development.md). Image verification is shared by the `images:check` package script and CI through `scripts/check-images.sh`; regeneration instructions remain in [docs/devimg.md](docs/devimg.md).
+
+Keep provider observations distinct from repository settings in [docs/operations.md](docs/operations.md). The full agent-readiness suite sends test requests, including a telemetry POST, and is for local verification; use the documented GET/HEAD smoke checks for deployed sites.
