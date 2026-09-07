@@ -140,7 +140,7 @@ export default async function McpPage({ params }: { params: Promise<{ locale: st
   const page = dictionary.pages.mcp
 
   return (
-    <SectionStack as="div">
+    <SectionStack as="div" className="reading-page">
       <Surface aria-labelledby="mcp-title">
         <PageHeader>
           <Eyebrow>{page.eyebrow}</Eyebrow>

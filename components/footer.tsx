@@ -1,4 +1,5 @@
 import { Container } from "@/components/design-system"
+import { CelestialDivider } from "@/components/astronomy"
 import type { Route } from "next"
 import Link from "next/link"
 import { siteIdentity } from "@/data/profile"
@@ -26,6 +27,7 @@ export function Footer({
   return (
     <footer className="site-footer">
       <Container className="footer-grid">
+        <CelestialDivider />
         <p>
           {siteIdentity.name} | {year}
         </p>

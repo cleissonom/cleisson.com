@@ -57,7 +57,7 @@ export const ptBRDictionary: LocaleDictionary = {
   },
   ui: {
     nav: {
-      home: "Sobre",
+      home: "Início",
       experience: "Experiência",
       projects: "Projetos",
       blog: "Blog",
@@ -65,6 +65,8 @@ export const ptBRDictionary: LocaleDictionary = {
     },
     cta: {
       contact: "Contato",
+      emailMe: "Enviar e-mail",
+      viewExperience: "Ver experiência",
       linkedin: "Ver LinkedIn",
       downloadResume: "Baixar currículo em PDF"
     },
@@ -90,6 +92,7 @@ export const ptBRDictionary: LocaleDictionary = {
       highlights: "Destaques",
       experienceTimelineAria: "Linha do tempo de experiência",
       mainNavigationAria: "Navegação principal",
+      skipToContent: "Pular para o conteúdo",
       backToProjects: "Voltar para projetos",
       backToBlog: "Voltar para o blog",
       notFoundTitle: "Página não encontrada",
@@ -371,6 +374,7 @@ export const ptBRDictionary: LocaleDictionary = {
       allLabels: "Todas as labels",
       clearLabels: "Limpar labels",
       noResultsDescription: "Nenhum projeto encontrado para as labels selecionadas.",
+      resultsCount: "{count} de {total} projetos",
       detailsComingSoonLabel: "Detalhes em breve",
       notFoundTitle: "Projeto não encontrado",
       notFoundDescription: "Projeto não encontrado para este idioma.",

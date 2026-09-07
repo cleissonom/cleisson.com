@@ -37,6 +37,9 @@ const iconAssetSources = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // React's dynamic preload Link header replaces the proxy's Markdown/discovery links.
+  // Resources remain discoverable in HTML; reserve the HTTP header for public contracts.
+  reactMaxHeadersLength: 1,
   skipProxyUrlNormalize: true,
   typedRoutes: true,
   experimental: {

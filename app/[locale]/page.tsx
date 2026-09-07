@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation"
 import Image from "next/image"
 
+import { OrbitalPortrait } from "@/components/astronomy"
 import {
   ButtonLink,
   Chip,
   ChipRow,
-  Eyebrow,
   Grid,
   InlineLink,
   Lead,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dictionary.site.headline,
     path: "/",
     imagePath: SEO_IMAGE_PATHS.home,
-    imageAlt: `${siteIdentity.name} homepage preview`,
+    imageAlt: siteIdentity.name,
     keywords: [...dictionary.pages.home.keywords]
   })
 }
@@ -79,18 +79,12 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
       <Surface as="div" className="hero">
         <div className="hero-layout">
           <div className="hero-copy">
-            <Eyebrow>{dictionary.site.shortTitle}</Eyebrow>
             <h1>{siteIdentity.name}</h1>
-            <Lead>{dictionary.site.headline}</Lead>
-            <div className="hero-proof" aria-label={ui.sections.focusAreas}>
-              <span>{focusAreas[0]}</span>
-              <span>{focusAreas[1]}</span>
-              <span>{focusAreas[2]}</span>
-            </div>
+            <Lead>{about[0]}</Lead>
             <div className="hero-actions">
-              <ButtonLink href={siteEmailHref(locale)}>{ui.cta.contact}</ButtonLink>
+              <ButtonLink href={siteEmailHref(locale)}>{ui.cta.emailMe}</ButtonLink>
               <ButtonLink variant="secondary" href={`/${locale}/experience`}>
-                {ui.nav.experience}
+                {ui.cta.viewExperience}
               </ButtonLink>
               <LinkedInButton
                 label={ui.cta.linkedin}
@@ -99,63 +93,47 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             </div>
           </div>
 
-          <figure className="hero-portrait">
-            <Image
-              src="/about/profile.webp"
-              alt={siteIdentity.name}
-              width={448}
-              height={459}
-              priority
-            />
-          </figure>
+          <OrbitalPortrait>
+            <figure className="hero-portrait">
+              <Image
+                src="/about/profile.webp"
+                alt={siteIdentity.name}
+                width={448}
+                height={459}
+                sizes="(min-width: 768px) 208px, 144px"
+                loading="eager"
+              />
+            </figure>
+          </OrbitalPortrait>
         </div>
       </Surface>
 
       <SectionStack as="div">
-        <Surface as="section" className="home-snapshot" aria-labelledby="home-snapshot-title">
-          <div className="section-heading-row">
-            <div>
-              <p className="card-meta">{dictionary.site.shortTitle}</p>
-              <h2 id="home-snapshot-title">{ui.sections.about}</h2>
-            </div>
-            <InlineLink href={`/${locale}/resume`}>{ui.nav.resume}</InlineLink>
-          </div>
-
-          <div className="snapshot-grid">
-            <div className="snapshot-copy">
-              {about.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-              {bestFitSummary ? <p>{bestFitSummary}</p> : null}
-              <p>
-                <InlineLink href={`/${locale}/mcp`}>
-                  {dictionary.pages.mcp.documentationLabel}
-                </InlineLink>
-              </p>
-            </div>
-            <dl className="metric-grid">
-              <div>
-                <dt>{allProjects.length}</dt>
-                <dd>{ui.sections.projects}</dd>
-              </div>
-              <div>
-                <dt>{allPosts.length}</dt>
-                <dd>{ui.sections.blog}</dd>
-              </div>
-            </dl>
-          </div>
-        </Surface>
-
-        <Surface as="section" aria-labelledby="home-focus-title">
-          <div className="section-heading-row">
-            <h2 id="home-focus-title">{ui.sections.focusAreas}</h2>
-          </div>
-          <ChipRow>
-            {focusAreas.map((area) => (
-              <Chip key={area}>{area}</Chip>
+        <SectionStack
+          as="section"
+          className="preview-section"
+          aria-labelledby="home-projects-title"
+        >
+          <PageHeader as="div" className="section-heading-row">
+            <h2 id="home-projects-title">{ui.sections.projects}</h2>
+            <InlineLink href={`/${locale}/projects`}>{ui.nav.projects}</InlineLink>
+          </PageHeader>
+          <Grid>
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                cardImage={null}
+                locale={locale}
+                readMoreLabel={ui.labels.readMore}
+                readMoreAboutPrefix={dictionary.snippets.readMoreAboutPrefix}
+                detailsUnavailableLabel={dictionary.pages.projects.detailsComingSoonLabel}
+                typeLabel={dictionary.pages.projects.typeLabels[project.type]}
+                stageLabel={dictionary.pages.projects.stageLabels[project.stage]}
+              />
             ))}
-          </ChipRow>
-        </Surface>
+          </Grid>
+        </SectionStack>
 
         <Surface as="section" className="preview-section" aria-labelledby="home-experience-title">
           <div className="section-heading-row">
@@ -175,37 +153,12 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
           />
         </Surface>
 
-        <SectionStack
-          as="section"
-          className="preview-section"
-          aria-labelledby="home-projects-title"
-        >
-          <PageHeader as="div" className="section-heading-row">
-            <h2 id="home-projects-title">{ui.sections.projects}</h2>
-            <InlineLink href={`/${locale}/projects`}>{ui.nav.projects}</InlineLink>
-          </PageHeader>
-          <Grid>
-            {projects.map((project) => (
-              <ProjectCard
-                key={project.slug}
-                project={project}
-                locale={locale}
-                readMoreLabel={ui.labels.readMore}
-                readMoreAboutPrefix={dictionary.snippets.readMoreAboutPrefix}
-                detailsUnavailableLabel={dictionary.pages.projects.detailsComingSoonLabel}
-                typeLabel={dictionary.pages.projects.typeLabels[project.type]}
-                stageLabel={dictionary.pages.projects.stageLabels[project.stage]}
-              />
-            ))}
-          </Grid>
-        </SectionStack>
-
         <SectionStack as="section" className="preview-section" aria-labelledby="home-blog-title">
           <PageHeader as="div" className="section-heading-row">
             <h2 id="home-blog-title">{ui.sections.blog}</h2>
             <InlineLink href={`/${locale}/blog`}>{ui.nav.blog}</InlineLink>
           </PageHeader>
-          <Grid>
+          <Grid className="writing-grid">
             {posts.map((post) => (
               <PostCard
                 key={post.slug}
@@ -218,6 +171,32 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
             ))}
           </Grid>
         </SectionStack>
+        <Surface as="section" className="home-snapshot" aria-labelledby="home-snapshot-title">
+          <div className="section-heading-row">
+            <h2 id="home-snapshot-title">{ui.sections.about}</h2>
+            <InlineLink href={`/${locale}/about`}>{ui.sections.about}</InlineLink>
+          </div>
+          <div className="snapshot-copy">
+            {about.slice(1).map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            <p>{dictionary.site.headline}</p>
+            {bestFitSummary ? <p>{bestFitSummary}</p> : null}
+            <p>
+              <InlineLink href={`/${locale}/mcp`}>
+                {dictionary.pages.mcp.documentationLabel}
+              </InlineLink>
+            </p>
+          </div>
+        </Surface>
+        <Surface as="section" className="home-focus" aria-labelledby="home-focus-title">
+          <h2 id="home-focus-title">{ui.sections.focusAreas}</h2>
+          <ChipRow>
+            {focusAreas.map((area) => (
+              <Chip key={area}>{area}</Chip>
+            ))}
+          </ChipRow>
+        </Surface>
       </SectionStack>
     </>
   )

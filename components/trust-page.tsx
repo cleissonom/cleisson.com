@@ -17,7 +17,7 @@ export function TrustPage({
   actions?: ReactNode
 }) {
   return (
-    <SectionStack>
+    <SectionStack className="reading-page">
       <Surface as="section" aria-labelledby="trust-page-title">
         <PageHeader>
           <Eyebrow>{eyebrow}</Eyebrow>

@@ -57,7 +57,7 @@ export const esESDictionary: LocaleDictionary = {
   },
   ui: {
     nav: {
-      home: "Sobre mí",
+      home: "Inicio",
       experience: "Experiencia",
       projects: "Proyectos",
       blog: "Blog",
@@ -65,6 +65,8 @@ export const esESDictionary: LocaleDictionary = {
     },
     cta: {
       contact: "Contacto",
+      emailMe: "Enviar correo",
+      viewExperience: "Ver experiencia",
       linkedin: "Ver LinkedIn",
       downloadResume: "Descargar currículum en PDF"
     },
@@ -90,6 +92,7 @@ export const esESDictionary: LocaleDictionary = {
       highlights: "Aspectos clave",
       experienceTimelineAria: "Línea de tiempo de experiencia",
       mainNavigationAria: "Navegación principal",
+      skipToContent: "Saltar al contenido",
       backToProjects: "Volver a proyectos",
       backToBlog: "Volver al blog",
       notFoundTitle: "Página no encontrada",
@@ -371,6 +374,7 @@ export const esESDictionary: LocaleDictionary = {
       allLabels: "Todas las etiquetas",
       clearLabels: "Borrar etiquetas",
       noResultsDescription: "No se encontraron proyectos para las etiquetas seleccionadas.",
+      resultsCount: "{count} de {total} proyectos",
       detailsComingSoonLabel: "Detalles próximamente",
       notFoundTitle: "Proyecto no encontrado",
       notFoundDescription: "No se encontró el proyecto para este idioma.",

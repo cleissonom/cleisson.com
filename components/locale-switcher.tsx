@@ -1,11 +1,27 @@
+"use client"
+
+import { usePathname } from "next/navigation"
+
 import { LocaleFlag } from "@/components/locale-flag"
 import { LOCALES, LOCALE_OPTIONS, type Locale } from "@/lib/i18n"
+import { resolveLocaleSwitchPath, type SlugIndex } from "@/lib/locale-route"
 
-export function LocaleSwitcher({ currentLocale, label }: { currentLocale: Locale; label: string }) {
+export function LocaleSwitcher({
+  currentLocale,
+  label,
+  projectSlugsByLocale,
+  blogSlugsByLocale
+}: {
+  currentLocale: Locale
+  label: string
+  projectSlugsByLocale: SlugIndex
+  blogSlugsByLocale: SlugIndex
+}) {
+  const pathname = usePathname()
   const currentOption = LOCALE_OPTIONS[currentLocale]
 
   return (
-    <details className="locale-dropdown js-locale-switcher">
+    <details className="locale-dropdown">
       <summary className="locale-dropdown-trigger" aria-label={label}>
         <span className="locale-dropdown-current">
           <LocaleFlag locale={currentLocale} />
@@ -20,14 +36,19 @@ export function LocaleSwitcher({ currentLocale, label }: { currentLocale: Locale
         {LOCALES.map((locale) => {
           const isCurrent = locale === currentLocale
           const option = LOCALE_OPTIONS[locale]
-          const href = `/${locale}`
+          const href = resolveLocaleSwitchPath(pathname, locale, {
+            locales: LOCALES,
+            projectSlugsByLocale,
+            blogSlugsByLocale
+          })
 
           return (
             <li key={locale}>
               <a
                 href={href}
-                className={`locale-dropdown-option js-locale-option${isCurrent ? " locale-dropdown-option-active" : ""}`}
-                data-target-locale={locale}
+                className={`locale-dropdown-option${isCurrent ? " locale-dropdown-option-active" : ""}`}
+                hrefLang={locale}
+                lang={locale}
                 aria-current={isCurrent ? "true" : undefined}
               >
                 <LocaleFlag locale={locale} />

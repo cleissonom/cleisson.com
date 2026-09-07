@@ -1,0 +1,157 @@
+.astronomy-portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(232px, 100%);
+  aspect-ratio: 1;
+  isolation: isolate;
+}
+.astronomy-portrait > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--muted);
+  pointer-events: none;
+  z-index: -1;
+}
+.orbital-paths {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.5;
+}
+.orbital-stars {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+.orbital-satellite {
+  fill: var(--accent);
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+}
+.orbital-halo {
+  fill: none;
+  stroke: var(--accent);
+  opacity: 0.4;
+}
+.orbital-satellite-near {
+  transform: rotate(35deg);
+  animation: orbit-near 3.2s cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+.orbital-satellite-far {
+  transform: rotate(-35deg);
+  animation: orbit-far 4.2s 150ms cubic-bezier(0.2, 0.6, 0.3, 1) both;
+}
+@keyframes orbit-near {
+  from {
+    transform: rotate(-220deg);
+  }
+  to {
+    transform: rotate(35deg);
+  }
+}
+@keyframes orbit-far {
+  from {
+    transform: rotate(160deg);
+  }
+  to {
+    transform: rotate(-35deg);
+  }
+}
+.celestial-divider {
+  display: block;
+  width: 200px;
+  height: 24px;
+  color: var(--muted);
+}
+.celestial-divider path {
+  fill: none;
+  stroke: currentColor;
+  opacity: 0.5;
+}
+.celestial-divider circle {
+  fill: var(--accent);
+}
+.card-banner-image {
+  transition: transform 240ms ease-out;
+}
+.card:not(.project-card-in-progress):focus-within .card-banner-image {
+  transform: scale(1.025);
+}
+@media (hover: hover) {
+  .card:not(.project-card-in-progress):hover .card-banner-image {
+    transform: scale(1.025);
+  }
+}
+.primary-button:active,
+.secondary-button:active,
+.ghost-button:active {
+  transform: scale(0.98);
+}
+.locale-caret,
+.projects-label-dropdown-caret,
+.timeline-company-chevron,
+.recommendation-chevron {
+  transition: transform 180ms ease-out;
+}
+.locale-dropdown[open] .locale-caret,
+.projects-label-dropdown[open] .projects-label-dropdown-caret {
+  transform: rotate(180deg);
+}
+.site-nav-link {
+  position: relative;
+}
+.site-nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 7px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease-out;
+}
+.site-nav-link-active,
+.site-nav-link:hover,
+.site-nav-link:focus-visible {
+  text-decoration: none;
+}
+.site-nav-link-active::after,
+.site-nav-link:hover::after,
+.site-nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (min-width: 768px) {
+  .astronomy-portrait {
+    width: 280px;
+  }
+}
+@media (min-width: 1024px) {
+  .astronomy-portrait {
+    width: 336px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card:not(.project-card-in-progress):focus-within .card-banner-image,
+  .card:not(.project-card-in-progress):hover .card-banner-image,
+  .primary-button:active,
+  .secondary-button:active,
+  .ghost-button:active {
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  .orbital-satellite,
+  .celestial-divider circle {
+    fill: CanvasText;
+  }
+  .orbital-halo {
+    stroke: CanvasText;
+  }
+  .site-nav-link::after {
+    background: LinkText;
+  }
+}

@@ -1,8 +1,4 @@
-import { BLOG_SLUGS_BY_LOCALE, PROJECT_SLUGS_BY_LOCALE } from "@/data/content-index"
-import { LOCALES } from "@/lib/i18n"
 import { THEME_COOKIE_KEY } from "@/lib/theme"
-
-import { UiEnhancements } from "@/components/ui-enhancements"
 
 export function ThemeScript() {
   const script = `
@@ -40,6 +36,7 @@ export function ThemeScript() {
             var label = nextTheme === 'dark' ? lightLabel : darkLabel;
             button.setAttribute('aria-label', label);
             button.textContent = label;
+            button.disabled = window.__themeToggleBound !== true;
           }
         }
 
@@ -94,14 +91,5 @@ export function ThemeScript() {
     })();
   `
 
-  return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: script }} />
-      <UiEnhancements
-        locales={LOCALES}
-        projectSlugsByLocale={PROJECT_SLUGS_BY_LOCALE}
-        blogSlugsByLocale={BLOG_SLUGS_BY_LOCALE}
-      />
-    </>
-  )
+  return <script dangerouslySetInnerHTML={{ __html: script }} />
 }

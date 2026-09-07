@@ -1,9 +1,20 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent
+} from "react"
 
 import { Grid, MutedText } from "@/components/design-system"
-import { ProjectCard, type ProjectCardProject } from "@/components/project-card"
+import {
+  ProjectCard,
+  type ProjectCardImage,
+  type ProjectCardProject
+} from "@/components/project-card"
 import type { ProjectStage, ProjectType } from "@/data/i18n/types"
 import type { Locale } from "@/lib/i18n"
 
@@ -12,7 +23,12 @@ type ProjectsFilterCopy = {
   allLabels: string
   clearLabels: string
   noResultsDescription: string
+  resultsCount: string
 }
+
+const subscribeToHydration = () => () => {}
+const clientReady = () => true
+const serverReady = () => false
 
 export function ProjectListWithFilters({
   projects,
@@ -24,7 +40,7 @@ export function ProjectListWithFilters({
   stageLabels,
   copy
 }: {
-  projects: ProjectCardProject[]
+  projects: (ProjectCardProject & { cardImage: ProjectCardImage | null })[]
   locale: Locale
   readMoreLabel: string
   readMoreAboutPrefix: string
@@ -33,7 +49,19 @@ export function ProjectListWithFilters({
   stageLabels: Record<ProjectStage, string>
   copy: ProjectsFilterCopy
 }) {
+  const isReady = useSyncExternalStore(subscribeToHydration, clientReady, serverReady)
+  const dropdownRef = useRef<HTMLDetailsElement>(null)
   const [selectedLabels, setSelectedLabels] = useState<string[]>([])
+  useEffect(() => {
+    function dismissOutside(event: PointerEvent) {
+      const dropdown = dropdownRef.current
+      if (dropdown?.open && event.target instanceof Node && !dropdown.contains(event.target)) {
+        dropdown.open = false
+      }
+    }
+    document.addEventListener("pointerdown", dismissOutside)
+    return () => document.removeEventListener("pointerdown", dismissOutside)
+  }, [])
   const availableLabels = useMemo(
     () =>
       Array.from(new Set(projects.flatMap((project) => project.tags))).sort((a, b) =>
@@ -73,12 +101,27 @@ export function ProjectListWithFilters({
     )
   }
 
+  function dismissWithEscape(event: KeyboardEvent<HTMLDetailsElement>) {
+    if (event.key !== "Escape" || !event.currentTarget.open) return
+    event.preventDefault()
+    event.currentTarget.open = false
+    event.currentTarget.querySelector("summary")?.focus()
+  }
+
   return (
     <>
-      <section className="projects-filter" aria-label={copy.filterHeading}>
+      <section
+        className="projects-filter"
+        aria-label={copy.filterHeading}
+        style={{ visibility: isReady ? "visible" : "hidden" }}
+      >
         <p className="projects-filter-label">{copy.filterHeading}</p>
 
-        <details className="projects-label-dropdown">
+        <details
+          ref={dropdownRef}
+          className="projects-label-dropdown"
+          onKeyDown={dismissWithEscape}
+        >
           <summary
             className="projects-label-dropdown-trigger"
             aria-label={`${copy.filterHeading}: ${selectedLabelSummary}`}
@@ -103,7 +146,7 @@ export function ProjectListWithFilters({
               <button
                 className="projects-label-clear"
                 type="button"
-                disabled={selectedLabels.length === 0}
+                aria-disabled={selectedLabels.length === 0}
                 onClick={() => setSelectedLabels([])}
               >
                 {copy.clearLabels}
@@ -137,6 +180,11 @@ export function ProjectListWithFilters({
             </div>
           </div>
         </details>
+        <p className="projects-filter-status" role="status" aria-live="polite" aria-atomic="true">
+          {copy.resultsCount
+            .replace("{count}", String(filteredProjects.length))
+            .replace("{total}", String(projects.length))}
+        </p>
       </section>
 
       {filteredProjects.length > 0 ? (
@@ -145,13 +193,14 @@ export function ProjectListWithFilters({
             <ProjectCard
               key={project.slug}
               project={project}
+              cardImage={project.cardImage}
               locale={locale}
               readMoreLabel={readMoreLabel}
               readMoreAboutPrefix={readMoreAboutPrefix}
               detailsUnavailableLabel={detailsUnavailableLabel}
               typeLabel={typeLabels[project.type]}
               stageLabel={stageLabels[project.stage]}
-              enableWalletHover
+              headingLevel={2}
             />
           ))}
         </Grid>

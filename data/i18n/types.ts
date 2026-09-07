@@ -38,6 +38,8 @@ export type UiDictionary = {
   }
   cta: {
     contact: string
+    emailMe: string
+    viewExperience: string
     linkedin: string
     downloadResume: string
   }
@@ -63,6 +65,7 @@ export type UiDictionary = {
     highlights: string
     experienceTimelineAria: string
     mainNavigationAria: string
+    skipToContent: string
     backToProjects: string
     backToBlog: string
     notFoundTitle: string
@@ -167,6 +170,7 @@ export type LocaleDictionary = {
       allLabels: string
       clearLabels: string
       noResultsDescription: string
+      resultsCount: string
       detailsComingSoonLabel: string
       notFoundTitle: string
       notFoundDescription: string

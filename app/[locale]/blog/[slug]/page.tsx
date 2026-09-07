@@ -76,7 +76,7 @@ export async function generateMetadata({
       description: dictionary.pages.blog.notFoundDescription,
       path: "/blog",
       imagePath: SEO_IMAGE_PATHS.blog,
-      imageAlt: `${dictionary.pages.blog.metadataTitle} social preview`
+      imageAlt: dictionary.pages.blog.metadataTitle
     })
   }
 
@@ -85,7 +85,7 @@ export async function generateMetadata({
     description: post.summary,
     path: `/blog/${post.slug}`,
     imagePath: post.coverImage ?? SEO_IMAGE_PATHS.blog,
-    imageAlt: post.coverAlt ?? `${post.title} social preview`,
+    imageAlt: post.coverAlt ?? post.title,
     openGraphType: "article",
     keywords: post.tags,
     authors: [siteIdentity.name],

@@ -55,7 +55,7 @@ export async function generateMetadata({
       description: dictionary.pages.projects.notFoundDescription,
       path: "/projects",
       imagePath: SEO_IMAGE_PATHS.projects,
-      imageAlt: `${dictionary.pages.projects.metadataTitle} social preview`
+      imageAlt: dictionary.pages.projects.metadataTitle
     })
   }
 
@@ -64,7 +64,7 @@ export async function generateMetadata({
     description: project.summary,
     path: `/projects/${project.slug}`,
     imagePath: SEO_IMAGE_PATHS.projects,
-    imageAlt: `${project.title} social preview`,
+    imageAlt: project.title,
     keywords: project.tags,
     authors: [siteIdentity.name]
   })
@@ -173,15 +173,16 @@ export default async function ProjectDetailPage({
         <figure className="project-banner">
           <Image
             src={bannerImage.src}
-            alt={`${project.title} banner`}
+            alt=""
             width={bannerImage.width}
             height={bannerImage.height}
+            loading="lazy"
             unoptimized
           />
         </figure>
       ) : null}
 
-      <Surface>
+      <Surface className="project-highlights">
         <h2>{ui.labels.highlights}</h2>
         <ul className="outcome-list">
           {project.highlights.map((highlight) => (

@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dictionary.pages.experience.metadataDescription,
     path: "/experience",
     imagePath: SEO_IMAGE_PATHS.experience,
-    imageAlt: `${dictionary.pages.experience.metadataTitle} social preview`,
+    imageAlt: dictionary.pages.experience.metadataTitle,
     keywords: [...dictionary.pages.home.keywords]
   })
 }
@@ -87,6 +87,19 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
           ) : null}
         </div>
 
+        <div className="experience-actions">
+          <ButtonLink href={resumePdfPath(locale)} target="_blank" rel="noreferrer">
+            {ui.cta.downloadResume}
+            <span className="sr-only"> ({experiencePage.opensInNewTabLabel})</span>
+          </ButtonLink>
+          <ButtonLink variant="secondary" href={siteEmailHref(locale)}>
+            {ui.cta.emailMe}
+          </ButtonLink>
+          <LinkedInButton
+            label={ui.cta.linkedin}
+            opensInNewTabLabel={experiencePage.opensInNewTabLabel}
+          />
+        </div>
         <div className="experience-overview" aria-label={experiencePage.overviewHeading}>
           <div className="experience-focus">
             <p className="card-meta">{experiencePage.focusLabel}</p>
@@ -103,20 +116,6 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
               <dd>{experiencePage.statsLabels.recommendations}</dd>
             </div>
           </dl>
-        </div>
-
-        <div className="experience-actions">
-          <ButtonLink href={resumePdfPath(locale)} target="_blank" rel="noreferrer">
-            {ui.cta.downloadResume}
-            <span className="sr-only"> ({experiencePage.opensInNewTabLabel})</span>
-          </ButtonLink>
-          <ButtonLink variant="secondary" href={siteEmailHref(locale)}>
-            {ui.cta.contact}
-          </ButtonLink>
-          <LinkedInButton
-            label={ui.cta.linkedin}
-            opensInNewTabLabel={experiencePage.opensInNewTabLabel}
-          />
         </div>
       </Surface>
 

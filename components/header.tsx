@@ -3,7 +3,9 @@ import type { Route } from "next"
 import Link from "next/link"
 import type { UiDictionary } from "@/data/i18n/types"
 import { LocaleSwitcher } from "@/components/locale-switcher"
+import { SiteNavigation } from "@/components/site-navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { BLOG_SLUGS_BY_LOCALE, PROJECT_SLUGS_BY_LOCALE } from "@/data/content-index"
 import type { Locale } from "@/lib/i18n"
 import { siteIdentity } from "@/data/profile"
 
@@ -18,57 +20,26 @@ export function Header({
 }) {
   const rootPath = `/${locale}`
 
-  const navItems = [
-    {
-      key: "home",
-      href: rootPath,
-      label: ui.nav.home
-    },
-    {
-      key: "experience",
-      href: `${rootPath}/experience`,
-      label: ui.nav.experience
-    },
-    {
-      key: "projects",
-      href: `${rootPath}/projects`,
-      label: ui.nav.projects
-    },
-    {
-      key: "blog",
-      href: `${rootPath}/blog`,
-      label: ui.nav.blog
-    },
-    {
-      key: "resume",
-      href: `${rootPath}/resume`,
-      label: ui.nav.resume
-    }
-  ]
-
   return (
-    <header className="site-header site-header-visible js-site-header">
+    <header className="site-header">
+      <a className="skip-link" href="#main-content">
+        {ui.labels.skipToContent}
+      </a>
       <Container className="header-grid">
         <Link href={rootPath as Route} className="nameplate">
           <span>{siteIdentity.name}</span>
           <small>{shortTitle}</small>
         </Link>
 
-        <nav className="site-nav js-site-nav" aria-label={ui.labels.mainNavigationAria}>
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href as Route}
-              className="site-nav-link js-site-nav-link"
-              data-nav-key={item.key}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <SiteNavigation locale={locale} labels={ui.nav} label={ui.labels.mainNavigationAria} />
 
         <div className="header-actions">
-          <LocaleSwitcher currentLocale={locale} label={ui.labels.locale} />
+          <LocaleSwitcher
+            currentLocale={locale}
+            label={ui.labels.locale}
+            projectSlugsByLocale={PROJECT_SLUGS_BY_LOCALE}
+            blogSlugsByLocale={BLOG_SLUGS_BY_LOCALE}
+          />
           <ThemeToggle lightLabel={ui.labels.light} darkLabel={ui.labels.dark} />
         </div>
       </Container>

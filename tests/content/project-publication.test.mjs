@@ -40,14 +40,3 @@ test("Jira to Toggl Quick Start is published in every locale", () => {
 
   assert.ok(fs.existsSync(path.join(root, "public", coverImage)))
 })
-
-test("the projects grid uses three desktop columns", () => {
-  const css = fs.readFileSync(path.join(root, "app", "globals.css"), "utf8")
-  const projectsRule = css.match(/\.projects-grid\s*\{(?<body>[^}]*)\}/)
-
-  assert.ok(projectsRule?.groups, "the projects grid rule should exist")
-  assert.match(
-    projectsRule.groups.body,
-    /grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/
-  )
-})

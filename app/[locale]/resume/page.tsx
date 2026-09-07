@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dictionary.pages.resume.metadataDescription,
     path: "/resume",
     imagePath: SEO_IMAGE_PATHS.resume,
-    imageAlt: `${dictionary.pages.resume.metadataTitle} social preview`
+    imageAlt: dictionary.pages.resume.metadataTitle
   })
 }
 
@@ -54,24 +54,11 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
       <JsonLd id="resume-person-jsonld" data={personJsonLd(locale, dictionary.content.about[0])} />
 
       <Surface as="section" className="resume-hub" aria-labelledby="resume-title">
-        <div className="detail-hero-grid">
-          <PageHeader className="detail-hero-copy">
-            <Eyebrow>{ui.nav.resume}</Eyebrow>
-            <h1 id="resume-title">{siteIdentity.name}</h1>
-            <Lead>{dictionary.pages.resume.summary}</Lead>
-          </PageHeader>
-
-          <div className="resume-contact-panel">
-            <p className="card-meta">{dictionary.site.shortTitle}</p>
-            <p>{dictionary.content.about[0]}</p>
-          </div>
-        </div>
-
-        <ChipRow>
-          {focusAreas.map((area) => (
-            <Chip key={area}>{area}</Chip>
-          ))}
-        </ChipRow>
+        <PageHeader>
+          <Eyebrow>{ui.nav.resume}</Eyebrow>
+          <h1 id="resume-title">{siteIdentity.name}</h1>
+          <Lead>{dictionary.pages.resume.summary}</Lead>
+        </PageHeader>
 
         <div className="hero-actions">
           <ButtonLink href={resumePdfPath(locale)} target="_blank" rel="noreferrer">
@@ -79,9 +66,17 @@ export default async function ResumePage({ params }: { params: Promise<{ locale:
             <span className="sr-only"> ({ui.labels.opensInNewTab})</span>
           </ButtonLink>
           <ButtonLink variant="secondary" href={siteEmailHref(locale)}>
-            {ui.cta.contact}
+            {ui.cta.emailMe}
           </ButtonLink>
           <LinkedInButton label={ui.cta.linkedin} opensInNewTabLabel={ui.labels.opensInNewTab} />
+        </div>
+        <div className="resume-contact-panel">
+          <p>{dictionary.content.about[0]}</p>
+          <ChipRow>
+            {focusAreas.map((area) => (
+              <Chip key={area}>{area}</Chip>
+            ))}
+          </ChipRow>
         </div>
       </Surface>
 

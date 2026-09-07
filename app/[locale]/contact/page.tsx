@@ -5,7 +5,7 @@ import { TrustPage } from "@/components/trust-page"
 import { getDictionary } from "@/data/i18n"
 import { isLocale } from "@/lib/i18n"
 import { buildPageTitle, createMetadata } from "@/lib/metadata"
-import { siteEmailHref } from "@/lib/site"
+import { siteEmailAddress, siteEmailHref } from "@/lib/site"
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -34,10 +34,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       sections={page.sections}
       actions={
         <>
-          <ButtonLink href={siteEmailHref(locale)}>{dictionary.ui.cta.contact}</ButtonLink>
+          <ButtonLink href={siteEmailHref(locale)}>{dictionary.ui.cta.emailMe}</ButtonLink>
           <ButtonLink variant="secondary" href={`/${locale}/resume`}>
             {dictionary.ui.nav.resume}
           </ButtonLink>
+          <p className="contact-address">{siteEmailAddress(locale)}</p>
         </>
       }
     />

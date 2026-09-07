@@ -1,0 +1,119 @@
+.reading-page {
+  width: min(100%, var(--reading-width));
+  margin-inline: auto;
+}
+.markdown {
+  display: grid;
+  gap: var(--space-6);
+}
+.content-prose {
+  min-width: 0;
+  width: 100%;
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  line-height: 1.75;
+}
+.content-prose h2,
+.content-prose h3 {
+  margin-top: var(--space-6);
+}
+.content-prose h2:first-child,
+.content-prose h3:first-child {
+  margin-top: 0;
+}
+.content-prose a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+code {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  padding: 0.1em 0.3em;
+  font-size: 0.875em;
+  overflow-wrap: anywhere;
+}
+pre {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+pre code {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  white-space: inherit;
+}
+.markdown ul,
+.markdown ol {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-left: var(--space-6);
+}
+.content-prose dl,
+dl.content-prose {
+  display: grid;
+  gap: var(--space-6);
+}
+.content-prose dd {
+  margin: var(--space-2) 0 0;
+}
+.markdown-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+.content-prose blockquote {
+  margin: 0;
+  padding-left: var(--space-6);
+  border-left: 2px solid var(--accent);
+}
+.content-prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.content-prose td,
+.content-prose th {
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  text-align: start;
+}
+.reading-page > .surface {
+  display: grid;
+  gap: var(--space-6);
+}
+@media (min-width: 768px) {
+  .content-prose,
+  .reading-page {
+    font-size: 1.125rem;
+  }
+  .article-prose {
+    max-width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 66ch) minmax(0, 1fr);
+  }
+  .article-prose > * {
+    grid-column: 2;
+    width: 100%;
+    margin-inline: 0;
+  }
+  .article-prose > p:has(.markdown-image) {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 960px;
+    justify-self: center;
+  }
+}

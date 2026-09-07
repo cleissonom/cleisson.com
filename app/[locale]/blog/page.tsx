@@ -1,20 +1,10 @@
 import { notFound } from "next/navigation"
 
-import {
-  Chip,
-  ChipRow,
-  Eyebrow,
-  Grid,
-  Lead,
-  PageHeader,
-  SectionStack,
-  Surface
-} from "@/components/design-system"
+import { Grid, Lead, PageHeader, SectionStack, Surface } from "@/components/design-system"
 import { JsonLd } from "@/components/json-ld"
 import { PostCard } from "@/components/post-card"
 import { getDictionary } from "@/data/i18n"
 import { getAllPosts } from "@/lib/content"
-import { contentDateYear } from "@/lib/display-date"
 import { isLocale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl, buildPageTitle, createMetadata } from "@/lib/metadata"
 import { breadcrumbJsonLd } from "@/lib/schema"
@@ -33,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: dictionary.pages.blog.metadataDescription,
     path: "/blog",
     imagePath: SEO_IMAGE_PATHS.blog,
-    imageAlt: `${dictionary.pages.blog.metadataTitle} social preview`
+    imageAlt: dictionary.pages.blog.metadataTitle
   })
 }
 
@@ -47,10 +37,6 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const dictionary = getDictionary(locale)
   const ui = dictionary.ui
   const posts = getAllPosts(locale)
-  const postLabels = Array.from(new Set(posts.flatMap((post) => post.tags))).sort((a, b) =>
-    a.localeCompare(b, locale, { sensitivity: "base" })
-  )
-  const latestPost = posts[0]
 
   const breadcrumbs = breadcrumbJsonLd([
     { name: ui.nav.home, url: absoluteUrl(`/${locale}`) },
@@ -63,34 +49,12 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
       <Surface as="section" className="page-overview" aria-labelledby="blog-title">
         <PageHeader className="page-overview-copy">
-          <Eyebrow>{ui.nav.blog}</Eyebrow>
           <h1 id="blog-title">{ui.sections.blog}</h1>
           <Lead>{dictionary.pages.blog.lead}</Lead>
         </PageHeader>
-
-        <dl className="metric-grid page-overview-metrics">
-          <div>
-            <dt>{posts.length}</dt>
-            <dd>{ui.sections.blog}</dd>
-          </div>
-          <div>
-            <dt>{postLabels.length}</dt>
-            <dd>{ui.labels.topics}</dd>
-          </div>
-          <div>
-            <dt>{latestPost ? contentDateYear(latestPost.date) : "-"}</dt>
-            <dd>{ui.labels.updated}</dd>
-          </div>
-        </dl>
-
-        <ChipRow className="overview-chip-row">
-          {postLabels.slice(0, 6).map((label) => (
-            <Chip key={label}>{label}</Chip>
-          ))}
-        </ChipRow>
       </Surface>
 
-      <Grid>
+      <Grid className="writing-grid">
         {posts.map((post) => (
           <PostCard
             key={post.slug}
@@ -99,6 +63,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
             readMoreLabel={ui.labels.readMore}
             readMoreAboutPrefix={dictionary.snippets.readMoreAboutPrefix}
             readingMinutesLabel={dictionary.snippets.readingMinutesShort}
+            headingLevel={2}
           />
         ))}
       </Grid>

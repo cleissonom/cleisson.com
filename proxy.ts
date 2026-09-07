@@ -156,10 +156,16 @@ function notAcceptableResponse(): NextResponse {
   return response
 }
 
+function recoveryHeaders(request: NextRequest, locale: Locale): Headers {
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set("x-recovery-locale", locale)
+  return requestHeaders
+}
+
 function notFoundRewrite(request: NextRequest, locale: Locale): NextResponse {
   const url = request.nextUrl.clone()
   url.pathname = `/${locale}/${NOT_FOUND_SEGMENT}`
-  return NextResponse.rewrite(url)
+  return NextResponse.rewrite(url, { request: { headers: recoveryHeaders(request, locale) } })
 }
 
 function explicitMarkdownPath(pathname: string, locale: Locale): string {
@@ -215,7 +221,6 @@ function shouldBypass(pathname: string): boolean {
     pathname.startsWith("/_vercel") ||
     pathname.startsWith("/api") ||
     pathname === "/mcp" ||
-    pathname.endsWith(`/${NOT_FOUND_SEGMENT}`) ||
     pathname === "/favicon.ico"
   )
 }
@@ -263,6 +268,10 @@ function unlocalizedResponse(context: NegotiationContext): NextResponse {
 export function proxy(request: NextRequest) {
   const context = negotiationContext(request)
   const { pathname, segments, locale } = context
+  if (pathname.endsWith(`/${NOT_FOUND_SEGMENT}`)) {
+    const recoveryLocale = isLocale(segments[0]) ? segments[0] : locale
+    return NextResponse.next({ request: { headers: recoveryHeaders(request, recoveryLocale) } })
+  }
   if (shouldBypass(pathname)) return NextResponse.next()
   if (pathname.endsWith(".md"))
     return markdownResponse(request, explicitMarkdownPath(pathname, locale))

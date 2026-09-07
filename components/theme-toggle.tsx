@@ -7,6 +7,7 @@ export function ThemeToggle({ lightLabel, darkLabel }: ThemeToggleProps) {
   return (
     <button
       type="button"
+      disabled
       className="ghost-button js-theme-toggle"
       aria-label={darkLabel}
       data-light-label={lightLabel}

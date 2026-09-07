@@ -12,18 +12,21 @@ export function PostCard({
   locale,
   readMoreLabel,
   readMoreAboutPrefix,
-  readingMinutesLabel
+  readingMinutesLabel,
+  headingLevel = 3
 }: {
   post: BlogEntry
   locale: Locale
   readMoreLabel: string
   readMoreAboutPrefix: string
   readingMinutesLabel: string
+  headingLevel?: 2 | 3
 }) {
   const contextLabel = `${readMoreAboutPrefix} ${post.title}`
   const descriptiveLabel = `${readMoreLabel} ${contextLabel}`
   const cardImage = post.coverImage ? blogCardImageVariant(post.coverImage) : null
   const detailHref = `/${locale}/blog/${post.slug}` as Route
+  const Heading = headingLevel === 2 ? "h2" : "h3"
 
   return (
     <Card className="post-card">
@@ -32,7 +35,7 @@ export function PostCard({
           <Image
             className={`card-banner-image${cardImage.fit === "contain" ? " card-banner-image-contain" : ""}`}
             src={cardImage.src}
-            alt={post.coverAlt ?? `${post.title} preview`}
+            alt={post.coverAlt ?? ""}
             width={cardImage.width}
             height={cardImage.height}
             loading="lazy"
@@ -40,6 +43,9 @@ export function PostCard({
           />
         </div>
       ) : null}
+      <Heading>
+        <Link href={detailHref}>{post.title}</Link>
+      </Heading>
       <p className="card-meta">
         {formatContentDate(post.date, locale, {
           year: "numeric",
@@ -48,9 +54,6 @@ export function PostCard({
         })}
         {` | ${post.readingTimeMinutes} ${readingMinutesLabel}`}
       </p>
-      <h3>
-        <Link href={detailHref}>{post.title}</Link>
-      </h3>
       <p>{post.summary}</p>
       <ChipRow>
         {post.tags.map((tag) => (

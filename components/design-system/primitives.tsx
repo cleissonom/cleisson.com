@@ -45,7 +45,14 @@ export function Container({
 }
 
 export function SiteMain({ className, ...props }: ComponentPropsWithoutRef<"main">) {
-  return <main className={cn("site-main container", className)} {...props} />
+  return (
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className={cn("site-main container", className)}
+      {...props}
+    />
+  )
 }
 
 export function SectionStack({
@@ -112,14 +119,8 @@ export function Grid({
   return <div className={cn("grid", projects && "projects-grid", className)} {...props} />
 }
 
-export function Card({
-  className,
-  enableWalletHover = false,
-  ...props
-}: ComponentPropsWithoutRef<"article"> & { enableWalletHover?: boolean }) {
-  return (
-    <article className={cn("card", enableWalletHover && "card-wallet", className)} {...props} />
-  )
+export function Card({ className, ...props }: ComponentPropsWithoutRef<"article">) {
+  return <article className={cn("card", className)} {...props} />
 }
 
 export function ChipRow({ className, ...props }: ComponentPropsWithoutRef<"div">) {

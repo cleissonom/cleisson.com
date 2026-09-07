@@ -31,5 +31,12 @@ export default defineConfig([
       ]
     }
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "node_modules/**"])
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "output/playwright/**",
+    "next-env.d.ts",
+    "node_modules/**"
+  ])
 ])

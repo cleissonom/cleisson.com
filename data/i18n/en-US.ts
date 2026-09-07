@@ -56,7 +56,7 @@ export const enUSDictionary: LocaleDictionary = {
   },
   ui: {
     nav: {
-      home: "About",
+      home: "Home",
       experience: "Experience",
       projects: "Projects",
       blog: "Blog",
@@ -64,6 +64,8 @@ export const enUSDictionary: LocaleDictionary = {
     },
     cta: {
       contact: "Contact",
+      emailMe: "Email me",
+      viewExperience: "View experience",
       linkedin: "View LinkedIn",
       downloadResume: "Download resume PDF"
     },
@@ -89,6 +91,7 @@ export const enUSDictionary: LocaleDictionary = {
       highlights: "Highlights",
       experienceTimelineAria: "Experience timeline",
       mainNavigationAria: "Main navigation",
+      skipToContent: "Skip to content",
       backToProjects: "Back to projects",
       backToBlog: "Back to blog",
       notFoundTitle: "Page not found",
@@ -370,6 +373,7 @@ export const enUSDictionary: LocaleDictionary = {
       allLabels: "All labels",
       clearLabels: "Clear labels",
       noResultsDescription: "No projects found for the selected labels.",
+      resultsCount: "{count} of {total} projects",
       detailsComingSoonLabel: "Details coming soon",
       notFoundTitle: "Project not found",
       notFoundDescription: "Project not found for this locale.",

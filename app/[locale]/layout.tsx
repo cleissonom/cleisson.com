@@ -39,7 +39,7 @@ export async function generateMetadata({
       description: dictionary.site.headline,
       path: "/",
       imagePath: SEO_IMAGE_PATHS.home,
-      imageAlt: `${siteIdentity.name} homepage preview`
+      imageAlt: siteIdentity.name
     })
   }
 }
