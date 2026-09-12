@@ -106,13 +106,14 @@ Artifacts are ignored under `output/playwright/`. `PERFORMANCE_OUTPUT=output/pla
 
 ## Skills and content tooling
 
-[`AGENTS.md`](../AGENTS.md) holds project rules; [`CLAUDE.md`](../CLAUDE.md) delegates to it. Project-local skills live in `.agents/skills/`:
+[`AGENTS.md`](../AGENTS.md) holds project rules; [`CLAUDE.md`](../CLAUDE.md) delegates to it. Project-local routers live in `.agents/skills/`; active variants live in
+`.agents/codex/skills/` and `.agents/antigravity/skills/`:
 
-| Skill/workflow                                          | Purpose, invocation and maintenance                                                                                                                                                                                                                                                                |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`blog-to-pdf`](../.agents/skills/blog-to-pdf/SKILL.md) | `$blog-to-pdf` for static localized article downloads. Canonical commands, Chromium prerequisites, optional Python review and update procedure: [blog-pdfs.md](blog-pdfs.md). Scripts/template/manifest live in `scripts/blog-pdf/`                                                                |
-| [`Humanizer`](../.agents/skills/humanizer/SKILL.md)     | `$humanizer` for explicitly requested future prose editing. Self-contained, no runtime dependencies. Exact pinned upstream revision, license, invocation and update procedure: [UPSTREAM.md](../.agents/skills/humanizer/UPSTREAM.md). Preserve vendored bytes; formatting exclusions protect them |
-| DevImg                                                  | CLI workflow described in [devimg.md](devimg.md); compatible agent skills may be installed in a maintainer's environment, but no project-local DevImg skill is required                                                                                                                            |
+| Skill/workflow                                          | Purpose, invocation and maintenance                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`blog-to-pdf`](../.agents/skills/blog-to-pdf/SKILL.md) | `$blog-to-pdf` for static localized article downloads. Canonical commands, Chromium prerequisites, optional Python review and update procedure: [blog-pdfs.md](blog-pdfs.md). Scripts/template/manifest live in `scripts/blog-pdf/`                                                                                          |
+| [`Humanizer`](../.agents/skills/humanizer/SKILL.md)     | `$humanizer` for explicitly requested future prose editing. Self-contained, no runtime dependencies. Pinned original source, license, client adaptations and update procedure: [UPSTREAM.md](../.agents/skills/humanizer/UPSTREAM.md). Preserve original bytes under `.agents/upstream/`; formatting exclusions protect them |
+| DevImg                                                  | CLI workflow described in [devimg.md](devimg.md); compatible agent skills may be installed in a maintainer's environment, but no project-local DevImg skill is required                                                                                                                                                      |
 
 Humanizer never runs in builds, PDF conversion or CI. PDF generation reuses source Markdown without editorial rewriting. Keep its complete guide canonical instead of duplicating installation/generation procedures here. Ignored drafts and task notes are not executable workflows or production dependencies.
 
@@ -127,7 +128,7 @@ Humanizer never runs in builds, PDF conversion or CI. PDF generation reuses sour
 | Browser executable missing                    | Install the matching Playwright Chromium or select existing Chrome; PDF freshness and unit checks can still run without it                                                                             |
 | DevImg missing/stale export                   | Follow [DevImg prerequisites and checks](devimg.md#verification); inspect config/source/manifest differences before regeneration                                                                       |
 | Blog PDF freshness failure                    | Follow [PDF troubleshooting](blog-pdfs.md#troubleshooting). The lockfile participates in the fingerprint, so dependency updates can require reviewed regeneration                                      |
-| Formatting fails in unrelated/generated files | Inspect paths and existing exclusions, then format only owned changes. Preserve Humanizer's upstream bytes and generated/public artifacts                                                              |
+| Formatting fails in unrelated/generated files | Inspect paths and existing exclusions, then format only owned changes. Preserve Humanizer's upstream snapshot bytes and generated/public artifacts                                                     |
 
 ## Maintenance checklist
 

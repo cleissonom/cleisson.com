@@ -18,15 +18,18 @@ Keep the REST API, OpenAPI document, public API documentation, and equivalent MC
 
 ## Local skills and blog downloads
 
-Project-local Codex skills live in `.agents/skills/`. Use `blog-to-pdf` for static
-blog downloads and follow `docs/blog-pdfs.md`. After changing published article
+Project-local discovery routers live in `.agents/skills/`; their independent
+Codex and Antigravity variants live in `.agents/codex/skills/` and
+`.agents/antigravity/skills/`. Select by the actual host application. Use
+`blog-to-pdf` for static blog downloads and follow `docs/blog-pdfs.md`. After changing published article
 content, PDF metadata, referenced images or print tooling, run `npm run blog:pdf`
 and `npm run blog:pdf:check`; review the PDFs and manifest together. CI checks
 freshness without launching a browser. Keep review artifacts in ignored
 `output/playwright/blog-pdf/`.
 
-Humanizer is vendored with pinned provenance for future editorial tasks. Preserve
-its upstream files and license when updating it. Never invoke it during PDF
+Humanizer has reviewed client variants and a pinned original source snapshot in
+`.agents/upstream/humanizer/`. Preserve that snapshot's bytes and license when
+updating it; review both active variants together. Never invoke it during PDF
 conversion or builds; editorial use must preserve facts, citations, code,
 frontmatter and link targets.
 

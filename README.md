@@ -45,7 +45,10 @@ lib/                 Content, routing, metadata, evidence, API and MCP logic
 public/              Public contracts, source/generated assets, stable downloads
 tests/               Content, PDF, agent-readiness, browser and performance checks
 scripts/             Maintainer tooling and PDF generation, shared with CI
-.agents/skills/      Project-local blog-to-PDF and vendored Humanizer skills
+.agents/skills/      Host-aware discovery routers for local skills
+.agents/codex/       Codex skill variants
+.agents/antigravity/ Antigravity skill variants
+.agents/upstream/    Preserved Humanizer source and license
 docs/                Maintainer documentation
 proxy.ts             Locale routing, content negotiation and discovery headers
 ```

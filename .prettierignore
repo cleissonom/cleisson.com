@@ -8,6 +8,4 @@ package-lock.json
 https-*.json
 output/playwright/
 # Vendored upstream files must retain their original bytes.
-.agents/skills/humanizer/SKILL.md
-.agents/skills/humanizer/README.md
-.agents/skills/humanizer/agents/openai.yaml
+.agents/upstream/humanizer/**

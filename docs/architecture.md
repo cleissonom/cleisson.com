@@ -15,7 +15,7 @@ This is one Next.js application with local, versioned content. There is no repos
 | [`lib/`](../lib/)                                 | Named domain helpers for content, locales, metadata, feeds, evidence and protocols; `devimg-*.generated.ts` files are generated        |
 | [`public/`](../public/)                           | Files published at stable URLs, including machine contracts, PDFs, source assets and generated images                                  |
 | [`tests/`](../tests/) / [`scripts/`](../scripts/) | Development-only verification and automation; PDF print tooling is outside website bundles                                             |
-| [`.agents/skills/`](../.agents/skills/)           | Local blog-to-PDF workflow and pinned Humanizer editorial skill                                                                        |
+| [`.agents/skills/`](../.agents/skills/)           | Discovery routers for separate Codex/Antigravity blog-to-PDF and Humanizer variants                                                    |
 | [`docs/`](./)                                     | Maintainer guidance, separate from published pages and public API documentation                                                        |
 
 ## Content and rendering flow

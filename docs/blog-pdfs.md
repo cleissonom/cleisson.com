@@ -2,9 +2,10 @@
 
 [README](../README.md) · [Development](development.md) · [Architecture](architecture.md)
 
-Both skills are versioned in `.agents/skills/`, which Codex discovers for this
-repository. They need no user-level settings, global installation, website runtime
-dependency or build hook. A new turn picks them up; restart Codex if they are absent.
+Both skills have independent variants in `.agents/codex/skills/` and
+`.agents/antigravity/skills/`. Discovery routers in `.agents/skills/` select the
+variant for the actual host application. They need no website runtime dependency
+or build hook. Reload the client's skill discovery after updates if needed.
 
 ```text
 $blog-to-pdf Refresh all published blog PDFs and validate every locale.
@@ -12,8 +13,9 @@ $blog-to-pdf Generate implementation-planning-vs-developing in pt-BR.
 $humanizer Edit the prose in my new draft. Preserve facts, citations, code, frontmatter and link targets.
 ```
 
-Humanizer is the actual upstream skill, installed for future editorial tasks. It
-does not run during PDF conversion, tests or builds. See its
+Humanizer uses reviewed client-specific instructions for editorial tasks, with
+an intact pinned upstream snapshot outside discovery. It does not run during
+PDF conversion, tests or builds. See its
 [provenance, pinned commit and update procedure](../.agents/skills/humanizer/UPSTREAM.md)
 and preserved [MIT license](../.agents/skills/humanizer/LICENSE). Review editorial
 diffs for facts and citations as well as unchanged code, metadata and link targets.
@@ -181,5 +183,6 @@ a `finally` block, do not generate from the probe, and confirm the final check p
 
 To update the PDF skill, edit its [instructions](../.agents/skills/blog-to-pdf/SKILL.md)
 and canonical scripts/template together, run unit/render tests, regenerate affected
-PDFs and review the resulting pages. Humanizer has a separate pinned update
-procedure; never replace its upstream behavior with a locally invented prompt.
+PDFs and review the resulting pages. Humanizer has a separate pinned source update
+procedure; preserve its original snapshot and review both client adaptations
+without changing PDF conversion.
