@@ -85,6 +85,7 @@
             }
           },
           "400": { "$ref": "#/components/responses/EvidenceBadRequest" },
+          "429": { "$ref": "#/components/responses/RateLimitExceeded" },
           "405": { "$ref": "#/components/responses/MethodNotAllowed" },
           "500": { "$ref": "#/components/responses/InternalServerError" }
         }
@@ -175,6 +176,20 @@
       },
       "MethodNotAllowed": {
         "description": "The HTTP method is not supported by this read-only endpoint.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ProblemDetails" }
+          }
+        }
+      },
+      "RateLimitExceeded": {
+        "description": "The caller exceeded the evidence-search request limit. Retry after the number of seconds in the Retry-After header.",
+        "headers": {
+          "Retry-After": {
+            "description": "Seconds until the caller can retry.",
+            "schema": { "type": "integer", "minimum": 1 }
+          }
+        },
         "content": {
           "application/problem+json": {
             "schema": { "$ref": "#/components/schemas/ProblemDetails" }

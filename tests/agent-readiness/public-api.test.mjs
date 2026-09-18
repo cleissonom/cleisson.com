@@ -68,9 +68,32 @@ function assertProblem(result, status, code) {
   assert.equal(result.body.type, "about:blank")
   assert.equal(
     result.body.title,
-    { 400: "Bad Request", 404: "Not Found", 405: "Method Not Allowed" }[status]
+    {
+      400: "Bad Request",
+      404: "Not Found",
+      405: "Method Not Allowed",
+      429: "Too Many Requests"
+    }[status]
   )
 }
+
+test("the evidence API rate limits repeated requests from one caller", async () => {
+  const headers = { "X-Vercel-Forwarded-For": "198.51.100.24" }
+  let result
+
+  for (let request = 0; request <= 60; request += 1) {
+    result = await fetchJson("/api/v1/evidence?topics=Kubernetes", { headers })
+    if (result.response.status === 429) break
+  }
+
+  assertProblem(result, 429, "rate_limit_exceeded")
+  assert.match(result.response.headers.get("retry-after") ?? "", /^\d+$/)
+
+  const otherCaller = await fetchJson("/api/v1/evidence?topics=Kubernetes", {
+    headers: { "X-Vercel-Forwarded-For": "198.51.100.25" }
+  })
+  assert.equal(otherCaller.response.status, 200)
+})
 
 function resolveLocalReference(document, value) {
   if (!value?.$ref) return value
@@ -223,6 +246,11 @@ test("OpenAPI publishes a complete function-calling-friendly contract", async ()
   }
 
   assert.equal(new Set(operationIds).size, operationIds.length)
+  const rateLimitResponse = resolveLocalReference(
+    specification,
+    specification.paths["/api/v1/evidence"].get.responses["429"]
+  )
+  assert.equal(rateLimitResponse.headers["Retry-After"].schema.minimum, 1)
   const problem = specification.components.schemas.ProblemDetails
   assert.equal(problem.additionalProperties, false)
   assert.equal(problem.properties.type.const, "about:blank")
