@@ -15,6 +15,10 @@ const RATE_LIMIT = 60
 const RATE_WINDOW_MS = 60_000
 const MAX_RATE_BUCKETS = 1_000
 const RATE_KEY_SECRET = randomBytes(32)
+const SHARED_RATE_LIMIT_URL = process.env.UPSTASH_REDIS_REST_URL
+const SHARED_RATE_LIMIT_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN
+const SHARED_RATE_KEY_SECRET = process.env.MCP_RATE_LIMIT_KEY_SECRET
+const isVercel = Boolean(process.env.VERCEL)
 
 type RateBucket = { count: number; resetAt: number }
 
@@ -67,7 +71,10 @@ function jsonError(
 }
 
 function callerKey(request: Request): string {
-  for (const header of ["x-vercel-forwarded-for", "x-forwarded-for", "x-real-ip"]) {
+  const headers = isVercel
+    ? ["x-vercel-forwarded-for"]
+    : ["x-vercel-forwarded-for", "x-forwarded-for", "x-real-ip"]
+  for (const header of headers) {
     const value = request.headers.get(header)?.split(",", 1)[0]?.trim()
     if (value) return createHmac("sha256", RATE_KEY_SECRET).update(value).digest("base64url")
   }
@@ -80,14 +87,16 @@ function pruneRateBuckets(now: number): void {
   }
 }
 
-function rateLimitResponse(request: Request): Response | null {
+function localRateLimitResponse(request: Request): Response | null {
   const now = Date.now()
   const key = callerKey(request)
   pruneRateBuckets(now)
   const existing = rateBuckets.get(key)
   if (!existing && rateBuckets.size >= MAX_RATE_BUCKETS) {
-    const oldest = rateBuckets.keys().next().value
-    if (oldest) rateBuckets.delete(oldest)
+    return jsonError(429, "Too many MCP requests", {
+      headers: { "Retry-After": `${Math.ceil(RATE_WINDOW_MS / 1_000)}` },
+      resolution: "Retry after the current rate-limit window."
+    })
   }
   const bucket = existing ?? { count: 0, resetAt: now + RATE_WINDOW_MS }
   if (bucket.count >= RATE_LIMIT) {
@@ -100,6 +109,53 @@ function rateLimitResponse(request: Request): Response | null {
   bucket.count += 1
   rateBuckets.set(key, bucket)
   return null
+}
+
+async function sharedRateLimitResponse(request: Request): Promise<Response | null> {
+  if (!SHARED_RATE_LIMIT_URL || !SHARED_RATE_LIMIT_TOKEN || !SHARED_RATE_KEY_SECRET) {
+    if (!isVercel) return localRateLimitResponse(request)
+    return jsonError(503, "MCP rate limiting is unavailable", {
+      headers: { "Retry-After": "60" },
+      resolution: "Retry after the service rate limiter is restored."
+    })
+  }
+
+  const identity = request.headers.get("x-vercel-forwarded-for")?.split(",", 1)[0]?.trim()
+  if (!identity) return jsonError(400, "Verified caller identity is unavailable")
+  const key = createHmac("sha256", SHARED_RATE_KEY_SECRET).update(identity).digest("base64url")
+  const window = Math.floor(Date.now() / RATE_WINDOW_MS)
+  const redisKey = `mcp:rate:${window}:${key}`
+  const script =
+    "local count=redis.call('INCR',KEYS[1]); if count==1 then redis.call('PEXPIRE',KEYS[1],ARGV[1]) end; return {count,redis.call('PTTL',KEYS[1])}"
+
+  try {
+    const response = await fetch(SHARED_RATE_LIMIT_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${SHARED_RATE_LIMIT_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(["EVAL", script, "1", redisKey, `${RATE_WINDOW_MS}`]),
+      cache: "no-store"
+    })
+    if (!response.ok) throw new Error(`rate-limit store returned ${response.status}`)
+    const payload = (await response.json()) as { result?: [number, number]; error?: string }
+    if (payload.error || !Array.isArray(payload.result))
+      throw new Error("invalid rate-limit response")
+    const [count, ttl] = payload.result
+    if (count <= RATE_LIMIT) return null
+    const retryAfter = Math.max(1, Math.ceil(ttl / 1_000))
+    return jsonError(429, "Too many MCP requests", {
+      headers: { "Retry-After": `${retryAfter}` },
+      resolution: `Retry after ${retryAfter} seconds.`
+    })
+  } catch {
+    console.error("MCP shared rate limiter failed")
+    return jsonError(503, "MCP rate limiting is unavailable", {
+      headers: { "Retry-After": "60" },
+      resolution: "Retry after the service rate limiter is restored."
+    })
+  }
 }
 
 function declaredBodyTooLarge(request: Request): boolean {
@@ -145,7 +201,7 @@ async function handle(request: Request): Promise<Response> {
   const rejected = securityResponse(request)
   if (rejected) return noStore(rejected)
   if (declaredBodyTooLarge(request)) return jsonError(413, "MCP request body is too large")
-  const limited = rateLimitResponse(request)
+  const limited = await sharedRateLimitResponse(request)
   if (limited) return limited
   if (await bodyTooLarge(request)) return jsonError(413, "MCP request body is too large")
   return noStore(await mcp.fetch(request))
