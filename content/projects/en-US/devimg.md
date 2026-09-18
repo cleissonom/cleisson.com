@@ -88,7 +88,7 @@ I wanted the pipeline to behave like normal developer infrastructure: determinis
 
 This website uses DevImg for project card and banner images. The source images live under `public/projects`, generated variants live under `public/images/generated`, and application code reads a checked-in TypeScript helper generated from the manifest.
 
-CI uses the public `cleissonom/devimg/action@v0.2.7`, downloads a checksum-verified release binary, runs strict `devimg check --fail-on-warning`, validates that the helper exports are up to date, uploads project, blog, and SEO review artifacts, and dry-runs the AI review, metadata-only alt-text, and project-page draft artifact paths without API keys. Draft prose is written only under `$RUNNER_TEMP` and is not committed or published by CI. The named configs `devimg.projects.toml`, `devimg.blog.toml`, and `devimg.seo.toml` keep project covers, blog images, and Open Graph images isolated.
+CI downloads the public v0.2.7 release binary and verifies its checksum before running strict `devimg check --fail-on-warning`, validates that the helper exports are up to date, uploads project, blog, and SEO review artifacts, and dry-runs the AI review, metadata-only alt-text, and project-page draft artifact paths without API keys. Draft prose is written only under `$RUNNER_TEMP` and is not committed or published by CI. The named configs `devimg.projects.toml`, `devimg.blog.toml`, and `devimg.seo.toml` keep project covers, blog images, and Open Graph images isolated.
 
 ## Current scope
 
