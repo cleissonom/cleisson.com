@@ -311,14 +311,20 @@ function postRecords(locale: Locale): SearchRecord[] {
   ])
 }
 
+const recordsByLocale = new Map<Locale, SearchRecord[]>()
+
 function allRecords(locale: Locale): SearchRecord[] {
-  return [
+  const existing = recordsByLocale.get(locale)
+  if (existing) return existing
+  const records = [
     ...profileRecords(locale),
     ...experienceRecords(locale),
     ...projectRecords(locale),
     ...postRecords(locale),
     ...recommendationRecords(locale)
   ]
+  recordsByLocale.set(locale, records)
+  return records
 }
 
 function evidenceItem(

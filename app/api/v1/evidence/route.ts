@@ -2,15 +2,31 @@ import { findProfessionalEvidence } from "@/lib/professional-evidence"
 import {
   apiNoStoreJson,
   apiOptions,
+  apiProblem,
   methodNotAllowed,
   parseLimit,
   parseLocale,
   parseTopics,
   safeApiResponse
 } from "@/lib/public-api"
+import { createRequestRateLimiter } from "@/lib/request-rate-limit"
+
+const rateLimit = createRequestRateLimiter(60, 60_000)
 
 export function GET(request: Request): Promise<Response> {
   return safeApiResponse(request, () => {
+    const retryAfter = rateLimit(request)
+    if (retryAfter !== null)
+      return apiProblem(
+        request,
+        {
+          status: 429,
+          code: "rate_limit_exceeded",
+          detail: "Too many evidence search requests were sent from this caller.",
+          resolution: `Retry after ${retryAfter} seconds.`
+        },
+        { "Retry-After": `${retryAfter}` }
+      )
     const topics = parseTopics(request)
     if (!topics.ok) return topics.response
     const locale = parseLocale(request)
