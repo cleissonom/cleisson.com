@@ -45,17 +45,39 @@ jobs:
 
       - name: Check image variants
         id: devimg
-        uses: cleissonom/devimg/action@v0.2.7
-        with:
-          mode: check
-          config: devimg.projects.toml
-          fail-on-warning: "true"
-          manifest-path: public/images/projects-manifest.json
-          export-output: lib/devimg-projects.generated.ts
-          export-format: typescript
-          strip-prefix: public
-          url-prefix: /
-          review-output: .devimg/projects-review.html
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEVIMG_VERSION: 0.2.7
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          gh release download "v${DEVIMG_VERSION}" \
+            --repo cleissonom/devimg \
+            --pattern 'devimg-linux-x86_64.tar.gz*' \
+            --dir "$tmp"
+          (
+            cd "$tmp"
+            sha256sum -c devimg-linux-x86_64.tar.gz.sha256
+            tar -xzf devimg-linux-x86_64.tar.gz
+          )
+          mkdir -p "$RUNNER_TEMP/devimg-bin" .devimg
+          install -m 0755 "$tmp/devimg" "$RUNNER_TEMP/devimg-bin/devimg"
+          echo "binary-path=$RUNNER_TEMP/devimg-bin/devimg" >> "$GITHUB_OUTPUT"
+          "$RUNNER_TEMP/devimg-bin/devimg" check \
+            --config devimg.projects.toml \
+            --fail-on-warning \
+            --no-report
+          "$RUNNER_TEMP/devimg-bin/devimg" manifest export \
+            --manifest public/images/projects-manifest.json \
+            --strip-prefix public \
+            --url-prefix / \
+            --format typescript \
+            --output lib/devimg-projects.generated.ts \
+            --check
+          "$RUNNER_TEMP/devimg-bin/devimg" review \
+            --manifest public/images/projects-manifest.json \
+            --output .devimg/projects-review.html \
+            --force
 
       - name: Check blog/SEO variants and preview DevImg AI commands
         env:
