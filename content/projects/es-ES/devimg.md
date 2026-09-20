@@ -88,7 +88,7 @@ Quería que el pipeline se comportara como infraestructura de desarrollo: config
 
 Este sitio usa DevImg para imágenes de tarjetas y banners de proyectos. Las imágenes de origen viven en `public/projects`, las variantes generadas viven en `public/images/generated` y el código de la aplicación lee un helper TypeScript versionado generado desde el manifiesto.
 
-El CI usa la Action pública `cleissonom/devimg/action@v0.2.7`, descarga un binario de release con checksum, ejecuta `devimg check --fail-on-warning` en modo estricto, confirma que los helpers exportados estén actualizados, sube artefactos de revisión para proyectos, blog y SEO, y ejecuta dry-runs de revisión con IA, alt text metadata-only y borrador de página de proyecto sin claves de API. El borrador en prosa se escribe solo en `$RUNNER_TEMP` y CI no lo commitea ni lo publica. Las configuraciones nombradas `devimg.projects.toml`, `devimg.blog.toml` y `devimg.seo.toml` mantienen aislados los covers de proyectos, las imágenes del blog y las imágenes Open Graph.
+El CI descarga el binario público de la release v0.2.7 y verifica su checksum antes de ejecutar `devimg check --fail-on-warning` en modo estricto, confirma que los helpers exportados estén actualizados, sube artefactos de revisión para proyectos, blog y SEO, y ejecuta dry-runs de revisión con IA, alt text metadata-only y borrador de página de proyecto sin claves de API. El borrador en prosa se escribe solo en `$RUNNER_TEMP` y CI no lo commitea ni lo publica. Las configuraciones nombradas `devimg.projects.toml`, `devimg.blog.toml` y `devimg.seo.toml` mantienen aislados los covers de proyectos, las imágenes del blog y las imágenes Open Graph.
 
 ## Alcance actual
 
