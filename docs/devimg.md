@@ -69,6 +69,6 @@ Real AI review/alt/draft requests are optional, require `OPENAI_API_KEY`, and on
 
 ## CI and maintenance
 
-The main workflow uses `cleissonom/devimg/action@v0.2.7` to download/checksum the CLI, strictly check project variants and their export, and prepare the project review. Its resolved binary then runs `bash scripts/check-images.sh blog seo`, prepares blog/SEO reviews, and checks AI preview artifacts. GitHub Actions uploads all three HTML reviews. CI never commits generated changes.
+The main workflow downloads the v0.2.7 release archive and checksum directly, installs the verified CLI, strictly checks project variants and their export, and prepares the project review. The same binary then runs `bash scripts/check-images.sh blog seo`, prepares blog/SEO reviews, and checks AI preview artifacts. GitHub Actions uploads all three HTML reviews. CI never commits generated changes.
 
-When updating DevImg, review the release and CLI help, update the Action pin deliberately, and verify the same configs/exports locally. Keep the package command, shared script, CI invocation and this guide synchronized. Review config/source/helper changes with the [image-pipeline skill](development.md#skills-and-content-tooling) when available; never hand-edit generated modules.
+When updating DevImg, review the release and CLI help, update the release version deliberately, and verify the same configs/exports locally. Keep the package command, shared script, CI invocation and this guide synchronized. Review config/source/helper changes with the [image-pipeline skill](development.md#skills-and-content-tooling) when available; never hand-edit generated modules.
