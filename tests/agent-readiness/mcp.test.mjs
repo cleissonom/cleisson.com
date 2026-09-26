@@ -305,6 +305,28 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
   }
 })
 
+test("Hercília Construções has matching localized REST and MCP evidence", async () => {
+  const client = new Client({ name: "project-publication", version: "1.0.0" })
+  await client.connect(new StreamableHTTPClientTransport(new URL("/api/mcp", origin)))
+  try {
+    const { resources } = await client.listResources()
+    for (const locale of ["en-US", "pt-BR", "es-ES"]) {
+      const slug = "hercilia-construcoes"
+      const result = await client.callTool({ name: "get_project", arguments: { slug, locale } })
+      assert.equal(result.structuredContent?.found, true)
+      const response = await fetch(`${origin}/api/v1/projects/${slug}?locale=${locale}`)
+      assert.equal(response.status, 200)
+      assert.deepEqual(result.structuredContent, await response.json())
+      const uri = `https://www.cleisson.com/${locale}/projects/${slug}.md`
+      assert.ok(resources.some((resource) => resource.uri === uri))
+      const resource = await client.readResource({ uri })
+      assert.match(resource.contents[0]?.text ?? "", /^# Hercília Construções\n/)
+    }
+  } finally {
+    await client.close()
+  }
+})
+
 test("the MCP rejects untrusted browser origins and oversized requests", async () => {
   const rejectedOrigin = await fetch(`${origin}/api/mcp`, {
     headers: { Origin: "https://untrusted.example" }

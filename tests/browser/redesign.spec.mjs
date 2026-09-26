@@ -80,7 +80,7 @@ test("unavailable enhancements never present working controls without JavaScript
   const context = await browser.newContext({ javaScriptEnabled: false })
   const page = await context.newPage()
   await page.goto(`${test.info().project.use.baseURL}/en-US/projects`)
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
   await expect.soft(page.locator(".projects-filter")).toBeHidden()
   const toggle = page.locator(".js-theme-toggle")
   expect((await toggle.isHidden()) || (await toggle.isDisabled())).toBe(true)
@@ -98,8 +98,8 @@ test("project filters work by keyboard and announce the result count", async ({ 
   await expect(page.locator(".projects-filter [role='status']")).toContainText(/1/)
   await expect(auditLogs).toBeFocused()
   await page.getByRole("button", { name: /clear/i }).click()
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
-  await expect(page.locator(".projects-filter [role='status']")).toContainText(/5/)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
+  await expect(page.locator(".projects-filter [role='status']")).toContainText(/6/)
 })
 
 test("long locale content reflows at 320px and enlarged text", async ({ page }) => {

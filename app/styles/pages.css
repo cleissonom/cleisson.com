@@ -67,6 +67,7 @@
 }
 .detail-hero-grid {
   display: grid;
+  align-items: start;
   gap: var(--space-8);
 }
 .detail-facts {

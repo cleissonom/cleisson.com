@@ -77,7 +77,7 @@ test("touch filters preserve any-selected-label behavior and reset feedback", as
   expect(expanded.length).toBeGreaterThan(initial.length)
   expect(expanded).toEqual(expect.arrayContaining(initial))
   await page.getByRole("button", { name: /clear/i }).tap()
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
   await context.close()
 })
 
@@ -86,7 +86,7 @@ test("failed script loading preserves core content and unavailable-control behav
 }) => {
   await page.route("**/*.js", (route) => route.abort("failed"))
   await page.goto("/es-ES/projects")
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
   await expect(page.locator(".projects-filter")).toBeHidden()
   // The small inline theme handler can remain useful even when application bundles fail.
   const toggle = page.locator(".js-theme-toggle")
@@ -115,7 +115,7 @@ test("blocked inline and external scripts leave honest controls and native navig
     })
   })
   await page.goto("/pt-BR/projects")
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
   await expect(page.locator(".projects-filter")).toBeHidden()
   await expect(page.locator(".js-theme-toggle")).toBeDisabled()
   await page.locator(".locale-dropdown summary").click()
@@ -133,7 +133,7 @@ test("delayed bundles reveal the project filter without moving its results", asy
     await route.continue()
   })
   await page.goto("/en-US/projects", { waitUntil: "commit" })
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
   await expect(page.locator(".projects-filter")).toBeHidden()
   const before = await page.locator(".projects-grid").boundingBox()
   releaseScripts()

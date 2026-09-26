@@ -40,6 +40,10 @@ fit = "contain"
 include = ["devimg.png"]
 fit = "contain"
 
+[[overrides]]
+include = ["hercilia-catalog.png"]
+fit = "contain"
+
 [[warnings.acknowledge]]
 code = "quality:cover-crop"
 source = "public/projects/accesstrace-overview.png"
@@ -55,6 +59,6 @@ width = 1200
 reason = "Intentional top-anchored project-banner crop after visual review."
 
 [budgets]
-max_total_bytes = "1mb"
+max_total_bytes = "1250kb"
 max_file_bytes = "200kb"
 fail_on_regression = true

@@ -21,6 +21,8 @@ Project cover variants use `crop = "top"` so screenshot headers and top navigati
 
 The CLI Tools and DevImg artwork use `[[overrides]]` entries with `fit = "contain"` so each full diagram is resized without cropping while the other project screenshots keep top-crop behavior.
 
+The Hercília Construções sources are screenshots of the website's homepage and catalog. The catalog uses `fit = "contain"` to preserve its search controls and product cards; the homepage uses the standard cover presets. The project pipeline's total budget is 1250 KB for seven sources and fourteen variants, with the existing 200 KB per-file limit. The localized case studies link to the catalog's generated banner directly: when regenerating that screenshot, update the image URL in all three Markdown files from the manifest. Publication tests verify those image links remain reachable.
+
 AccessTrace keeps two narrow `quality:cover-crop` acknowledgements for the card and banner presets because the top-anchored crop was visually reviewed and is intentional. New unacknowledged warnings still fail strict checks.
 
 `lib/devimg-projects.generated.ts` is generated from `public/images/projects-manifest.json`; `lib/devimg-blog.generated.ts` is generated from `public/images/blog-manifest.json`; `lib/devimg-seo.generated.ts` is generated from `public/images/seo-manifest.json`. They are the only places generated content-hash filenames are copied into app code. `lib/devimg.ts` derives project card, project banner, blog card, blog social, and SEO metadata variants from those generated modules.

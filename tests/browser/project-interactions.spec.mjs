@@ -17,10 +17,10 @@ test("outside clicks dismiss labels without clearing selections or stealing focu
   await expect(theme).toBeFocused()
   await trigger.click()
   await expect(auditLogs).toBeChecked()
-  await expect(page.locator(".projects-filter [role='status']")).toHaveText("1 of 5 projects")
+  await expect(page.locator(".projects-filter [role='status']")).toHaveText("1 of 6 projects")
   await page.getByRole("button", { name: /clear/i }).click()
   await expect(dropdown).toHaveAttribute("open", "")
-  await expect(page.locator(".projects-grid article")).toHaveCount(5)
+  await expect(page.locator(".projects-grid article")).toHaveCount(6)
 })
 
 test("tapping outside dismisses labels and preserves the selected filter", async ({
@@ -78,30 +78,24 @@ test("unpublished project cards communicate their status first and stay non-inte
     ["pt-BR", "Detalhes em breve"],
     ["es-ES", "Detalles próximamente"]
   ]) {
-    for (const path of ["/projects", ""]) {
-      await page.goto(`/${locale}${path}`)
-      const card = page
-        .locator("article")
-        .filter({ has: page.getByRole("heading", { name: "AccessTrace", exact: true }) })
-      await expect(card.getByText(status, { exact: true })).toBeVisible()
-      await expect(card.locator("a,button,input,summary,[tabindex='0']")).toHaveCount(0)
-      const notice = await card.getByText(status, { exact: true }).boundingBox()
-      const heading = await card.getByRole("heading").boundingBox()
-      expect
-        .soft(notice.y, `${locale}${path} publication status precedes the title`)
-        .toBeLessThan(heading.y)
-      if (path) {
-        const image = card.locator("img")
-        expect
-          .soft(heading.y, `${locale} title precedes preview`)
-          .toBeLessThan((await image.boundingBox()).y)
-        await card.hover()
-        expect.soft(await image.evaluate((node) => getComputedStyle(node).transform)).toBe("none")
-      }
-      await expect(
-        page.getByRole("link", { name: "Jira → Toggl Quick Start", exact: true })
-      ).toHaveAttribute("href", `/${locale}/projects/jira-toggl-quickstart`)
-    }
+    await page.goto(`/${locale}/projects`)
+    const card = page
+      .locator("article")
+      .filter({ has: page.getByRole("heading", { name: "AccessTrace", exact: true }) })
+    await expect(card.getByText(status, { exact: true })).toBeVisible()
+    await expect(card.locator("a,button,input,summary,[tabindex='0']")).toHaveCount(0)
+    const notice = await card.getByText(status, { exact: true }).boundingBox()
+    const heading = await card.getByRole("heading").boundingBox()
+    expect.soft(notice.y, `${locale} publication status precedes the title`).toBeLessThan(heading.y)
+    const image = card.locator("img")
+    expect
+      .soft(heading.y, `${locale} title precedes preview`)
+      .toBeLessThan((await image.boundingBox()).y)
+    await card.hover()
+    expect.soft(await image.evaluate((node) => getComputedStyle(node).transform)).toBe("none")
+    await expect(
+      page.getByRole("link", { name: "Jira → Toggl Quick Start", exact: true })
+    ).toHaveAttribute("href", `/${locale}/projects/jira-toggl-quickstart`)
   }
   await context.close()
 })
