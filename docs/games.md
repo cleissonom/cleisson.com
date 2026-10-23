@@ -24,7 +24,7 @@ cargo clippy --manifest-path wasm/falling-blocks/Cargo.toml --all-targets -- -D 
 npm test
 ```
 
-`games:wasm` runs native tests, builds the binary, and verifies its ABI in Node. `games:wasm:check` rebuilds and compares bytes without replacing the published artifact; CI runs it to catch stale binaries. Rebuild after changing Rust code, including line changes that can affect embedded panic locations.
+`games:wasm` runs native tests, builds the binary, and verifies its ABI in Node. The build normalizes local Rust source paths to the compiler's canonical prefix so installed source locations do not change the artifact. `games:wasm:check` rebuilds and compares bytes without replacing the published artifact; CI runs it to catch stale binaries. Rebuild after changing Rust code, including line changes that can affect embedded panic locations.
 
 Browser checks cover completing a row through normal keyboard play, preserving incomplete rows and holes, keyboard focus, touch controls at 320px, pause/resume/restart, failed loading and retry, loading-disabled controls, and all locales without JavaScript. The clearing test fixes the random seed and clock so the same placements exercise the real engine every time, then checks the visible line count and settled canvas. Run the existing production-browser workflow in [development.md](development.md), then:
 

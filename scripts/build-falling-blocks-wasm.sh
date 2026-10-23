@@ -22,7 +22,12 @@ fi
 
 cd "$crate_dir"
 cargo test --locked --quiet
-cargo build --locked --release --target wasm32-unknown-unknown
+# Generic standard-library code can embed paths from a local rust-src install.
+# Use the compiler's canonical source prefix so macOS and Linux emit equal bytes.
+rust_source="$(rustc --print sysroot)/lib/rustlib/src/rust"
+rust_commit="$(rustc --version --verbose | sed -n 's/^commit-hash: //p')"
+cargo rustc --locked --release --target wasm32-unknown-unknown -- \
+  --remap-path-prefix "$rust_source=/rustc/$rust_commit"
 built="target/wasm32-unknown-unknown/release/falling_blocks.wasm"
 if [[ "$mode" == "--check" ]]; then
   if ! cmp -s "$built" "$artifact"; then
