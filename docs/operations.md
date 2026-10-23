@@ -94,7 +94,7 @@ The [workflow](../.github/workflows/ci.yml) is authoritative (**R**):
 1. Pull requests and pushes to `main` run `validate` on Ubuntu with the GitHub environment named `Production`.
 2. Validation checks Git history with Gitleaks; verifies DevImg variants/exports and AI dry-run artifacts; installs Node from `.nvmrc` and dependencies with `npm ci`; runs lint, core tests, PDF freshness, typecheck and a production build.
 3. Only a push to `main` can run `deploy`, and it depends on successful validation. It uses the same GitHub environment, with a `vercel-production` concurrency group that cancels an in-progress delivery when superseded.
-4. Delivery installs dependencies, runs `vercel@latest pull` for production settings, `vercel@latest build --prod`, and `vercel@latest deploy --prebuilt --prod`, authenticated by GitHub secrets. These are descriptions of existing CI steps, not commands executed during this documentation work.
+4. Delivery installs dependencies, runs the pinned `vercel@48.10.12 pull` for production settings, `vercel@48.10.12 build --prod`, and `vercel@48.10.12 deploy --prebuilt --prod`, authenticated by GitHub secrets. The CLI version must support the project's Node 24 runtime; the previous 48.8.0 pin rejected the configured Node range before building.
 5. Vercel receives the built output; the domain's actual active deployment must be checked afterward. The earlier validation build and the Vercel artifact build are separate steps. GitHub's environment name does not prove dashboard protection rules exist.
 
 The [inspected push run for `cea31eb`](https://github.com/cleissonom/cleisson.com/actions/runs/34157075196) reported successful `Validate Code` and `Deploy to Vercel` jobs on the inspection date (**P project**, workflow metadata only). Correlation with the deployment currently serving the canonical domain remains unverified.
@@ -222,4 +222,4 @@ After recovery, rerun the focused smoke checks, confirm the active commit/domain
 - Analytics/operations: feature enablement, recent received data and environments, plan/retention/usage limits, log access and coverage, external error reporting/tracing/log drains, alerts and incident notifications.
 - Recovery: eligible rollback deployment, authorized operator and confirmation that normal domain assignment can be restored. No recovery exercise has been performed.
 
-Potential follow-ups, separate from this cleanup: decide whether to pin the CI Vercel CLI, standardize on Husky or the optional Python pre-commit setup, and add error/alert coverage only after confirming existing provider capabilities and a concrete operational need. No services, tracking, paid features or alerts were added.
+Potential follow-ups, separate from this cleanup: standardize on Husky or the optional Python pre-commit setup, and add error/alert coverage only after confirming existing provider capabilities and a concrete operational need. No services, tracking, paid features or alerts were added.

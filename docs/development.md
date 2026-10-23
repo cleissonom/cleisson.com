@@ -44,7 +44,7 @@ Repository verification establishes the following roles. Provider enablement/dat
 | Vercel CLI                                    | CI pulls project settings, builds and uploads prebuilt output                                              | Production delivery tooling; not required for ordinary local development                                            |
 | RTK                                           | Optional local command-output wrapper used by repository agent instructions                                | Agent environment only; not an npm or production dependency. Use `rtk proxy <command>` when exact output matters    |
 
-Do not remove `.pre-commit-config.yaml` merely because Husky is active, or infer service usage from transitive/local packages. Check references and owner workflows first. CI pins the DevImg and Gitleaks binary releases, while its Vercel CLI uses `@latest`; the latter is a maintenance consideration, unchanged by this cleanup.
+Do not remove `.pre-commit-config.yaml` merely because Husky is active, or infer service usage from transitive/local packages. Check references and owner workflows first. CI pins the DevImg, Gitleaks, and Vercel CLI releases. Keep the Vercel CLI compatible with the Node version in `.nvmrc` and `package.json`; CLI 48.8.0 rejects this project's Node 24 range.
 
 ## Commands and quality checks
 
