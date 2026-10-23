@@ -9,3 +9,5 @@ https-*.json
 output/playwright/
 # Vendored upstream files must retain their original bytes.
 .agents/upstream/humanizer/**
+wasm/*/target/
+next-env.d.ts

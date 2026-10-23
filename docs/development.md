@@ -50,18 +50,19 @@ Do not remove `.pre-commit-config.yaml` merely because Husky is active, or infer
 
 The package script names below are stable entry points. Read `package.json` for their exact implementation.
 
-| Workflow              | Commands and prerequisites                                                                                                                   |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Serve                 | `npm run dev`; or `npm run build` followed by `npm run start`                                                                                |
-| Core regression tests | `npm test`; narrower `npm run test:content` and `npm run test:agent-readiness`                                                               |
-| Code checks           | `npm run lint`, `npm run typecheck`, `npm run format:check`                                                                                  |
-| Intentional fixes     | `npm run lint:fix`, `npm run format`; inspect the resulting diff because these write files                                                   |
-| Image checks          | `npm run images:check`, or `npm run images:check -- blog seo`; DevImg required, no regeneration                                              |
-| PDF checks            | `npm run blog:pdf:check`, `npm run test:blog-pdf`; no browser required                                                                       |
-| PDF generation/review | `npm run blog:pdf`, `npm run blog:pdf:review`, `npm run test:blog-pdf:render`; [PDF guide](blog-pdfs.md) owns prerequisites and safety steps |
-| Browser/performance   | `npm run test:browser`, `npm run test:performance`; production server and Chromium required                                                  |
-| Bundle analysis       | `npm run analyze`; optional diagnostic build                                                                                                 |
-| Hooks                 | `npm run precommit:checks` runs `precommit:secrets` then `precommit:lint`; requires Gitleaks and staged files                                |
+| Workflow              | Commands and prerequisites                                                                                                                                                                                                                                                       |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Serve                 | `npm run dev`; or `npm run build` followed by `npm run start`                                                                                                                                                                                                                    |
+| Core regression tests | `npm test`; narrower `npm run test:content` and `npm run test:agent-readiness`                                                                                                                                                                                                   |
+| Code checks           | `npm run lint`, `npm run typecheck`, `npm run format:check`                                                                                                                                                                                                                      |
+| Intentional fixes     | `npm run lint:fix`, `npm run format`; inspect the resulting diff because these write files                                                                                                                                                                                       |
+| Image checks          | `npm run images:check`, or `npm run images:check -- blog seo`; DevImg required, no regeneration                                                                                                                                                                                  |
+| PDF checks            | `npm run blog:pdf:check`, `npm run test:blog-pdf`; no browser required                                                                                                                                                                                                           |
+| PDF generation/review | `npm run blog:pdf`, `npm run blog:pdf:review`, `npm run test:blog-pdf:render`; [PDF guide](blog-pdfs.md) owns prerequisites and safety steps                                                                                                                                     |
+| Games WASM            | `npm run games:wasm` / `npm run games:wasm:check`; Rust 1.98.1; runs Rust tests, compiles `wasm/falling-blocks` to `public/games/falling-blocks/falling-blocks.wasm`, then verifies the ABI; a wasm32 Rust target must be installed (`rustup target add wasm32-unknown-unknown`) |
+| Browser/performance   | `npm run test:browser`, `npm run test:performance`; production server and Chromium required                                                                                                                                                                                      |
+| Bundle analysis       | `npm run analyze`; optional diagnostic build                                                                                                                                                                                                                                     |
+| Hooks                 | `npm run precommit:checks` runs `precommit:secrets` then `precommit:lint`; requires Gitleaks and staged files                                                                                                                                                                    |
 
 For a typical change, run:
 
@@ -77,7 +78,7 @@ npm run build
 
 Expected result: each command exits zero, public content/download contracts pass, and the production build completes. Run focused checks while developing, then the applicable broader checks before handoff. Behavior changes require the test-first workflow in the applicable instructions; use existing passing contracts for behavior-preserving cleanup. Do not refresh generated assets just to hide a freshness failure.
 
-CI additionally scans secrets and verifies DevImg AI dry-runs. It runs the core tests, PDF freshness, lint, typecheck and build. Browser/performance/PDF rendering integration checks and standalone Prettier checks are local procedures, not currently CI checks. A successful build alone does not establish that the other checks ran.
+CI additionally scans secrets and verifies DevImg AI dry-runs. It runs the core tests, PDF freshness, lint, typecheck and build. CI also rebuilds the game engine with Rust 1.98.1 and rejects stale WASM bytes. Browser/performance/PDF rendering integration checks and standalone Prettier checks are local procedures, not currently CI checks. A successful build alone does not establish that the other checks ran.
 
 ## Production browser and performance checks
 

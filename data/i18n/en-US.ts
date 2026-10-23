@@ -57,6 +57,7 @@ export const enUSDictionary: LocaleDictionary = {
   ui: {
     nav: {
       home: "Home",
+      games: "Games",
       experience: "Experience",
       projects: "Projects",
       blog: "Blog",
@@ -94,6 +95,7 @@ export const enUSDictionary: LocaleDictionary = {
       skipToContent: "Skip to content",
       backToProjects: "Back to projects",
       backToBlog: "Back to blog",
+      backToGames: "Back to games",
       notFoundTitle: "Page not found",
       notFoundDescription: "The page you requested does not exist for this locale.",
       goHome: "Go to home",
@@ -405,6 +407,119 @@ export const enUSDictionary: LocaleDictionary = {
         caseStudy: "Case Study",
         demo: "Demo",
         package: "Package"
+      }
+    },
+    games: {
+      metadataTitle: "Browser Games",
+      metadataDescription:
+        "Play Falling Blocks, a falling-block puzzle with six mixed-size shapes. Complete horizontal rows to clear space and score points.",
+      lead: "Small games from my programming experiments. Pick a game and try it in your browser.",
+      playLabel: "Play",
+      wasmNote:
+        "Playing requires JavaScript and WebAssembly. The rules and controls are available without them.",
+      notFoundTitle: "Game not found",
+      notFoundDescription: "Game not found for this locale.",
+      statusLabels: {
+        ready: "Ready",
+        playing: "Playing",
+        paused: "Paused",
+        over: "Game over"
+      },
+      statsLabels: {
+        score: "Score",
+        level: "Level",
+        lines: "Lines"
+      },
+      panelLabels: {
+        hold: "Reserve",
+        next: "Up next",
+        controls: "Keyboard shortcuts",
+        touch: "Game controls"
+      },
+      overlay: {
+        canvasLabel: "Falling Blocks board",
+        readyHint: "Fill complete horizontal rows to clear them. Start when you are ready.",
+        pausedHint: "Resume when you are ready. Your board is saved for this visit.",
+        overHintTemplate: "Score {score} · Level {level}",
+        startLabel: "Start",
+        resumeLabel: "Resume",
+        replayLabel: "Play again",
+        loadErrorLabel:
+          "The game could not load. Try again or check that your browser supports WebAssembly.",
+        loadingLabel: "Loading game…",
+        errorTitle: "Unable to load",
+        retryLabel: "Try again"
+      },
+      actionLabels: {
+        left: "← Left",
+        right: "Right →",
+        down: "↓ Lower",
+        clockwise: "↻ Rotate",
+        counterclockwise: "↺ Rotate",
+        drop: "Drop",
+        hold: "Reserve",
+        pause: "Pause",
+        restart: "Restart"
+      },
+      inputHint:
+        "Use the buttons, or focus the board to use keyboard shortcuts. Leaving the game pauses it.",
+      accessibilityNote:
+        "This is a visual puzzle. The board does not have a screen-reader equivalent; the rules and controls are available as text.",
+      rulesTitle: "How to play",
+      aboutTitle: "About this game",
+      rules: [
+        "Fit six shapes of one to five cells into a 12×12 board. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
+        "Fill all 12 cells in a horizontal row to clear it. Incomplete rows stay on the board.",
+        "After a clear, the rows above move down intact. Each cleared row earns 90 × level points.",
+        "Lowering earns 1 point per cell; dropping earns 2. Every six cleared rows increases the level and speed. The game ends when a new piece cannot enter or a piece lands above the board."
+      ],
+      controls: [
+        {
+          key: "Enter",
+          action: "Start / resume"
+        },
+        {
+          key: "← / →",
+          action: "Move"
+        },
+        {
+          key: "↓",
+          action: "Lower"
+        },
+        {
+          key: "↑ / X",
+          action: "Rotate clockwise"
+        },
+        {
+          key: "Z",
+          action: "Rotate counterclockwise"
+        },
+        {
+          key: "Space",
+          action: "Drop"
+        },
+        {
+          key: "C",
+          action: "Reserve"
+        },
+        {
+          key: "P / Escape",
+          action: "Pause / resume"
+        },
+        {
+          key: "R",
+          action: "Restart"
+        }
+      ],
+      entries: {
+        "falling-blocks": {
+          title: "Falling Blocks",
+          summary:
+            "Fit six mixed-size shapes, complete horizontal rows, and keep the board from filling up.",
+          description:
+            "A falling-block puzzle built for this site. Rust handles the game rules in WebAssembly; a canvas draws the board. Each run stays in this tab, with no account, saved leaderboard, or game audio.",
+          stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        }
       }
     },
     blog: {

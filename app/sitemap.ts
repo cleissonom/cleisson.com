@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 
 import { getAllPosts, getAllProjects } from "@/lib/content"
+import { getAllGames } from "@/lib/games"
 import { LOCALES, buildLocalizedPath } from "@/lib/i18n"
 import { absoluteUrl } from "@/lib/metadata"
 import { isProjectDetailAvailable } from "@/lib/project-state"
@@ -13,6 +14,7 @@ const staticPaths = [
   "/experience",
   "/projects",
   "/blog",
+  "/games",
   "/resume",
   "/mcp"
 ] as const
@@ -55,6 +57,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: absoluteUrl(buildLocalizedPath(locale, path)),
         lastModified: projectLastModified,
+        changeFrequency: "monthly",
+        priority: 0.7,
+        alternates: languageAlternates(path)
+      })
+    }
+
+    for (const game of getAllGames(locale)) {
+      const path = `/games/${game.slug}`
+      entries.push({
+        url: absoluteUrl(buildLocalizedPath(locale, path)),
+        lastModified: now,
         changeFrequency: "monthly",
         priority: 0.7,
         alternates: languageAlternates(path)

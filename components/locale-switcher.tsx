@@ -10,12 +10,14 @@ export function LocaleSwitcher({
   currentLocale,
   label,
   projectSlugsByLocale,
-  blogSlugsByLocale
+  blogSlugsByLocale,
+  gameSlugsByLocale
 }: {
   currentLocale: Locale
   label: string
   projectSlugsByLocale: SlugIndex
   blogSlugsByLocale: SlugIndex
+  gameSlugsByLocale: SlugIndex
 }) {
   const pathname = usePathname()
   const currentOption = LOCALE_OPTIONS[currentLocale]
@@ -39,7 +41,8 @@ export function LocaleSwitcher({
           const href = resolveLocaleSwitchPath(pathname, locale, {
             locales: LOCALES,
             projectSlugsByLocale,
-            blogSlugsByLocale
+            blogSlugsByLocale,
+            gameSlugsByLocale
           })
 
           return (

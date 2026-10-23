@@ -1,3 +1,5 @@
+import type { GameSlug } from "@/data/games"
+
 export type ExperienceRole = {
   title: string
   period: string
@@ -31,6 +33,7 @@ export type ContentSection = {
 export type UiDictionary = {
   nav: {
     home: string
+    games: string
     experience: string
     projects: string
     blog: string
@@ -68,11 +71,73 @@ export type UiDictionary = {
     skipToContent: string
     backToProjects: string
     backToBlog: string
+    backToGames: string
     notFoundTitle: string
     notFoundDescription: string
     goHome: string
     opensInNewTab: string
   }
+}
+
+export type GameStatus = "ready" | "playing" | "paused" | "over"
+
+export type GameStatusLabels = Record<GameStatus, string>
+
+export type GamePageDictionary = {
+  metadataTitle: string
+  metadataDescription: string
+  lead: string
+  playLabel: string
+  wasmNote: string
+  notFoundTitle: string
+  notFoundDescription: string
+  statusLabels: GameStatusLabels
+  statsLabels: {
+    score: string
+    level: string
+    lines: string
+  }
+  panelLabels: {
+    hold: string
+    next: string
+    controls: string
+    touch: string
+  }
+  overlay: {
+    canvasLabel: string
+    readyHint: string
+    pausedHint: string
+    overHintTemplate: string
+    startLabel: string
+    resumeLabel: string
+    replayLabel: string
+    loadingLabel: string
+    errorTitle: string
+    retryLabel: string
+    loadErrorLabel: string
+  }
+  actionLabels: Record<
+    | "left"
+    | "right"
+    | "down"
+    | "clockwise"
+    | "counterclockwise"
+    | "drop"
+    | "hold"
+    | "pause"
+    | "restart",
+    string
+  >
+  inputHint: string
+  accessibilityNote: string
+  rulesTitle: string
+  aboutTitle: string
+  rules: string[]
+  controls: Array<{ key: string; action: string }>
+  entries: Record<
+    GameSlug,
+    { title: string; summary: string; description: string; stack: string[] }
+  >
 }
 
 export type ProjectStatus = "active" | "archived"
@@ -182,6 +247,7 @@ export type LocaleDictionary = {
       stageLabels: Record<ProjectStage, string>
       linkLabels: Record<ProjectLinkKey, string>
     }
+    games: GamePageDictionary
     blog: {
       metadataTitle: string
       metadataDescription: string

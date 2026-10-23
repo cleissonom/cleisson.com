@@ -15,6 +15,7 @@ This is one Next.js application with local, versioned content. There is no repos
 | [`lib/`](../lib/)                                 | Named domain helpers for content, locales, metadata, feeds, evidence and protocols; `devimg-*.generated.ts` files are generated        |
 | [`public/`](../public/)                           | Files published at stable URLs, including machine contracts, PDFs, source assets and generated images                                  |
 | [`tests/`](../tests/) / [`scripts/`](../scripts/) | Development-only verification and automation; PDF print tooling is outside website bundles                                             |
+| [`wasm/`](../wasm/)                               | Rust game engines (no runtime deps) compiled to committed WebAssembly artifacts under `public/`; build via `npm run games:wasm`        |
 | [`.agents/skills/`](../.agents/skills/)           | Discovery routers for separate Codex/Antigravity blog-to-PDF and Humanizer variants                                                    |
 | [`docs/`](./)                                     | Maintainer guidance, separate from published pages and public API documentation                                                        |
 
@@ -49,14 +50,15 @@ Prerequisites: the development environment and existing content tests. Use a cor
 4. Keep localization, linked assets and public professional evidence synchronized. Review HTML, negotiated Markdown, feeds, sitemap, `llms.txt`, REST/OpenAPI and MCP wherever affected. After article, image or print-tool changes, follow the PDF regeneration and review procedure.
 5. Run `npm run test:content`, `npm test`, `npm run blog:pdf:check` and `npm run build`; use browser checks when presentation changes. Expected result: valid content, current downloads, reachable supported URLs and equivalent public representations. Investigate schema errors, missing assets and changed PDF hashes before accepting the change.
 
-| Asset kind                      | Location and maintenance                                                                                         |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Image sources                   | `public/projects/`, `public/images/blog/`, `public/seo/`; inline blog SVGs remain directly served                |
-| Generated images                | `public/images/generated/{projects,blog,seo}/`; content-hashed outputs owned by [DevImg](devimg.md)              |
-| Image manifests and app exports | `public/images/*-manifest.json` and `lib/devimg-*.generated.ts`; regenerate together, never hand-edit            |
-| Resume downloads                | `public/downloads/resume.{locale}.pdf`; supplied files, with paths and hashes protected by tests                 |
-| Blog downloads                  | `public/downloads/blog/`, produced by `scripts/blog-pdf/`; commit the PDFs with `scripts/blog-pdf/manifest.json` |
-| Local artifacts                 | `.devimg/`, `.next/`, `.vercel/`, `output/playwright/`; ignored, not published source                            |
+| Asset kind                      | Location and maintenance                                                                                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Image sources                   | `public/projects/`, `public/images/blog/`, `public/seo/`; inline blog SVGs remain directly served                                                              |
+| Generated images                | `public/images/generated/{projects,blog,seo}/`; content-hashed outputs owned by [DevImg](devimg.md)                                                            |
+| Image manifests and app exports | `public/images/*-manifest.json` and `lib/devimg-*.generated.ts`; regenerate together, never hand-edit                                                          |
+| Resume downloads                | `public/downloads/resume.{locale}.pdf`; supplied files, with paths and hashes protected by tests                                                               |
+| Game engines                    | `wasm/falling-blocks/` Rust crate compiled to the committed `public/games/falling-blocks/falling-blocks.wasm`; rebuild and re-verify with `npm run games:wasm` |
+| Blog downloads                  | `public/downloads/blog/`, produced by `scripts/blog-pdf/`; commit the PDFs with `scripts/blog-pdf/manifest.json`                                               |
+| Local artifacts                 | `.devimg/`, `.next/`, `.vercel/`, `output/playwright/`; ignored, not published source                                                                          |
 
 ## Localization and request routing
 
@@ -68,15 +70,19 @@ The proxy also negotiates HTML versus Markdown and rewrites explicit `.md` URLs 
 
 ## Public interfaces
 
-| Interface                 | Paths and authority                                                                                                                                                                 |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Canonical HTML pages      | `/{locale}`, then `/about`, `/contact`, `/privacy`, `/experience`, `/projects`, `/projects/{slug}`, `/blog`, `/blog/{slug}`, `/resume`, `/mcp` under that locale                    |
-| Markdown                  | Equivalent canonical pages via `Accept: text/markdown` or `.md`; [`lib/agent-content.ts`](../lib/agent-content.ts)                                                                  |
-| REST                      | `/api/v1/profile`, `/api/v1/evidence`, `/api/v1/projects/{slug}`; [`lib/public-api.ts`](../lib/public-api.ts) and [`lib/professional-evidence.ts`](../lib/professional-evidence.ts) |
-| MCP                       | `/api/mcp`, with `/mcp` compatibility alias; [`lib/mcp-server.ts`](../lib/mcp-server.ts) uses the same professional evidence                                                        |
-| Public API documentation  | `/{locale}/mcp` and Markdown equivalent; [`lib/api-docs.ts`](../lib/api-docs.ts), localized dictionaries and [`public/openapi.json`](../public/openapi.json)                        |
-| Agent discovery           | [`public/llms.txt`](../public/llms.txt), HTML metadata and HTTP discovery links                                                                                                     |
-| Search/discovery metadata | `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`; corresponding `app/` entry points plus [`lib/metadata.ts`](../lib/metadata.ts) and [`lib/schema.ts`](../lib/schema.ts)      |
-| Feeds                     | `/rss.xml`, `/atom.xml`, `/feed.json`; [`lib/feed.ts`](../lib/feed.ts) combines locales, handlers set shared caching                                                                |
+| Interface                 | Paths and authority                                                                                                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Canonical HTML pages      | `/{locale}`, then `/about`, `/contact`, `/privacy`, `/experience`, `/projects`, `/projects/{slug}`, `/blog`, `/blog/{slug}`, `/games`, `/games/{slug}`, `/resume`, `/mcp` under that locale |
+| Markdown                  | Equivalent canonical pages via `Accept: text/markdown` or `.md`; [`lib/agent-content.ts`](../lib/agent-content.ts)                                                                          |
+| REST                      | `/api/v1/profile`, `/api/v1/evidence`, `/api/v1/projects/{slug}`; [`lib/public-api.ts`](../lib/public-api.ts) and [`lib/professional-evidence.ts`](../lib/professional-evidence.ts)         |
+| MCP                       | `/api/mcp`, with `/mcp` compatibility alias; [`lib/mcp-server.ts`](../lib/mcp-server.ts) uses the same professional evidence                                                                |
+| Public API documentation  | `/{locale}/mcp` and Markdown equivalent; [`lib/api-docs.ts`](../lib/api-docs.ts), localized dictionaries and [`public/openapi.json`](../public/openapi.json)                                |
+| Agent discovery           | [`public/llms.txt`](../public/llms.txt), HTML metadata and HTTP discovery links                                                                                                             |
+| Search/discovery metadata | `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`; corresponding `app/` entry points plus [`lib/metadata.ts`](../lib/metadata.ts) and [`lib/schema.ts`](../lib/schema.ts)              |
+| Feeds                     | `/rss.xml`, `/atom.xml`, `/feed.json`; [`lib/feed.ts`](../lib/feed.ts) combines locales, handlers set shared caching                                                                        |
 
 REST and MCP expose public, source-linked evidence without credentials. Evidence searches memoize their immutable localized corpus, and REST has a bounded instance-local rate-limit backstop; provider-wide enforcement for REST is not established by this code. MCP adds host/origin validation, bounded bodies and a shared Redis-backed rate limiter in Vercel; it fails closed when the shared store is unavailable. Local development uses a bounded in-process backstop so contributors do not need deployment credentials. Public API docs and OpenAPI describe supported arguments and errors. Keep those documents at their published paths.
+
+## Browser games
+
+The localized games registry is independent of the professional project/evidence registry. Games share their descriptions and rules between semantic HTML and Markdown; their interactive canvas loads a committed Rust WebAssembly engine. See [games](games.md) for the rules, ABI ownership, verification, accessibility limits, and provenance.

@@ -9,6 +9,7 @@ import {
   getProjectBySlug,
   type ProjectEntry
 } from "@/lib/content"
+import { getAllGames, getGameBySlug } from "@/lib/games"
 import {
   MCP_DISCOVERY_EXAMPLE,
   PROBLEM_EXAMPLE,
@@ -147,6 +148,52 @@ function projectsMarkdown(locale: Locale): string {
   )
 }
 
+function gameIndex(locale: Locale): string {
+  const dictionary = getDictionary(locale)
+  const entries = getAllGames(locale).map((game) =>
+    document(
+      `### [${game.title}](/${locale}/games/${game.slug})`,
+      game.summary,
+      `**${dictionary.ui.labels.stack}:** ${game.stack.join(", ")}`
+    ).trim()
+  )
+
+  return document(`## ${dictionary.ui.nav.games}`, ...entries).trim()
+}
+
+function gamesMarkdown(locale: Locale): string {
+  const dictionary = getDictionary(locale)
+  return document(
+    `# ${dictionary.pages.games.metadataTitle}`,
+    `> ${dictionary.pages.games.lead}`,
+    `**${dictionary.pages.games.wasmNote}**`,
+    gameIndex(locale)
+  )
+}
+
+function gameMarkdown(locale: Locale, slug: string): string | null {
+  const dictionary = getDictionary(locale)
+  const games = dictionary.pages.games
+  const game = getGameBySlug(locale, slug)
+  if (!game) return null
+
+  return document(
+    `# ${game.title}`,
+    `> ${game.summary}`,
+    game.description,
+    `**${dictionary.ui.labels.stack}:** ${game.stack.join(", ")}`,
+    `**${games.wasmNote}**`,
+    `## ${games.rulesTitle}\n\n${games.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}`,
+    games.inputHint,
+    games.accessibilityNote,
+    `## ${games.panelLabels.controls}\n\n${bulletList(
+      games.controls.map((entry) => `\`${entry.key}\` — ${entry.action}`)
+    )}`,
+    `## ${games.playLabel}\n\n[${games.playLabel} ${game.title}](/${locale}/games/${game.slug})`,
+    `[${dictionary.ui.labels.backToGames}](/${locale}/games)`
+  )
+}
+
 function projectLinks(project: ProjectEntry): string | null {
   const links = Object.entries(project.links).flatMap(([label, url]) =>
     url ? [`[${label}](${url})`] : []
@@ -280,6 +327,7 @@ function staticMarkdown(locale: Locale, page?: string): string | null {
   if (page === "experience") return experienceMarkdown(locale)
   if (page === "projects") return projectsMarkdown(locale)
   if (page === "blog") return blogMarkdown(locale)
+  if (page === "games") return gamesMarkdown(locale)
   if (page === "resume") return resumeMarkdown(locale)
   if (page === "mcp") return mcpMarkdown(locale)
   return null
@@ -295,7 +343,9 @@ export function getAgentContent(segments: string[]): AgentContent {
       ? projectMarkdown(locale, slug)
       : page === "blog"
         ? postMarkdown(locale, slug)
-        : null
+        : page === "games"
+          ? gameMarkdown(locale, slug)
+          : null
     : staticMarkdown(locale, page)
 
   return body ? { body, status: 200 } : notFoundMarkdown(locale)
