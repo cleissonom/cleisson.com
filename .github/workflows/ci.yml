@@ -193,10 +193,10 @@ jobs:
         run: npm ci
 
       - name: Pull Vercel project settings
-        run: npx vercel@48.8.0 pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+        run: npx vercel@48.10.12 pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Build Vercel artifacts
-        run: npx vercel@48.8.0 build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+        run: npx vercel@48.10.12 build --prod --token="${{ secrets.VERCEL_TOKEN }}"
 
       - name: Deploy to Vercel
-        run: npx vercel@48.8.0 deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
+        run: npx vercel@48.10.12 deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
