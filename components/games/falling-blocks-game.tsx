@@ -8,7 +8,7 @@ import type { Locale } from "@/lib/i18n"
 import { BOARD_CELL, PREVIEW_CELL, useFallingBlocks, type GameAction } from "./use-falling-blocks"
 
 type Props = { wasmPath: string; locale: Locale; copy: GamePageDictionary }
-const EMPTY = { score: 0, level: 1, regions: 0, status: FALLING_BLOCKS_STATUS.ready }
+const EMPTY = { score: 0, level: 1, lines: 0, status: FALLING_BLOCKS_STATUS.ready }
 const STATUS_KEYS = ["ready", "playing", "paused", "over"] as const
 const ACTIONS = [
   "left",
@@ -67,7 +67,7 @@ export function FallingBlocksGame({ wasmPath, locale, copy }: Props) {
     >
       <div className="falling-blocks-play">
         <dl className="falling-blocks-hud">
-          {(["score", "level", "regions"] as const).map((key) => (
+          {(["score", "level", "lines"] as const).map((key) => (
             <div key={key}>
               <dt>{statsLabels[key]}</dt>
               <dd>{view[key].toLocaleString(locale)}</dd>

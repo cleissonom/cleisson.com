@@ -4,7 +4,7 @@
 
 The games index and `/games/falling-blocks` are published under `en-US`, `pt-BR`, and `es-ES`. Their HTML and Markdown share localized descriptions, rules, keyboard controls, and accessibility limitations. Gameplay requires JavaScript, WebAssembly, and a 2D canvas. The visual board does not have a screen-reader equivalent.
 
-Falling Blocks uses a 12×12 board, six shapes containing one to five cells, and aligned 3×3 regions. Completed regions disappear; loose cells then settle by column and can trigger further clears. Each wave awards `90 × cleared regions × level × wave number`; the level increases every six regions. The renderer uses a green mosaic with beveled square tiles; each of the six shapes keeps its own bright color on the board and in the previews. A translucent shadow shows where the active piece will land. The game has no audio, account, leaderboard, or persistent game storage. Existing site analytics remain governed by the site's privacy notice.
+Falling Blocks uses a 12×12 board and six shapes containing one to five cells. Only complete horizontal rows disappear. The rows above move down intact, preserving their holes and cell order. Each clear awards `90 × cleared rows × level`; the level increases every six rows. The renderer uses a uniform green grid with beveled square tiles; each of the six shapes keeps its own bright color on the board and in the previews. A translucent shadow shows where the active piece will land. The game has no audio, account, leaderboard, or persistent game storage. Existing site analytics remain governed by the site's privacy notice.
 
 ## Implementation and verification
 
@@ -26,10 +26,10 @@ npm test
 
 `games:wasm` runs native tests, builds the binary, and verifies its ABI in Node. `games:wasm:check` rebuilds and compares bytes without replacing the published artifact; CI runs it to catch stale binaries. Rebuild after changing Rust code, including line changes that can affect embedded panic locations.
 
-Browser checks cover keyboard focus, touch controls at 320px, pause/resume/restart, failed loading and retry, loading-disabled controls, and all locales without JavaScript. Run the existing production-browser workflow in [development.md](development.md), then:
+Browser checks cover completing a row through normal keyboard play, preserving incomplete rows and holes, keyboard focus, touch controls at 320px, pause/resume/restart, failed loading and retry, loading-disabled controls, and all locales without JavaScript. The clearing test fixes the random seed and clock so the same placements exercise the real engine every time, then checks the visible line count and settled canvas. Run the existing production-browser workflow in [development.md](development.md), then:
 
 ```bash
-BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/games.spec.mjs
+BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/games.spec.mjs tests/browser/game-clearing.spec.mjs
 ```
 
 For development, use `http://localhost:3123` with `npm run dev -- --port 3123`. Next.js development origin checks can reject JavaScript requests when a server started with the default hostname is accessed through `127.0.0.1`; the production browser workflow avoids that development-only restriction.
@@ -40,7 +40,7 @@ The engine adapts the prototype supplied by the owner as their own creation. An 
 
 The canvas graphics added here are drawn by repository code. No external artwork, fonts, music, recordings, logos, or game assets were added. Site fonts and other existing site assets retain their existing provenance. “Falling Blocks” is used as a descriptive title; this work does not represent a trademark registration or clearance search.
 
-The publication review changed the prior game's title, route, piece set, board proportions, clearing objective, scoring, and presentation. These are design decisions, not a formula for legal clearance. The prior `/games/tetris` route was part of the unpublished working-tree addition and is not retained as a public alias.
+The publication review changed the prior game's title, route, piece set, board proportions, scoring, and presentation. These are design decisions, not a formula for legal clearance. The prior `/games/tetris` route was part of the unpublished working-tree addition and is not retained as a public alias.
 
 The cited legal guidance is broadly consistent with these primary sources:
 

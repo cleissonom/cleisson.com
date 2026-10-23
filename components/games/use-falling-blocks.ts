@@ -24,7 +24,7 @@ export type GameAction =
   | "counterclockwise"
   | "drop"
   | "hold"
-export type Snapshot = { score: number; level: number; regions: number; status: number }
+export type Snapshot = { score: number; level: number; lines: number; status: number }
 
 function initialize(engine: FallingBlocksEngine) {
   const seed = crypto.getRandomValues(new Uint32Array(2))
@@ -126,7 +126,7 @@ export function useFallingBlocks(
           const value = {
             score: frame.score,
             level: frame.level,
-            regions: frame.regions,
+            lines: frame.lines,
             status: frame.status
           }
           if (

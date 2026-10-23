@@ -10,18 +10,14 @@ fn started_game() -> Game {
     game
 }
 
-fn prepare_region_clear(game: &mut Game) {
+fn prepare_line_clear(game: &mut Game) {
     game.board = [0; BOARD_SIZE];
-    for row in ROWS - 2..ROWS {
-        for col in 0..3 {
-            game.board[row * COLS + col] = 2;
-        }
-    }
+    game.board[(ROWS - 1) * COLS + 1..].fill(2);
     let mut cells = [0; 16];
-    spawn_cells(3, &mut cells);
+    spawn_cells(1, &mut cells);
     game.piece = Some(Piece {
-        id: 3,
-        size: 3,
+        id: 1,
+        size: 1,
         cells,
         x: 0,
         y: 0,
@@ -175,17 +171,34 @@ fn soft_drop_moves_down_one_row_and_scores_a_point() {
 }
 
 #[test]
-fn clears_completed_regions_scores_them_and_advances_the_queue() {
+fn clears_completed_rows_scores_them_and_advances_the_queue() {
     let mut game = started_game();
-    prepare_region_clear(&mut game);
+    prepare_line_clear(&mut game);
     let queued = game.queue[0];
 
     game.hard_drop();
 
-    assert_eq!(game.regions, 1);
-    assert_eq!(game.score, 90 + 2 * (ROWS as u32 - 4));
+    assert_eq!(game.lines, 1);
+    assert_eq!(game.score, 90 + 2 * (ROWS as u32 - 1));
     assert_eq!(game.piece.as_ref().unwrap().id, queued);
     assert_eq!(game.board.iter().filter(|cell| **cell != 0).count(), 0);
+}
+
+#[test]
+fn clearing_the_sixth_row_advances_level_for_the_next_piece() {
+    let mut game = started_game();
+    game.lines = 5;
+    prepare_line_clear(&mut game);
+    game.hard_drop();
+    assert_eq!(game.lines, 6);
+    assert_eq!(game.level, 2);
+    assert_eq!(game.score, 90 + 2 * (ROWS as u32 - 1));
+
+    prepare_line_clear(&mut game);
+    game.hard_drop();
+    assert_eq!(game.lines, 7);
+    assert_eq!(game.level, 2);
+    assert_eq!(game.score, 90 + 180 + 4 * (ROWS as u32 - 1));
 }
 
 #[test]

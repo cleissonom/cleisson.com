@@ -413,7 +413,7 @@ export const ptBRDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Jogos no navegador",
       metadataDescription:
-        "Jogue Falling Blocks, um quebra-cabeça de mosaico com peças de tamanhos variados e regiões 3×3 em cascata.",
+        "Jogue Falling Blocks, um quebra-cabeça com seis formatos de peças em queda. Complete linhas horizontais para liberar espaço e ganhar pontos.",
       lead: "Pequenos jogos dos meus experimentos de programação. Escolha um e jogue no navegador.",
       playLabel: "Jogar",
       wasmNote:
@@ -429,7 +429,7 @@ export const ptBRDictionary: LocaleDictionary = {
       statsLabels: {
         score: "Pontos",
         level: "Nível",
-        regions: "Regiões"
+        lines: "Linhas"
       },
       panelLabels: {
         hold: "Reserva",
@@ -438,8 +438,8 @@ export const ptBRDictionary: LocaleDictionary = {
         touch: "Controles do jogo"
       },
       overlay: {
-        canvasLabel: "Tabuleiro de mosaico de Falling Blocks",
-        readyHint: "Preencha as regiões 3×3 demarcadas. Comece quando quiser.",
+        canvasLabel: "Tabuleiro de Falling Blocks",
+        readyHint: "Preencha linhas horizontais completas para removê-las. Comece quando quiser.",
         pausedHint: "Retome quando quiser. O tabuleiro fica salvo durante esta visita.",
         overHintTemplate: "Pontos {score} · Nível {level}",
         startLabel: "Iniciar",
@@ -469,10 +469,10 @@ export const ptBRDictionary: LocaleDictionary = {
       rulesTitle: "Como jogar",
       aboutTitle: "Sobre o jogo",
       rules: [
-        "Encaixe seis formatos de uma a cinco células em um mosaico 12×12. Mova e gire cada peça que cai; a sombra indica onde ela vai pousar. Reserve uma peça por jogada.",
-        "Complete uma região 3×3 demarcada para remover suas nove células. Preencher apenas uma linha não a remove.",
-        "Após uma remoção, as células soltas caem em cada coluna. Novas regiões completas são removidas em cascata: 90 × nível por região, com multiplicadores de 1, 2, 3… nas etapas seguintes.",
-        "Descer rende 1 ponto por célula; soltar rende 2. A cada seis regiões removidas, o nível e a velocidade aumentam. A partida termina quando uma peça não consegue entrar ou fica acima do tabuleiro ao pousar."
+        "Encaixe seis formatos de uma a cinco células em um tabuleiro 12×12. Mova e gire cada peça que cai; a sombra indica onde ela vai pousar. Reserve uma peça por jogada.",
+        "Preencha todas as 12 células de uma linha horizontal para removê-la. Linhas incompletas permanecem no tabuleiro.",
+        "Após uma remoção, as linhas acima descem inteiras. Cada linha removida rende 90 × nível pontos.",
+        "Descer rende 1 ponto por célula; soltar rende 2. A cada seis linhas removidas, o nível e a velocidade aumentam. A partida termina quando uma peça não consegue entrar ou fica acima do tabuleiro ao pousar."
       ],
       controls: [
         {
@@ -516,9 +516,9 @@ export const ptBRDictionary: LocaleDictionary = {
         "falling-blocks": {
           title: "Falling Blocks",
           summary:
-            "Monte um mosaico, complete regiões 3×3 e provoque cascatas com seis formatos de tamanhos variados.",
+            "Encaixe seis formatos de peças, complete linhas horizontais e evite que o tabuleiro fique cheio.",
           description:
-            "Um experimento de mosaico com peças em queda, criado para este site. Rust executa as regras em WebAssembly; um canvas desenha o tabuleiro. A partida fica nesta aba, sem conta, ranking salvo ou áudio no jogo.",
+            "Um quebra-cabeça com peças em queda, criado para este site. Rust executa as regras em WebAssembly; um canvas desenha o tabuleiro. A partida fica nesta aba, sem conta, ranking salvo ou áudio no jogo.",
           stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
         }
       }

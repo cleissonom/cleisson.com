@@ -95,7 +95,7 @@ export type GamePageDictionary = {
   statsLabels: {
     score: string
     level: string
-    regions: string
+    lines: string
   }
   panelLabels: {
     hold: string

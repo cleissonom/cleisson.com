@@ -27,7 +27,7 @@ const LAYOUT = {
 
 export const STATE_LAYOUT = {
   score: 0,
-  regions: 4,
+  lines: 4,
   level: 8,
   dropTimer: 12,
   status: 16,
@@ -70,7 +70,7 @@ type FallingBlocksExports = {
 
 export type FallingBlocksGameState = {
   score: number
-  regions: number
+  lines: number
   level: number
   dropTimer: number
   status: number
@@ -133,7 +133,7 @@ function instantiate(exports: FallingBlocksExports): FallingBlocksEngine {
     const shared = stateView(memory)
     return {
       score: dataView.getUint32(state + STATE_LAYOUT.score, true),
-      regions: dataView.getUint32(state + STATE_LAYOUT.regions, true),
+      lines: dataView.getUint32(state + STATE_LAYOUT.lines, true),
       level: dataView.getUint32(state + STATE_LAYOUT.level, true),
       dropTimer: dataView.getUint32(state + STATE_LAYOUT.dropTimer, true),
       status: shared[STATE_LAYOUT.status],

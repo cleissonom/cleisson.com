@@ -1,4 +1,4 @@
-/** Canvas mosaic rendering. Assets are drawn locally; no image or audio files. */
+/** Canvas board rendering. Assets are drawn locally; no image or audio files. */
 import {
   COLS,
   ROWS,
@@ -92,8 +92,7 @@ export function drawBoard(ctx: CanvasRenderingContext2D, frame: FallingBlocksFra
   ctx.fillRect(0, 0, width, height)
   for (let row = 0; row < ROWS; row += 1) {
     for (let col = 0; col < COLS; col += 1) {
-      const zone = (Math.floor(row / 3) + Math.floor(col / 3)) % 2
-      ctx.fillStyle = zone ? "#233b35" : "#1b302b"
+      ctx.fillStyle = "#1b302b"
       ctx.fillRect(col * cell + 1, row * cell + 1, cell - 2, cell - 2)
       ctx.fillStyle = "#49645a"
       ctx.beginPath()
@@ -101,17 +100,6 @@ export function drawBoard(ctx: CanvasRenderingContext2D, frame: FallingBlocksFra
       ctx.fill()
     }
   }
-  ctx.strokeStyle = "#8baa9c"
-  ctx.lineWidth = 1.5
-  for (let pos = 3; pos < COLS; pos += 3) {
-    ctx.beginPath()
-    ctx.moveTo(pos * cell, 0)
-    ctx.lineTo(pos * cell, height)
-    ctx.moveTo(0, pos * cell)
-    ctx.lineTo(width, pos * cell)
-    ctx.stroke()
-  }
-
   for (let index = 0; index < frame.board.length; index += 1) {
     const id = frame.board[index]
     if (!id) continue

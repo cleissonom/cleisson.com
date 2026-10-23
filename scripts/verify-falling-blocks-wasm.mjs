@@ -68,6 +68,11 @@ function score() {
   return view.getUint32(0, true)
 }
 
+function clearedLines() {
+  const view = new DataView(instance.exports.memory.buffer, base + OFFSETS.state, OFFSETS.stateLen)
+  return view.getUint32(4, true)
+}
+
 function state() {
   return memory().slice(base + OFFSETS.state, base + OFFSETS.state + OFFSETS.stateLen)
 }
@@ -90,6 +95,47 @@ function filledBoardCells() {
   let filled = 0
   for (const cell of region("board")) if (cell !== 0) filled += 1
   return filled
+}
+
+function movePieceTo(x) {
+  while (piece().x !== x) {
+    assert.equal(instance.exports.blocks_move(Math.sign(x - piece().x)), 1, "piece reaches target")
+  }
+}
+
+function fillPartialBoard() {
+  const { exports } = instance
+  exports.blocks_init(0, 104)
+  exports.blocks_start()
+  for (const x of [0, 3, 6, 7, 9, 4]) {
+    movePieceTo(x)
+    assert.equal(exports.blocks_hard_drop(), 1)
+    assert.equal(clearedLines(), 0, "incomplete rows remain after each placement")
+  }
+  assert.equal(filledBoardCells(), 18)
+  assert.equal(region("board").slice(132).filter(Boolean).length, 11, "bottom row has one gap")
+}
+
+function verifyRowClearing() {
+  fillPartialBoard()
+  const { exports } = instance
+  assert.equal(piece().id, 5, "square waits before hold")
+  assert.equal(exports.blocks_hold(), 1)
+  assert.equal(piece().id, 2, "hold brings in a domino")
+  assert.equal(exports.blocks_rotate(1), 1)
+  movePieceTo(10)
+  assert.equal(exports.blocks_hard_drop(), 1)
+  assert.equal(clearedLines(), 1, "filling the last column clears the complete row")
+  assert.equal(filledBoardCells(), 8, "only the twelve cells in the full row disappear")
+  const board = region("board")
+  assert.deepEqual(
+    [...board.slice(120, 132)].flatMap((cell, col) => (cell ? [col] : [])),
+    [5]
+  )
+  assert.deepEqual(
+    [...board.slice(132)].flatMap((cell, col) => (cell ? [col] : [])),
+    [3, 4, 5, 6, 7, 8, 11]
+  )
 }
 
 async function main() {
@@ -171,6 +217,8 @@ async function main() {
     [0, 1, 2, 3, 3, 4, 5][piece().id],
     "a fresh piece matches its shape"
   )
+
+  verifyRowClearing()
 
   console.log(`falling-blocks.wasm verified: ${bytes.length} bytes, ${titles.length} game exports`)
 }

@@ -412,7 +412,7 @@ export const enUSDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Browser Games",
       metadataDescription:
-        "Play Falling Blocks, a falling-mosaic puzzle with mixed-size pieces and cascading 3×3 regions.",
+        "Play Falling Blocks, a falling-block puzzle with six mixed-size shapes. Complete horizontal rows to clear space and score points.",
       lead: "Small games from my programming experiments. Pick a game and try it in your browser.",
       playLabel: "Play",
       wasmNote:
@@ -428,7 +428,7 @@ export const enUSDictionary: LocaleDictionary = {
       statsLabels: {
         score: "Score",
         level: "Level",
-        regions: "Regions"
+        lines: "Lines"
       },
       panelLabels: {
         hold: "Reserve",
@@ -437,8 +437,8 @@ export const enUSDictionary: LocaleDictionary = {
         touch: "Game controls"
       },
       overlay: {
-        canvasLabel: "Falling Blocks mosaic board",
-        readyHint: "Fill the outlined 3×3 regions. Start when you are ready.",
+        canvasLabel: "Falling Blocks board",
+        readyHint: "Fill complete horizontal rows to clear them. Start when you are ready.",
         pausedHint: "Resume when you are ready. Your board is saved for this visit.",
         overHintTemplate: "Score {score} · Level {level}",
         startLabel: "Start",
@@ -468,10 +468,10 @@ export const enUSDictionary: LocaleDictionary = {
       rulesTitle: "How to play",
       aboutTitle: "About this game",
       rules: [
-        "Fit six shapes of one to five cells into a 12×12 mosaic. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
-        "Complete any outlined 3×3 region to remove its nine cells. Filling a row alone does not clear it.",
-        "After a clear, loose cells fall down each column. Further completed regions clear in a cascade, earning 90 × level per region with multipliers of 1, 2, 3… for successive waves.",
-        "Lowering earns 1 point per cell; dropping earns 2. Every six cleared regions increases the level and speed. The game ends when a new piece cannot enter or a piece lands above the board."
+        "Fit six shapes of one to five cells into a 12×12 board. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
+        "Fill all 12 cells in a horizontal row to clear it. Incomplete rows stay on the board.",
+        "After a clear, the rows above move down intact. Each cleared row earns 90 × level points.",
+        "Lowering earns 1 point per cell; dropping earns 2. Every six cleared rows increases the level and speed. The game ends when a new piece cannot enter or a piece lands above the board."
       ],
       controls: [
         {
@@ -515,9 +515,9 @@ export const enUSDictionary: LocaleDictionary = {
         "falling-blocks": {
           title: "Falling Blocks",
           summary:
-            "Build a mosaic, clear 3×3 regions, and set off cascades with six mixed-size shapes.",
+            "Fit six mixed-size shapes, complete horizontal rows, and keep the board from filling up.",
           description:
-            "A falling-mosaic experiment built for this site. Rust handles the game rules in WebAssembly; a canvas draws the board. Each run stays in this tab, with no account, saved leaderboard, or game audio.",
+            "A falling-block puzzle built for this site. Rust handles the game rules in WebAssembly; a canvas draws the board. Each run stays in this tab, with no account, saved leaderboard, or game audio.",
           stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
         }
       }

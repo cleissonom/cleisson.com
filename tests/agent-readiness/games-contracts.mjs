@@ -3,6 +3,11 @@ import { test } from "node:test"
 
 const slug = "falling-blocks"
 const locales = ["en-US", "pt-BR", "es-ES"]
+const rowRules = {
+  "en-US": "Fill all 12 cells in a horizontal row to clear it.",
+  "pt-BR": "Preencha todas as 12 células de uma linha horizontal para removê-la.",
+  "es-ES": "Llena las 12 celdas de una fila horizontal para eliminarla."
+}
 
 export function registerGamesContracts({ fetchText, mainHtml, fetchBinary }) {
   for (const locale of locales) {
@@ -58,9 +63,9 @@ export function registerGamesContracts({ fetchText, mainHtml, fetchBinary }) {
       assert.equal(markdown.body, explicit.body)
       assert.ok(markdown.body.includes("- `"), markdown.body)
       assert.ok(markdown.body.includes("WebAssembly"), markdown.body)
-      assert.ok(markdown.body.includes("3×3"), markdown.body)
+      assert.ok(markdown.body.includes(rowRules[locale]), markdown.body)
       assert.ok(markdown.body.includes("12×12"), markdown.body)
-      assert.ok(main.includes("3×3"), main)
+      assert.ok(main.includes(rowRules[locale]), main)
 
       const index = await fetchText(`/${locale}/games.md`)
       assert.ok(index.body.includes(`](${pathname})`))

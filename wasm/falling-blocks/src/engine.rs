@@ -1,9 +1,9 @@
-//! Seeded falling-mosaic state machine, independent of its browser host.
+//! Seeded falling-block state machine, independent of its browser host.
 
 use self::rand::Rng;
 use crate::rules::{
     BOARD_SIZE, COLS, KICKS, PIECE_IDS, QUEUE_SIZE, collides, drop_interval, ghost_row,
-    level_for_regions, lock_piece, resolve_regions, rotate_cells, spawn_cells, spawn_size,
+    level_for_lines, lock_piece, resolve_lines, rotate_cells, spawn_cells, spawn_size,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -31,7 +31,7 @@ pub struct Game {
     pub(crate) can_hold: bool,
     pub(crate) queue: [u8; QUEUE_SIZE],
     pub(crate) score: u32,
-    pub(crate) regions: u32,
+    pub(crate) lines: u32,
     pub(crate) level: u32,
     pub(crate) drop_timer: u32,
     pub(crate) status: Status,
@@ -51,7 +51,7 @@ impl Game {
             can_hold: true,
             queue: [0; QUEUE_SIZE],
             score: 0,
-            regions: 0,
+            lines: 0,
             level: 1,
             drop_timer: 0,
             status: Status::Ready,
@@ -71,7 +71,7 @@ impl Game {
         self.can_hold = true;
         self.queue = [0; QUEUE_SIZE];
         self.score = 0;
-        self.regions = 0;
+        self.lines = 0;
         self.level = 1;
         self.drop_timer = 0;
         self.status = Status::Ready;
@@ -248,7 +248,7 @@ impl Game {
         }
     }
 
-    /// Locks the piece, clears regions, updates score/level/spawns the next one
+    /// Locks the piece, clears lines, updates score/level/spawns the next one
     /// from the queue.
     fn land(&mut self) {
         let piece = match self.piece.take() {
@@ -269,10 +269,10 @@ impl Game {
             piece.y,
             piece.id,
         );
-        let (cleared, points) = resolve_regions(&mut self.board, self.level);
-        self.regions += cleared;
+        let (cleared, points) = resolve_lines(&mut self.board, self.level);
+        self.lines += cleared;
         self.score += points;
-        self.level = level_for_regions(self.regions);
+        self.level = level_for_lines(self.lines);
         self.can_hold = true;
         self.drop_timer = 0;
         let next = self.pull_queue();

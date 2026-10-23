@@ -1,7 +1,7 @@
 use super::*;
 
 #[test]
-fn mosaic_uses_a_square_board_and_mixed_size_pieces() {
+fn uses_a_square_board_and_mixed_size_pieces() {
     assert_eq!((COLS, ROWS), (12, 12));
     let counts: Vec<usize> = PIECE_IDS
         .iter()
@@ -47,66 +47,65 @@ fn collision_and_landing_respect_walls_floor_and_occupied_cells() {
 }
 
 #[test]
-fn only_complete_aligned_regions_clear() {
+fn a_complete_horizontal_row_clears() {
     let mut board = [0; BOARD_SIZE];
     board[(ROWS - 1) * COLS..].fill(1);
+    assert_eq!(resolve_lines(&mut board, 1), (1, 90));
+    assert_eq!(board, [0; BOARD_SIZE]);
+}
+
+#[test]
+fn incomplete_rows_and_completed_squares_remain_unchanged() {
+    let mut board = [0; BOARD_SIZE];
+    for row in ROWS - 3..ROWS {
+        for col in 0..3 {
+            board[row * COLS + col] = 2;
+        }
+    }
+    board[5 * COLS..6 * COLS - 1].fill(3);
+    board[0] = 4;
+    let before = board;
+    assert_eq!(resolve_lines(&mut board, 1), (0, 0));
     assert_eq!(
-        clear_regions(&mut board),
-        0,
-        "a full row alone does not clear"
+        board, before,
+        "holes and unsupported cells stay in their rows"
     );
-    for row in ROWS - 3..ROWS {
-        for col in 0..3 {
-            board[row * COLS + col] = 2;
-        }
-    }
-    assert_eq!(clear_regions(&mut board), 1);
-    assert!(
-        board[(ROWS - 1) * COLS..(ROWS - 1) * COLS + 3]
-            .iter()
-            .all(|c| *c == 0)
-    );
-    assert_eq!(board[BOARD_SIZE - 1], 1, "neighboring regions remain");
 }
 
 #[test]
-fn clearing_settles_each_column_and_resolves_cascades() {
+fn separated_complete_rows_collapse_without_rearranging_remaining_cells() {
     let mut board = [0; BOARD_SIZE];
-    for row in ROWS - 3..ROWS {
-        for col in 0..3 {
-            board[row * COLS + col] = 2;
-        }
+    for row in [2, 8, 11] {
+        board[row * COLS..(row + 1) * COLS].fill(1);
     }
-    // Staggered cells do not fill any upper region until the first clear.
-    for (col, rows) in [(0, [0, 2, 4]), (1, [1, 3, 5]), (2, [0, 3, 6])] {
-        for row in rows {
-            board[row * COLS + col] = 3;
-        }
+    for (row, col, id) in [(0, 0, 2), (1, 1, 3), (3, 2, 4), (10, 3, 5)] {
+        board[row * COLS + col] = id;
     }
-    let (regions, score) = resolve_regions(&mut board, 1);
-    assert_eq!(regions, 2);
-    assert_eq!(score, 90 + 180, "each cascade increases the multiplier");
-    assert!(board.iter().all(|c| *c == 0));
+    let before = board;
+    assert_eq!(resolve_lines(&mut board, 2), (3, 540));
+    assert_eq!(&board[..3 * COLS], &[0; 3 * COLS]);
+    for (source, destination) in [(0, 3), (1, 4), (3, 5), (10, 11)] {
+        assert_eq!(
+            &board[destination * COLS..(destination + 1) * COLS],
+            &before[source * COLS..(source + 1) * COLS]
+        );
+    }
+    assert_eq!(board.iter().filter(|cell| **cell != 0).count(), 4);
 }
 
 #[test]
-fn settling_preserves_cell_order_and_other_columns() {
+fn adjacent_complete_rows_score_once_each_without_cascade_multiplier() {
     let mut board = [0; BOARD_SIZE];
-    board[0] = 2;
-    board[2 * COLS] = 3;
-    board[COLS + 1] = 4;
-    settle_columns(&mut board);
-    assert_eq!(board[(ROWS - 2) * COLS], 2);
-    assert_eq!(board[(ROWS - 1) * COLS], 3);
-    assert_eq!(board[(ROWS - 1) * COLS + 1], 4);
-    assert_eq!(board.iter().filter(|c| **c != 0).count(), 3);
+    board[(ROWS - 3) * COLS..].fill(2);
+    assert_eq!(resolve_lines(&mut board, 3), (3, 810));
+    assert_eq!(board, [0; BOARD_SIZE]);
 }
 
 #[test]
-fn progression_speeds_up_every_six_regions_with_a_lower_bound() {
-    assert_eq!(level_for_regions(0), 1);
-    assert_eq!(level_for_regions(5), 1);
-    assert_eq!(level_for_regions(6), 2);
+fn progression_speeds_up_every_six_lines_with_a_lower_bound() {
+    assert_eq!(level_for_lines(0), 1);
+    assert_eq!(level_for_lines(5), 1);
+    assert_eq!(level_for_lines(6), 2);
     assert!(drop_interval(2) < drop_interval(1));
     assert_eq!(drop_interval(10_000), 100);
 }

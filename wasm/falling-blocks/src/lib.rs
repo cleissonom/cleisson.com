@@ -59,7 +59,7 @@ mod layout {
 }
 
 /// Byte offsets inside the 32-byte state region as `[offset, length]` pairs:
-/// `score`, `regions`, `level`, `dropTimer` (elapsed gravity time) as `u32`; then bytes at 16..23
+/// `score`, `lines`, `level`, `dropTimer` (elapsed gravity time) as `u32`; then bytes at 16..23
 /// hold `status`, `pieceType`, `pieceSize`, `pieceX`, `pieceY`, `held`,
 /// `canHold`; `ghostRow` sits at 23.
 pub const STATE_LAYOUT: [[usize; 2]; 6] = [[0, 4], [4, 4], [8, 4], [12, 4], [16, 7], [23, 1]];
@@ -95,7 +95,7 @@ fn sync(game: &Game) {
 
     let state = &mut memory[layout::STATE..layout::STATE + layout::STATE_LEN];
     state[0..4].copy_from_slice(&game.score.to_le_bytes());
-    state[4..8].copy_from_slice(&game.regions.to_le_bytes());
+    state[4..8].copy_from_slice(&game.lines.to_le_bytes());
     state[8..12].copy_from_slice(&game.level.to_le_bytes());
     state[12..16].copy_from_slice(&game.drop_timer.to_le_bytes());
 
@@ -379,6 +379,32 @@ mod tests {
         assert!(
             queue.iter().all(|id| (1..=6).contains(id)),
             "ready queue holds valid piece ids"
+        );
+
+        blocks_start();
+        let game = game();
+        game.board.fill(0);
+        game.board[(rules::ROWS - 1) * rules::COLS + 1..].fill(2);
+        let mut cells = [0; 16];
+        rules::spawn_cells(1, &mut cells);
+        game.piece = Some(engine::Piece {
+            id: 1,
+            size: 1,
+            cells,
+            x: 0,
+            y: 0,
+        });
+        blocks_hard_drop();
+        assert_eq!(&state()[4..8], &1u32.to_le_bytes(), "one cleared line");
+        assert_eq!(
+            &state()[0..4],
+            &112u32.to_le_bytes(),
+            "clear and drop score"
+        );
+        assert!(
+            region(layout::BOARD, BOARD_SIZE)
+                .iter()
+                .all(|cell| *cell == 0)
         );
     }
 }

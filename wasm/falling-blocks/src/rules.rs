@@ -1,4 +1,4 @@
-//! Falling mosaic rules: mixed-size pieces and aligned region cascades.
+//! Falling-block rules: mixed-size pieces and complete horizontal row clears.
 
 pub const COLS: usize = 12;
 pub const ROWS: usize = 12;
@@ -9,8 +9,6 @@ pub const QUEUE_SIZE: usize = 3;
 
 /// Piece ids are 1-based so that 0 can mean "no piece" in the board and ABI.
 pub const PIECE_IDS: [u8; 6] = [1, 2, 3, 4, 5, 6];
-pub const REGION: usize = 3;
-
 const GRAVITY_BASE_MS: u32 = 900;
 const GRAVITY_STEP_MS: u32 = 70;
 const GRAVITY_MIN_MS: u32 = 100;
@@ -113,59 +111,24 @@ pub fn lock_piece(
     }
 }
 
-/// Clear only complete, aligned 3×3 regions. Partial rows remain in place.
-pub fn clear_regions(board: &mut [u8; BOARD_SIZE]) -> u32 {
-    let mut count = 0;
-    for top in (0..ROWS).step_by(REGION) {
-        for left in (0..COLS).step_by(REGION) {
-            let full = (top..top + REGION)
-                .all(|row| (left..left + REGION).all(|col| board[row * COLS + col] != 0));
-            if full {
-                count += 1;
-                for row in top..top + REGION {
-                    board[row * COLS + left..row * COLS + left + REGION].fill(0);
-                }
-            }
+/// Remove complete rows and move the remaining rows down intact, preserving holes.
+/// Score each cleared row at the level before this placement.
+pub fn resolve_lines(board: &mut [u8; BOARD_SIZE], level: u32) -> (u32, u32) {
+    let mut write = ROWS;
+    for read in (0..ROWS).rev() {
+        let row = read * COLS..(read + 1) * COLS;
+        if board[row.clone()].iter().all(|cell| *cell != 0) {
+            continue;
         }
+        write -= 1;
+        board.copy_within(row, write * COLS);
     }
-    count
+    board[..write * COLS].fill(0);
+    let cleared = write as u32;
+    (cleared, 90 * cleared * level)
 }
 
-/// After a clear, loose cells fall independently while retaining vertical order.
-pub fn settle_columns(board: &mut [u8; BOARD_SIZE]) {
-    for col in 0..COLS {
-        let mut write = ROWS;
-        for row in (0..ROWS).rev() {
-            let value = board[row * COLS + col];
-            if value != 0 {
-                write -= 1;
-                board[write * COLS + col] = value;
-            }
-        }
-        for row in 0..write {
-            board[row * COLS + col] = 0;
-        }
-    }
-}
-
-/// Resolve cascades; every pass removes at least nine cells, so it terminates.
-pub fn resolve_regions(board: &mut [u8; BOARD_SIZE], level: u32) -> (u32, u32) {
-    let mut total = 0;
-    let mut score = 0;
-    let mut chain = 1;
-    loop {
-        let cleared = clear_regions(board);
-        if cleared == 0 {
-            return (total, score);
-        }
-        total += cleared;
-        score += 90 * cleared * chain * level;
-        settle_columns(board);
-        chain += 1;
-    }
-}
-
-pub fn level_for_regions(total: u32) -> u32 {
+pub fn level_for_lines(total: u32) -> u32 {
     total / 6 + 1
 }
 
