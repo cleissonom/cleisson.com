@@ -45,6 +45,7 @@ lib/                 Content, routing, metadata, evidence, API and MCP logic
 public/              Public contracts, source/generated assets, stable downloads
 tests/               Content, PDF, agent-readiness, browser and performance checks
 scripts/             Maintainer tooling and PDF generation, shared with CI
+wasm/                Rust game engines compiled to WebAssembly under public/
 .agents/skills/      Host-aware discovery routers for local skills
 .agents/codex/       Codex skill variants
 .agents/antigravity/ Antigravity skill variants
@@ -56,6 +57,7 @@ proxy.ts             Locale routing, content negotiation and discovery headers
 - [Architecture and content](docs/architecture.md): responsibilities, authoring, localization, public interfaces.
 - [Development and tooling](docs/development.md): setup, checks, scripts, skills, maintenance checklist.
 - [Deployment and operations](docs/operations.md): Cloudflare/domain evidence, Vercel delivery, environments, analytics, troubleshooting and recovery.
+- [Browser games](docs/games.md): game rules, WebAssembly builds, controls, accessibility, and provenance.
 - [DevImg](docs/devimg.md): source assets, generated outputs, verification and regeneration.
 - [Blog PDFs and writing skills](docs/blog-pdfs.md): PDF generation/review and Humanizer invocation/update references.
 - [Design system](components/design-system/README.md): UI foundations and interaction contracts.

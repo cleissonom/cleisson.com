@@ -7,6 +7,8 @@ import { getAllProjects } from "@/lib/content"
 import { LOCALES, type Locale } from "@/lib/i18n"
 import { isProjectDetailAvailable } from "@/lib/project-state"
 
+export { GAME_SLUGS_BY_LOCALE } from "@/data/games"
+
 const contentRoot = path.join(process.cwd(), "content")
 
 function getMarkdownSlugs(type: "projects" | "blog", locale: Locale): string[] {

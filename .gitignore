@@ -14,4 +14,6 @@ ai_tasks
 .project-ideas/
 .devimg/
 .linkedin-drafts/
+# Rust/WASM build outputs
+wasm/falling-blocks/target
 output/playwright/

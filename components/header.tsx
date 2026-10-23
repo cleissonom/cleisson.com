@@ -5,7 +5,11 @@ import type { UiDictionary } from "@/data/i18n/types"
 import { LocaleSwitcher } from "@/components/locale-switcher"
 import { SiteNavigation } from "@/components/site-navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { BLOG_SLUGS_BY_LOCALE, PROJECT_SLUGS_BY_LOCALE } from "@/data/content-index"
+import {
+  BLOG_SLUGS_BY_LOCALE,
+  GAME_SLUGS_BY_LOCALE,
+  PROJECT_SLUGS_BY_LOCALE
+} from "@/data/content-index"
 import type { Locale } from "@/lib/i18n"
 import { siteIdentity } from "@/data/profile"
 
@@ -39,6 +43,7 @@ export function Header({
             label={ui.labels.locale}
             projectSlugsByLocale={PROJECT_SLUGS_BY_LOCALE}
             blogSlugsByLocale={BLOG_SLUGS_BY_LOCALE}
+            gameSlugsByLocale={GAME_SLUGS_BY_LOCALE}
           />
           <ThemeToggle lightLabel={ui.labels.light} darkLabel={ui.labels.dark} />
         </div>

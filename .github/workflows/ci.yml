@@ -148,6 +148,13 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Verify game engine and published WASM
+        env:
+          RUSTUP_TOOLCHAIN: 1.98.1
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal --target wasm32-unknown-unknown
+          npm run games:wasm:check
+
       - name: Tests
         run: npm test
 

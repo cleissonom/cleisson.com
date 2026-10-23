@@ -58,6 +58,7 @@ export const ptBRDictionary: LocaleDictionary = {
   ui: {
     nav: {
       home: "Início",
+      games: "Jogos",
       experience: "Experiência",
       projects: "Projetos",
       blog: "Blog",
@@ -95,6 +96,7 @@ export const ptBRDictionary: LocaleDictionary = {
       skipToContent: "Pular para o conteúdo",
       backToProjects: "Voltar para projetos",
       backToBlog: "Voltar para o blog",
+      backToGames: "Voltar para os jogos",
       notFoundTitle: "Página não encontrada",
       notFoundDescription: "A página solicitada não existe para este idioma.",
       goHome: "Ir para o início",
@@ -406,6 +408,119 @@ export const ptBRDictionary: LocaleDictionary = {
         caseStudy: "Estudo de caso",
         demo: "Demonstração",
         package: "Pacote"
+      }
+    },
+    games: {
+      metadataTitle: "Jogos no navegador",
+      metadataDescription:
+        "Jogue Falling Blocks, um quebra-cabeça de mosaico com peças de tamanhos variados e regiões 3×3 em cascata.",
+      lead: "Pequenos jogos dos meus experimentos de programação. Escolha um e jogue no navegador.",
+      playLabel: "Jogar",
+      wasmNote:
+        "Para jogar, é necessário habilitar JavaScript e WebAssembly. As regras e os controles podem ser lidos sem eles.",
+      notFoundTitle: "Jogo não encontrado",
+      notFoundDescription: "Jogo não encontrado para este idioma.",
+      statusLabels: {
+        ready: "Pronto",
+        playing: "Jogando",
+        paused: "Pausado",
+        over: "Fim de jogo"
+      },
+      statsLabels: {
+        score: "Pontos",
+        level: "Nível",
+        regions: "Regiões"
+      },
+      panelLabels: {
+        hold: "Reserva",
+        next: "Próxima",
+        controls: "Atalhos do teclado",
+        touch: "Controles do jogo"
+      },
+      overlay: {
+        canvasLabel: "Tabuleiro de mosaico de Falling Blocks",
+        readyHint: "Preencha as regiões 3×3 demarcadas. Comece quando quiser.",
+        pausedHint: "Retome quando quiser. O tabuleiro fica salvo durante esta visita.",
+        overHintTemplate: "Pontos {score} · Nível {level}",
+        startLabel: "Iniciar",
+        resumeLabel: "Retomar",
+        replayLabel: "Jogar de novo",
+        loadErrorLabel:
+          "Não foi possível carregar o jogo. Tente novamente ou verifique se o navegador suporta WebAssembly.",
+        loadingLabel: "Carregando jogo…",
+        errorTitle: "Falha ao carregar",
+        retryLabel: "Tentar novamente"
+      },
+      actionLabels: {
+        left: "← Esquerda",
+        right: "Direita →",
+        down: "↓ Descer",
+        clockwise: "↻ Girar",
+        counterclockwise: "↺ Girar",
+        drop: "Soltar",
+        hold: "Reservar",
+        pause: "Pausar",
+        restart: "Reiniciar"
+      },
+      inputHint:
+        "Use os botões ou selecione o tabuleiro para usar os atalhos. Ao sair do jogo, a partida é pausada.",
+      accessibilityNote:
+        "Este é um quebra-cabeça visual. O tabuleiro não tem uma versão equivalente para leitores de tela; as regras e os controles estão disponíveis em texto.",
+      rulesTitle: "Como jogar",
+      aboutTitle: "Sobre o jogo",
+      rules: [
+        "Encaixe seis formatos de uma a cinco células em um mosaico 12×12. Mova e gire cada peça que cai; a sombra indica onde ela vai pousar. Reserve uma peça por jogada.",
+        "Complete uma região 3×3 demarcada para remover suas nove células. Preencher apenas uma linha não a remove.",
+        "Após uma remoção, as células soltas caem em cada coluna. Novas regiões completas são removidas em cascata: 90 × nível por região, com multiplicadores de 1, 2, 3… nas etapas seguintes.",
+        "Descer rende 1 ponto por célula; soltar rende 2. A cada seis regiões removidas, o nível e a velocidade aumentam. A partida termina quando uma peça não consegue entrar ou fica acima do tabuleiro ao pousar."
+      ],
+      controls: [
+        {
+          key: "Enter",
+          action: "Iniciar / retomar"
+        },
+        {
+          key: "← / →",
+          action: "Mover"
+        },
+        {
+          key: "↓",
+          action: "Descer"
+        },
+        {
+          key: "↑ / X",
+          action: "Girar no sentido horário"
+        },
+        {
+          key: "Z",
+          action: "Girar no sentido anti-horário"
+        },
+        {
+          key: "Espaço",
+          action: "Soltar"
+        },
+        {
+          key: "C",
+          action: "Reservar"
+        },
+        {
+          key: "P / Escape",
+          action: "Pausar / retomar"
+        },
+        {
+          key: "R",
+          action: "Reiniciar"
+        }
+      ],
+      entries: {
+        "falling-blocks": {
+          title: "Falling Blocks",
+          summary:
+            "Monte um mosaico, complete regiões 3×3 e provoque cascatas com seis formatos de tamanhos variados.",
+          description:
+            "Um experimento de mosaico com peças em queda, criado para este site. Rust executa as regras em WebAssembly; um canvas desenha o tabuleiro. A partida fica nesta aba, sem conta, ranking salvo ou áudio no jogo.",
+          stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        }
       }
     },
     blog: {

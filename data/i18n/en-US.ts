@@ -57,6 +57,7 @@ export const enUSDictionary: LocaleDictionary = {
   ui: {
     nav: {
       home: "Home",
+      games: "Games",
       experience: "Experience",
       projects: "Projects",
       blog: "Blog",
@@ -94,6 +95,7 @@ export const enUSDictionary: LocaleDictionary = {
       skipToContent: "Skip to content",
       backToProjects: "Back to projects",
       backToBlog: "Back to blog",
+      backToGames: "Back to games",
       notFoundTitle: "Page not found",
       notFoundDescription: "The page you requested does not exist for this locale.",
       goHome: "Go to home",
@@ -405,6 +407,119 @@ export const enUSDictionary: LocaleDictionary = {
         caseStudy: "Case Study",
         demo: "Demo",
         package: "Package"
+      }
+    },
+    games: {
+      metadataTitle: "Browser Games",
+      metadataDescription:
+        "Play Falling Blocks, a falling-mosaic puzzle with mixed-size pieces and cascading 3×3 regions.",
+      lead: "Small games from my programming experiments. Pick a game and try it in your browser.",
+      playLabel: "Play",
+      wasmNote:
+        "Playing requires JavaScript and WebAssembly. The rules and controls are available without them.",
+      notFoundTitle: "Game not found",
+      notFoundDescription: "Game not found for this locale.",
+      statusLabels: {
+        ready: "Ready",
+        playing: "Playing",
+        paused: "Paused",
+        over: "Game over"
+      },
+      statsLabels: {
+        score: "Score",
+        level: "Level",
+        regions: "Regions"
+      },
+      panelLabels: {
+        hold: "Reserve",
+        next: "Up next",
+        controls: "Keyboard shortcuts",
+        touch: "Game controls"
+      },
+      overlay: {
+        canvasLabel: "Falling Blocks mosaic board",
+        readyHint: "Fill the outlined 3×3 regions. Start when you are ready.",
+        pausedHint: "Resume when you are ready. Your board is saved for this visit.",
+        overHintTemplate: "Score {score} · Level {level}",
+        startLabel: "Start",
+        resumeLabel: "Resume",
+        replayLabel: "Play again",
+        loadErrorLabel:
+          "The game could not load. Try again or check that your browser supports WebAssembly.",
+        loadingLabel: "Loading game…",
+        errorTitle: "Unable to load",
+        retryLabel: "Try again"
+      },
+      actionLabels: {
+        left: "← Left",
+        right: "Right →",
+        down: "↓ Lower",
+        clockwise: "↻ Rotate",
+        counterclockwise: "↺ Rotate",
+        drop: "Drop",
+        hold: "Reserve",
+        pause: "Pause",
+        restart: "Restart"
+      },
+      inputHint:
+        "Use the buttons, or focus the board to use keyboard shortcuts. Leaving the game pauses it.",
+      accessibilityNote:
+        "This is a visual puzzle. The board does not have a screen-reader equivalent; the rules and controls are available as text.",
+      rulesTitle: "How to play",
+      aboutTitle: "About this game",
+      rules: [
+        "Fit six shapes of one to five cells into a 12×12 mosaic. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
+        "Complete any outlined 3×3 region to remove its nine cells. Filling a row alone does not clear it.",
+        "After a clear, loose cells fall down each column. Further completed regions clear in a cascade, earning 90 × level per region with multipliers of 1, 2, 3… for successive waves.",
+        "Lowering earns 1 point per cell; dropping earns 2. Every six cleared regions increases the level and speed. The game ends when a new piece cannot enter or a piece lands above the board."
+      ],
+      controls: [
+        {
+          key: "Enter",
+          action: "Start / resume"
+        },
+        {
+          key: "← / →",
+          action: "Move"
+        },
+        {
+          key: "↓",
+          action: "Lower"
+        },
+        {
+          key: "↑ / X",
+          action: "Rotate clockwise"
+        },
+        {
+          key: "Z",
+          action: "Rotate counterclockwise"
+        },
+        {
+          key: "Space",
+          action: "Drop"
+        },
+        {
+          key: "C",
+          action: "Reserve"
+        },
+        {
+          key: "P / Escape",
+          action: "Pause / resume"
+        },
+        {
+          key: "R",
+          action: "Restart"
+        }
+      ],
+      entries: {
+        "falling-blocks": {
+          title: "Falling Blocks",
+          summary:
+            "Build a mosaic, clear 3×3 regions, and set off cascades with six mixed-size shapes.",
+          description:
+            "A falling-mosaic experiment built for this site. Rust handles the game rules in WebAssembly; a canvas draws the board. Each run stays in this tab, with no account, saved leaderboard, or game audio.",
+          stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        }
       }
     },
     blog: {

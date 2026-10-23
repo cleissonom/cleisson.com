@@ -5,6 +5,7 @@ import path from "node:path"
 import { after, before, test } from "node:test"
 import { registerRecoveryContracts } from "./recovery-contracts.mjs"
 import { registerProjectPublicationContracts } from "./project-publication-contracts.mjs"
+import { registerGamesContracts } from "./games-contracts.mjs"
 
 const root = process.cwd()
 const locales = ["en-US", "pt-BR", "es-ES"]
@@ -114,6 +115,12 @@ async function fetchText(pathname, options) {
   return { response, body: await response.text() }
 }
 
+async function fetchBinary(pathname) {
+  const response = await fetch(`${origin}${pathname}`)
+  const bytes = Buffer.from(await response.arrayBuffer())
+  return { response, bytes }
+}
+
 before(
   async () => {
     if (configuredOrigin) {
@@ -145,6 +152,7 @@ before(
 after(stopServer)
 
 registerProjectPublicationContracts({ fetchText, mainHtml })
+registerGamesContracts({ fetchText, mainHtml, fetchBinary })
 
 test("the raw homepage is complete, structured server-rendered HTML", async () => {
   const { response, body } = await fetchText("/")

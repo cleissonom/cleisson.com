@@ -1,0 +1,18 @@
+[package]
+name = "falling-blocks"
+version = "1.0.0"
+edition = "2024"
+publish = false
+description = "Falling Blocks mosaic rules engine compiled to WebAssembly for cleisson.com/games"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+# The artifact ships from public/games/falling-blocks, so release keeps it small and
+# deterministic. The engine never unwinds and cannot allocate at runtime.
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

@@ -35,6 +35,11 @@ frontmatter and link targets.
 
 ## Maintainer reference
 
+Browser game maintenance is documented in `docs/games.md`. After changing the
+Rust engine, run `npm run games:wasm` and `npm run games:wasm:check` with the
+documented compiler version; review the source and committed binary together.
+Keep localized rules, Markdown, discovery, and keyboard/touch behavior aligned.
+
 Start with [README.md](README.md). Maintainer architecture, development/tooling, and deployment/operations guides live in `docs/`; published content and machine-consumed contracts stay in `content/` and `public/`.
 
 Use the commands and maintenance checklist in [docs/development.md](docs/development.md). Image verification is shared by the `images:check` package script and CI through `scripts/check-images.sh`; regeneration instructions remain in [docs/devimg.md](docs/devimg.md).

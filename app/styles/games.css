@@ -1,0 +1,192 @@
+.games-grid {
+  align-items: start;
+}
+.game-card {
+  gap: var(--space-4);
+}
+
+.falling-blocks {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.falling-blocks-play {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 24rem;
+  justify-self: center;
+  min-width: 0;
+}
+
+.falling-blocks-board-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  background: #142522;
+  width: 100%;
+}
+
+.falling-blocks-board {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.falling-blocks-board:focus-visible {
+  outline: 3px solid #f4c680;
+  outline-offset: -5px;
+}
+
+.falling-blocks-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  text-align: center;
+  background: rgb(20 37 34 / 94%);
+  color: #f2f4ee;
+}
+
+.falling-blocks-overlay-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.falling-blocks-overlay-hint {
+  max-width: 30ch;
+  margin: 0;
+  color: #c5d4cb;
+  font-size: 0.9375rem;
+}
+
+.falling-blocks-overlay button {
+  min-height: 44px;
+}
+.falling-blocks button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.falling-blocks-panels {
+  display: grid;
+  gap: var(--space-6);
+  min-width: 0;
+}
+.falling-blocks-hud {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+.falling-blocks-hud div {
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.falling-blocks-hud dt,
+.falling-blocks-slot figcaption {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.falling-blocks-hud dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.falling-blocks-slots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.falling-blocks-slot {
+  margin: 0;
+  padding: var(--space-3);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.falling-blocks-preview {
+  background: #142522;
+  border-radius: 8px;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.falling-blocks-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.falling-blocks-actions button {
+  min-height: 44px;
+  padding: var(--space-2);
+  font-size: 0.8125rem;
+  touch-action: manipulation;
+}
+.falling-blocks-input-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+.falling-blocks-rules h2 {
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+.falling-blocks-rules ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0;
+}
+.falling-blocks-rules li + li {
+  margin-top: var(--space-3);
+}
+.falling-blocks-controls {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.falling-blocks-controls summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.falling-blocks-controls dl {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+.falling-blocks-controls dl div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.falling-blocks-controls kbd {
+  font: inherit;
+  font-size: 0.75rem;
+}
+.falling-blocks-controls dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+@media (min-width: 768px) {
+  .falling-blocks {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+  .games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

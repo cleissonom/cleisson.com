@@ -4,6 +4,7 @@ type LocaleRouteOptions = {
   locales: readonly string[]
   projectSlugsByLocale: SlugIndex
   blogSlugsByLocale: SlugIndex
+  gameSlugsByLocale: SlugIndex
 }
 
 const STATIC_PAGES = new Set([
@@ -12,6 +13,7 @@ const STATIC_PAGES = new Set([
   "privacy",
   "projects",
   "blog",
+  "games",
   "resume",
   "experience",
   "mcp"
@@ -45,7 +47,15 @@ function detailPath(
   options: LocaleRouteOptions
 ): string | null {
   const [section, slug] = segments
-  const indexes = section === "projects" ? options.projectSlugsByLocale : options.blogSlugsByLocale
+  const indexes =
+    section === "projects"
+      ? options.projectSlugsByLocale
+      : section === "blog"
+        ? options.blogSlugsByLocale
+        : section === "games"
+          ? options.gameSlugsByLocale
+          : null
+  if (!indexes) return null
   const slugs = indexes[targetLocale] ?? []
   return slugs.includes(slug) ? localePath(targetLocale, `/${section}/${slug}`) : null
 }
@@ -62,7 +72,10 @@ export function resolveLocaleSwitchPath(
   if (segments.length === 1 && isStaticPageSegment(segments[0])) {
     return localePath(targetLocale, `/${segments[0]}`)
   }
-  if (segments.length === 2 && (segments[0] === "projects" || segments[0] === "blog")) {
+  if (
+    segments.length === 2 &&
+    (segments[0] === "projects" || segments[0] === "blog" || segments[0] === "games")
+  ) {
     return detailPath(segments, targetLocale, options) ?? localePath(targetLocale, "/")
   }
   return localePath(targetLocale, "/")

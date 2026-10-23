@@ -6,7 +6,11 @@ import {
   preferredRepresentation,
   type Representation
 } from "@/lib/content-negotiation"
-import { BLOG_SLUGS_BY_LOCALE, PROJECT_SLUGS_BY_LOCALE } from "@/data/content-index"
+import {
+  BLOG_SLUGS_BY_LOCALE,
+  GAME_SLUGS_BY_LOCALE,
+  PROJECT_SLUGS_BY_LOCALE
+} from "@/data/content-index"
 import {
   DEFAULT_LOCALE,
   LOCALE_COOKIE_NAME,
@@ -108,6 +112,7 @@ function isKnownPage(segments: string[], locale: Locale): boolean {
   const [section, slug] = segments
   if (section === "projects") return PROJECT_SLUGS_BY_LOCALE[locale].includes(slug)
   if (section === "blog") return BLOG_SLUGS_BY_LOCALE[locale].includes(slug)
+  if (section === "games") return GAME_SLUGS_BY_LOCALE[locale].includes(slug)
   return false
 }
 
