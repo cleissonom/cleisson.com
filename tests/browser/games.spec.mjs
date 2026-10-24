@@ -108,10 +108,10 @@ test("loading disables actions until the engine is available", async ({ page }) 
   await expect(page.getByRole("button", { name: "Start", exact: true })).toBeEnabled()
 })
 
-for (const [locale, rules, startLabel, shortcuts] of [
-  ["en-US", "How to play", "Start", "Keyboard shortcuts"],
-  ["pt-BR", "Como jogar", "Iniciar", "Atalhos do teclado"],
-  ["es-ES", "Cómo jugar", "Empezar", "Atajos de teclado"]
+for (const [locale, rules, startLabel, shortcuts, bestLabel] of [
+  ["en-US", "How to play", "Start", "Keyboard shortcuts", "Best score"],
+  ["pt-BR", "Como jogar", "Iniciar", "Atalhos do teclado", "Recorde"],
+  ["es-ES", "Cómo jugar", "Empezar", "Atajos de teclado", "Récord"]
 ]) {
   test(`rules and controls remain available without JavaScript in ${locale}`, async ({
     browser,
@@ -123,6 +123,9 @@ for (const [locale, rules, startLabel, shortcuts] of [
     await expect(page.getByRole("heading", { name: "Falling Blocks", exact: true })).toBeVisible()
     await expect(page.getByRole("heading", { name: rules, exact: true })).toBeVisible()
     await expect(page.locator(".falling-blocks-rules li")).toHaveCount(4)
+    await expect(
+      page.locator(".falling-blocks-hud dt").filter({ hasText: bestLabel })
+    ).toBeVisible()
     await expect(page.getByRole("button", { name: startLabel, exact: true })).toBeDisabled()
     await page.getByText(shortcuts, { exact: true }).click()
     await expect(page.locator("kbd").first()).toBeVisible()

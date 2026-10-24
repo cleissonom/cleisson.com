@@ -82,7 +82,7 @@
 }
 .falling-blocks-hud {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
   margin: 0;
 }
@@ -100,7 +100,7 @@
 }
 .falling-blocks-hud dd {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: clamp(0.875rem, 4vw, 1.25rem);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }

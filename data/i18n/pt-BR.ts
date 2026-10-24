@@ -277,6 +277,7 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Cookies, analytics e desempenho",
           paragraphs: [
+            "Falling Blocks salva seu recorde neste navegador quando o armazenamento local está disponível. A pontuação não é enviada a um servidor nem compartilhada entre dispositivos. Limpar os dados deste site no navegador apaga o recorde.",
             "O site usa um cookie de idioma para apoiar a detecção e o roteamento de idioma, e um cookie de tema quando você escolhe o modo claro ou escuro. Cada um pode permanecer por até um ano. Eles atendem ao comportamento solicitado do site, e não à publicidade. Vercel Analytics e Speed Insights estão habilitados para entender uso agregado, entrega de páginas e desempenho; a Vercel pode processar informações técnicas da requisição e do dispositivo sob seus próprios termos.",
             "Provedores de hospedagem e segurança podem manter logs operacionais conforme suas próprias políticas. Este site não vende informações pessoais nem adiciona rastreadores de publicidade de terceiros. Links para LinkedIn, GitHub e outros recursos externos deixam este site e seguem as práticas de privacidade desses serviços."
           ]
@@ -284,7 +285,7 @@ export const ptBRDictionary: LocaleDictionary = {
         {
           heading: "Dúvidas e escolhas",
           paragraphs: [
-            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Requisições à API REST e ao MCP, com seus argumentos limitados, podem aparecer em logs comuns de hospedagem, limite de uso, diagnóstico ou segurança; não envie uma descrição confidencial de vaga, credenciais ou dados pessoais sensíveis. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 23 de agosto de 2026."
+            "Você pode limpar os cookies de idioma e tema no navegador, bloquear recursos opcionais no cliente ou consultar o conteúdo renderizado no servidor sem JavaScript. Requisições à API REST e ao MCP, com seus argumentos limitados, podem aparecer em logs comuns de hospedagem, limite de uso, diagnóstico ou segurança; não envie uma descrição confidencial de vaga, credenciais ou dados pessoais sensíveis. Para uma dúvida de privacidade sobre este site ou sobre um e-mail enviado anteriormente, use a página de contato e descreva o pedido sem acrescentar outros dados sensíveis. Este aviso foi atualizado em 24 de outubro de 2026."
           ]
         }
       ]
@@ -428,6 +429,7 @@ export const ptBRDictionary: LocaleDictionary = {
       },
       statsLabels: {
         score: "Pontos",
+        bestScore: "Recorde",
         level: "Nível",
         lines: "Linhas"
       },
@@ -464,6 +466,8 @@ export const ptBRDictionary: LocaleDictionary = {
       },
       inputHint:
         "Use os botões ou selecione o tabuleiro para usar os atalhos. Ao sair do jogo, a partida é pausada.",
+      bestScoreNote:
+        "Seu recorde fica salvo apenas neste navegador quando o armazenamento local está disponível. Limpar os dados do site apaga o recorde.",
       accessibilityNote:
         "Este é um quebra-cabeça visual. O tabuleiro não tem uma versão equivalente para leitores de tela; as regras e os controles estão disponíveis em texto.",
       rulesTitle: "Como jogar",
