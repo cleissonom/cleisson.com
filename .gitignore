@@ -16,4 +16,5 @@ ai_tasks
 .linkedin-drafts/
 # Rust/WASM build outputs
 wasm/falling-blocks/target
+wasm/sudoku/target
 output/playwright/

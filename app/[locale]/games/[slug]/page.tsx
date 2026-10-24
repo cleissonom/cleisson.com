@@ -12,8 +12,10 @@ import {
   Surface
 } from "@/components/design-system"
 import { FallingBlocksGame } from "@/components/games/falling-blocks-game"
+import { SudokuGame } from "@/components/games/sudoku-game"
 import { JsonLd } from "@/components/json-ld"
 import { getDictionary } from "@/data/i18n"
+import { getSudokuDictionary } from "@/data/sudoku"
 import { getAllGames, getGameBySlug } from "@/lib/games"
 import { LOCALES, isLocale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl, buildPageTitle, createMetadata } from "@/lib/metadata"
@@ -79,6 +81,7 @@ export default async function GameDetailPage({
   if (!game) {
     notFound()
   }
+  const sudoku = game.slug === "sudoku" ? getSudokuDictionary(locale) : null
 
   const breadcrumbs = breadcrumbJsonLd([
     { name: ui.nav.home, url: absoluteUrl(`/${locale}`) },
@@ -95,11 +98,15 @@ export default async function GameDetailPage({
           <Eyebrow>{ui.nav.games}</Eyebrow>
           <h1 id="game-title">{game.title}</h1>
           <Lead>{game.summary}</Lead>
-          <MutedText>{games.wasmNote}</MutedText>
+          <MutedText>{sudoku?.loadingNote ?? games.wasmNote}</MutedText>
         </PageHeader>
       </Surface>
 
-      <FallingBlocksGame wasmPath={game.wasmPath} locale={locale} copy={games} />
+      {sudoku ? (
+        <SudokuGame wasmPath={game.wasmPath} locale={locale} copy={sudoku} />
+      ) : (
+        <FallingBlocksGame wasmPath={game.wasmPath} locale={locale} copy={games} />
+      )}
 
       <Surface
         as="section"

@@ -6,6 +6,7 @@ import { after, before, test } from "node:test"
 import { registerRecoveryContracts } from "./recovery-contracts.mjs"
 import { registerProjectPublicationContracts } from "./project-publication-contracts.mjs"
 import { registerGamesContracts } from "./games-contracts.mjs"
+import { registerSudokuContracts } from "./sudoku-contracts.mjs"
 
 const root = process.cwd()
 const locales = ["en-US", "pt-BR", "es-ES"]
@@ -153,6 +154,7 @@ after(stopServer)
 
 registerProjectPublicationContracts({ fetchText, mainHtml })
 registerGamesContracts({ fetchText, mainHtml, fetchBinary })
+registerSudokuContracts({ fetchText, mainHtml, fetchBinary })
 
 test("the raw homepage is complete, structured server-rendered HTML", async () => {
   const { response, body } = await fetchText("/")

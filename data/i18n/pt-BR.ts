@@ -1,5 +1,6 @@
 import type { LocaleDictionary } from "@/data/i18n/types"
 import { buildRecommendations, type RecommendationTranslationsById } from "@/data/recommendations"
+import { sudokuPtBR } from "@/data/sudoku/pt-BR"
 
 const recommendationTranslations: RecommendationTranslationsById = {
   "valeriia-kruchinina": {
@@ -278,6 +279,7 @@ export const ptBRDictionary: LocaleDictionary = {
           heading: "Cookies, analytics e desempenho",
           paragraphs: [
             "Falling Blocks salva seu recorde neste navegador quando o armazenamento local está disponível. A pontuação não é enviada a um servidor nem compartilhada entre dispositivos. Limpar os dados deste site no navegador apaga o recorde.",
+            "Sudoku salva o tabuleiro atual, os números inseridos, as anotações, o tempo decorrido, o uso de dicas e os melhores tempos neste navegador quando o armazenamento local está disponível. Esses dados do jogo não são enviados a um servidor nem compartilhados entre dispositivos. Limpar os dados deste site no navegador apaga o progresso salvo e os recordes.",
             "O site usa um cookie de idioma para apoiar a detecção e o roteamento de idioma, e um cookie de tema quando você escolhe o modo claro ou escuro. Cada um pode permanecer por até um ano. Eles atendem ao comportamento solicitado do site, e não à publicidade. Vercel Analytics e Speed Insights estão habilitados para entender uso agregado, entrega de páginas e desempenho; a Vercel pode processar informações técnicas da requisição e do dispositivo sob seus próprios termos.",
             "Provedores de hospedagem e segurança podem manter logs operacionais conforme suas próprias políticas. Este site não vende informações pessoais nem adiciona rastreadores de publicidade de terceiros. Links para LinkedIn, GitHub e outros recursos externos deixam este site e seguem as práticas de privacidade desses serviços."
           ]
@@ -414,7 +416,7 @@ export const ptBRDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Jogos no navegador",
       metadataDescription:
-        "Jogue Falling Blocks, um quebra-cabeça com seis formatos de peças em queda. Complete linhas horizontais para liberar espaço e ganhar pontos.",
+        "Jogue Falling Blocks e Sudoku no navegador, com controles de teclado e toque, tela cheia e recordes salvos localmente.",
       lead: "Pequenos jogos dos meus experimentos de programação. Escolha um e jogue no navegador.",
       playLabel: "Jogar",
       wasmNote:
@@ -525,6 +527,12 @@ export const ptBRDictionary: LocaleDictionary = {
           description:
             "Um quebra-cabeça com peças em queda, criado para este site. Rust executa as regras em WebAssembly; um canvas desenha o tabuleiro. A partida fica nesta aba, sem conta, ranking salvo ou áudio no jogo.",
           stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        },
+        sudoku: {
+          title: "Sudoku",
+          summary: sudokuPtBR.summary,
+          description: sudokuPtBR.description,
+          stack: ["Rust", "WebAssembly", "TypeScript", "HTML"]
         }
       }
     },

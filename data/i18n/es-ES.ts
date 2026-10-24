@@ -1,5 +1,6 @@
 import type { LocaleDictionary } from "@/data/i18n/types"
 import { buildRecommendations, type RecommendationTranslationsById } from "@/data/recommendations"
+import { sudokuEsES } from "@/data/sudoku/es-ES"
 
 const recommendationTranslations: RecommendationTranslationsById = {
   "valeriia-kruchinina": {
@@ -278,6 +279,7 @@ export const esESDictionary: LocaleDictionary = {
           heading: "Cookies, analítica y rendimiento",
           paragraphs: [
             "Falling Blocks guarda tu récord en este navegador cuando el almacenamiento local está disponible. La puntuación no se envía a un servidor ni se comparte entre dispositivos. Borrar los datos de este sitio en el navegador elimina el récord.",
+            "Sudoku guarda el tablero actual, los números introducidos, las notas, el tiempo transcurrido, el uso de pistas y los mejores tiempos en este navegador cuando el almacenamiento local está disponible. Estos datos del juego no se envían a un servidor ni se comparten entre dispositivos. Borrar los datos de este sitio en el navegador elimina el progreso guardado y los récords.",
             "El sitio utiliza una cookie de idioma para apoyar la detección y el enrutamiento del idioma, y una cookie de tema cuando seleccionas el modo claro u oscuro. Cada una puede permanecer hasta un año. Sirven al comportamiento solicitado del sitio y no a la publicidad. Vercel Analytics y Speed Insights están habilitados para comprender el uso agregado, la entrega de páginas y el rendimiento; Vercel puede procesar información técnica de solicitudes y dispositivos bajo sus propios términos.",
             "Los proveedores de alojamiento y seguridad pueden conservar registros operativos de acuerdo con sus propias políticas. Este sitio no vende información personal ni incorpora rastreadores publicitarios de terceros. Los enlaces a LinkedIn, GitHub y otros recursos externos salen de este sitio y se rigen por las prácticas de privacidad de esos servicios."
           ]
@@ -414,7 +416,7 @@ export const esESDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Juegos en el navegador",
       metadataDescription:
-        "Juega a Falling Blocks, un rompecabezas con seis formas de piezas que caen. Completa filas horizontales para liberar espacio y ganar puntos.",
+        "Juega a Falling Blocks y Sudoku en tu navegador, con controles de teclado y táctiles, pantalla completa y récords guardados localmente.",
       lead: "Pequeños juegos de mis experimentos de programación. Elige uno y juega en tu navegador.",
       playLabel: "Jugar",
       wasmNote:
@@ -525,6 +527,12 @@ export const esESDictionary: LocaleDictionary = {
           description:
             "Un rompecabezas con piezas que caen, creado para este sitio. Rust ejecuta las reglas en WebAssembly; un canvas dibuja el tablero. La partida se queda en esta pestaña, sin cuenta, clasificación guardada ni audio en el juego.",
           stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        },
+        sudoku: {
+          title: "Sudoku",
+          summary: sudokuEsES.summary,
+          description: sudokuEsES.description,
+          stack: ["Rust", "WebAssembly", "TypeScript", "HTML"]
         }
       }
     },

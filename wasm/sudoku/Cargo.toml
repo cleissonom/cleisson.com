@@ -1,0 +1,16 @@
+[package]
+name = "sudoku"
+version = "1.0.0"
+edition = "2024"
+publish = false
+description = "Seeded Sudoku puzzles and rules compiled to WebAssembly for cleisson.com/games"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

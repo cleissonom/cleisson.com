@@ -142,7 +142,13 @@ for (const viewport of [
     browser,
     baseURL
   }) => {
-    const context = await browser.newContext({ baseURL, viewport, isMobile: true, hasTouch: true })
+    const context = await browser.newContext({
+      baseURL,
+      viewport,
+      isMobile: true,
+      hasTouch: true,
+      reducedMotion: "reduce"
+    })
     const page = await context.newPage()
     await page.goto(path)
     await expect(page.getByRole("button", { name: "Start", exact: true })).toBeEnabled()

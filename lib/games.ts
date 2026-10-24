@@ -15,6 +15,7 @@ export type GameEntry = {
 export type GamesPageDictionary = GamePageDictionary
 
 export const FALLING_BLOCKS_WASM_PATH = "/games/falling-blocks/falling-blocks.wasm"
+export const SUDOKU_WASM_PATH = "/games/sudoku/sudoku.wasm"
 
 export function gamesDictionary(locale: Locale): GamesPageDictionary {
   return getDictionary(locale).pages.games
@@ -24,7 +25,7 @@ export function getAllGames(locale: Locale): GameEntry[] {
   const entries = gamesDictionary(locale).entries
   return GAMES.map((slug) => ({
     slug,
-    wasmPath: FALLING_BLOCKS_WASM_PATH,
+    wasmPath: slug === "sudoku" ? SUDOKU_WASM_PATH : FALLING_BLOCKS_WASM_PATH,
     ...entries[slug]
   }))
 }
