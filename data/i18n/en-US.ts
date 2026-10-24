@@ -438,6 +438,7 @@ export const enUSDictionary: LocaleDictionary = {
         controls: "Keyboard shortcuts",
         touch: "Game controls"
       },
+      fullscreenLabels: { enter: "Fullscreen", exit: "Exit fullscreen" },
       overlay: {
         canvasLabel: "Falling Blocks board",
         readyHint: "Fill complete horizontal rows to clear them. Start when you are ready.",
@@ -464,7 +465,7 @@ export const enUSDictionary: LocaleDictionary = {
         restart: "Restart"
       },
       inputHint:
-        "Use the buttons, or focus the board to use keyboard shortcuts. Leaving the game pauses it.",
+        "Use the touch buttons on your phone, or focus the board for keyboard shortcuts on your laptop. Fullscreen gives the game more room. Leaving the game pauses it.",
       bestScoreNote:
         "Your best score is saved only in this browser when local storage is available. Clearing site data removes it.",
       accessibilityNote:
@@ -472,7 +473,7 @@ export const enUSDictionary: LocaleDictionary = {
       rulesTitle: "How to play",
       aboutTitle: "About this game",
       rules: [
-        "Fit six shapes of one to five cells into a 12×12 board. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
+        "Fit six shapes of one to five cells into a 12×20 board. Move and rotate each falling piece; the shadow shows where it will land. Reserve a piece once per drop.",
         "Fill all 12 cells in a horizontal row to clear it. Incomplete rows stay on the board.",
         "After a clear, the rows above move down intact. Each cleared row earns 90 × level points.",
         "Lowering earns 1 point per cell; dropping earns 2. Every six cleared rows increases the level and speed. The game ends when a new piece cannot enter or a piece lands above the board."

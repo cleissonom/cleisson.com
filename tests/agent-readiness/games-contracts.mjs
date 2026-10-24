@@ -64,7 +64,7 @@ export function registerGamesContracts({ fetchText, mainHtml, fetchBinary }) {
       assert.ok(markdown.body.includes("- `"), markdown.body)
       assert.ok(markdown.body.includes("WebAssembly"), markdown.body)
       assert.ok(markdown.body.includes(rowRules[locale]), markdown.body)
-      assert.ok(markdown.body.includes("12×12"), markdown.body)
+      assert.ok(markdown.body.includes("12×20"), markdown.body)
       assert.ok(main.includes(rowRules[locale]), main)
 
       const index = await fetchText(`/${locale}/games.md`)

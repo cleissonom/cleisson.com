@@ -104,6 +104,7 @@ export type GamePageDictionary = {
     controls: string
     touch: string
   }
+  fullscreenLabels: { enter: string; exit: string }
   overlay: {
     canvasLabel: string
     readyHint: string

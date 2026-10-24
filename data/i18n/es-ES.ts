@@ -439,6 +439,7 @@ export const esESDictionary: LocaleDictionary = {
         controls: "Atajos de teclado",
         touch: "Controles del juego"
       },
+      fullscreenLabels: { enter: "Pantalla completa", exit: "Salir de pantalla completa" },
       overlay: {
         canvasLabel: "Tablero de Falling Blocks",
         readyHint: "Completa filas horizontales para eliminarlas. Empieza cuando quieras.",
@@ -465,7 +466,7 @@ export const esESDictionary: LocaleDictionary = {
         restart: "Reiniciar"
       },
       inputHint:
-        "Usa los botones o selecciona el tablero para usar los atajos. Al salir del juego, la partida se pausa.",
+        "Usa los botones táctiles en tu móvil o selecciona el tablero para usar los atajos en tu portátil. La pantalla completa da más espacio al juego. Al salir del juego, la partida se pausa.",
       bestScoreNote:
         "Tu récord se guarda solo en este navegador cuando el almacenamiento local está disponible. Borrar los datos del sitio elimina el récord.",
       accessibilityNote:
@@ -473,7 +474,7 @@ export const esESDictionary: LocaleDictionary = {
       rulesTitle: "Cómo jugar",
       aboutTitle: "Acerca del juego",
       rules: [
-        "Encaja seis formas de una a cinco celdas en un tablero de 12×12. Mueve y gira cada pieza que cae; la sombra indica dónde aterrizará. Reserva una pieza por jugada.",
+        "Encaja seis formas de una a cinco celdas en un tablero de 12×20. Mueve y gira cada pieza que cae; la sombra indica dónde aterrizará. Reserva una pieza por jugada.",
         "Llena las 12 celdas de una fila horizontal para eliminarla. Las filas incompletas permanecen en el tablero.",
         "Tras una eliminación, las filas de arriba bajan enteras. Cada fila eliminada da 90 × nivel puntos.",
         "Bajar da 1 punto por celda; soltar da 2. Cada seis filas eliminadas aumenta el nivel y la velocidad. La partida termina cuando una pieza no puede entrar o queda por encima del tablero al aterrizar."

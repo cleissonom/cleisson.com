@@ -7,7 +7,7 @@
  * Shared block (contiguous inside linear memory; absolute addresses come from
  * the exported pointers at runtime):
  *
- * - board: 144 bytes, row-major 12x12, `0` = empty, `1..=6` = piece id;
+ * - board: 240 bytes, row-major 12x20, `0` = empty, `1..=6` = piece id;
  * - state: 32 bytes (`STATE_LAYOUT` below);
  * - piece cells: 16 bytes, active piece matrix (stride 4);
  * - preview: 16 bytes, scratch matrix for stateless `preview(id)`;
@@ -15,7 +15,7 @@
  */
 
 const COLS = 12
-const ROWS = 12
+const ROWS = 20
 
 const LAYOUT = {
   boardLen: COLS * ROWS,
