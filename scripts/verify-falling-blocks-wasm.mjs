@@ -17,19 +17,21 @@ const artifact = path.join(repoRoot, "public", "games", "falling-blocks", "falli
 const bytes = fs.readFileSync(artifact)
 
 const STATUS = { ready: 0, playing: 1, paused: 2, over: 3 }
+const COLS = 12
+const ROWS = 20
 
 // Documented layout from wasm/falling-blocks/src/lib.rs, relative to the block base:
 // board, state, piece cells, preview, queue.
 const OFFSETS = {
   board: 0,
-  boardLen: 144,
-  state: 144,
+  boardLen: COLS * ROWS,
+  state: 240,
   stateLen: 32,
-  pieceCells: 176,
+  pieceCells: 272,
   pieceCellsLen: 16,
-  preview: 192,
+  preview: 288,
   previewLen: 16,
-  queue: 208,
+  queue: 304,
   queueLen: 3
 }
 
@@ -113,7 +115,13 @@ function fillPartialBoard() {
     assert.equal(clearedLines(), 0, "incomplete rows remain after each placement")
   }
   assert.equal(filledBoardCells(), 18)
-  assert.equal(region("board").slice(132).filter(Boolean).length, 11, "bottom row has one gap")
+  assert.equal(
+    region("board")
+      .slice((ROWS - 1) * COLS)
+      .filter(Boolean).length,
+    11,
+    "bottom row has one gap"
+  )
 }
 
 function verifyRowClearing() {
@@ -129,11 +137,13 @@ function verifyRowClearing() {
   assert.equal(filledBoardCells(), 8, "only the twelve cells in the full row disappear")
   const board = region("board")
   assert.deepEqual(
-    [...board.slice(120, 132)].flatMap((cell, col) => (cell ? [col] : [])),
+    [...board.slice((ROWS - 2) * COLS, (ROWS - 1) * COLS)].flatMap((cell, col) =>
+      cell ? [col] : []
+    ),
     [5]
   )
   assert.deepEqual(
-    [...board.slice(132)].flatMap((cell, col) => (cell ? [col] : [])),
+    [...board.slice((ROWS - 1) * COLS)].flatMap((cell, col) => (cell ? [col] : [])),
     [3, 4, 5, 6, 7, 8, 11]
   )
 }
@@ -204,7 +214,7 @@ async function main() {
   assert.deepEqual([...region("preview")], [1, ...Array(15).fill(0)])
   assert.equal(exports.blocks_preview(2), 2, "domino spans 2 columns")
   assert.equal(exports.blocks_preview(0), 0, "unknown ids have no shape")
-  assert.ok(exports.blocks_ghost_row() >= 0 && exports.blocks_ghost_row() < 12)
+  assert.ok(exports.blocks_ghost_row() >= 0 && exports.blocks_ghost_row() < ROWS)
 
   exports.blocks_start()
   assert.equal(status(), STATUS.playing, "a run restarts cleanly")

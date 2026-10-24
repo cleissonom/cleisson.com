@@ -1,7 +1,7 @@
 //! Falling-block rules: mixed-size pieces and complete horizontal row clears.
 
 pub const COLS: usize = 12;
-pub const ROWS: usize = 12;
+pub const ROWS: usize = 20;
 pub const BOARD_SIZE: usize = COLS * ROWS;
 
 /// Pieces held before the next spawn.

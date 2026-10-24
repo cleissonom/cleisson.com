@@ -21,7 +21,7 @@
 //! Shared regions (contiguous, deterministic layout, all inside one block in
 //! linear memory — the `*_ptr()` exports resolve the actual addresses):
 //!
-//! - board: 144 bytes, row-major 12×12, `0` = empty, `1..=6` = piece id;
+//! - board: 240 bytes, row-major 12×20, `0` = empty, `1..=6` = piece id;
 //! - state: 32 bytes — see `STATE_LAYOUT` for the field offsets;
 //! - piece cells: 16 bytes, active piece matrix (stride 4; use
 //!   `state.piece_size` for the meaningful area);
@@ -398,7 +398,7 @@ mod tests {
         assert_eq!(&state()[4..8], &1u32.to_le_bytes(), "one cleared line");
         assert_eq!(
             &state()[0..4],
-            &112u32.to_le_bytes(),
+            &128u32.to_le_bytes(),
             "clear and drop score"
         );
         assert!(

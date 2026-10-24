@@ -11,7 +11,7 @@ use falling_blocks::{
 
 /// Shared-region sizes documented in `src/lib.rs`. The layout module is
 /// internal, so the expectations here double as an ABI drift check.
-const BOARD_LEN: usize = 144;
+const BOARD_LEN: usize = 240;
 
 /// On the host the whole shared block is `exported_memory()`, so region
 /// offsets are the pointer deltas from the exported board pointer. The real
@@ -57,7 +57,7 @@ fn init_start_move_and_drop_follow_the_documented_abi() {
     assert!(distance >= 0, "ghost never sits above the piece");
 
     let board_before = board_filled_cells();
-    let active_count = memory()[176..192].iter().filter(|cell| **cell != 0).count();
+    let active_count = memory()[272..288].iter().filter(|cell| **cell != 0).count();
     blocks_soft_drop();
     let scored_soft = u32::from_le_bytes(state()[0..4].try_into().unwrap());
     assert_eq!(scored_soft, 1, "a soft drop scores a point");
@@ -92,7 +92,7 @@ fn init_start_move_and_drop_follow_the_documented_abi() {
     assert_eq!(blocks_preview(0), 0, "unknown ids have no shape");
     assert_eq!(
         blocks_queue_ptr(),
-        blocks_board_ptr() + 208,
+        blocks_board_ptr() + 304,
         "queue follows preview"
     );
 }

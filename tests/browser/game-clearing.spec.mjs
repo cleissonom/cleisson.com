@@ -43,7 +43,7 @@ test("a completed row clears while partial rows keep their cells and order", asy
     const ctx = canvas.getContext("2d")
     const cell = canvas.width / 12
     const empty = ctx.getImageData(0.3 * cell, 0.3 * cell, 1, 1).data
-    return Array.from({ length: 12 }, (_, row) =>
+    return Array.from({ length: 20 }, (_, row) =>
       Array.from({ length: 12 }, (_, col) => {
         const pixel = ctx.getImageData((col + 0.3) * cell, (row + 0.3) * cell, 1, 1).data
         return pixel.some((value, index) => value !== empty[index])
@@ -51,8 +51,8 @@ test("a completed row clears while partial rows keep their cells and order", asy
     )
   })
   expect(settled.flat().filter(Boolean)).toHaveLength(8)
-  expect(settled[10]).toEqual(Array.from({ length: 12 }, (_, col) => col === 5))
-  expect(settled[11]).toEqual(
+  expect(settled[18]).toEqual(Array.from({ length: 12 }, (_, col) => col === 5))
+  expect(settled[19]).toEqual(
     Array.from({ length: 12 }, (_, col) => [3, 4, 5, 6, 7, 8, 11].includes(col))
   )
 })

@@ -161,6 +161,30 @@ fn hard_drop_locks_the_piece_and_awards_distance_points() {
 }
 
 #[test]
+fn a_piece_passes_the_twelfth_row_and_lands_on_the_twentieth() {
+    let mut game = started_game();
+    let mut cells = [0; 16];
+    spawn_cells(1, &mut cells);
+    game.piece = Some(Piece {
+        id: 1,
+        size: 1,
+        cells,
+        x: 0,
+        y: 0,
+    });
+    assert_eq!(game.ghost_row_of_piece(), 19);
+    for _ in 0..13 {
+        assert!(game.soft_drop());
+    }
+    assert_eq!(game.piece.as_ref().unwrap().y, 13);
+    assert_eq!(game.ghost_row_of_piece(), 19);
+    assert!(game.hard_drop());
+    assert_eq!(game.board.get(19 * COLS), Some(&1));
+    assert_eq!(game.board.iter().filter(|cell| **cell != 0).count(), 1);
+    assert_eq!(game.score, 25);
+}
+
+#[test]
 fn soft_drop_moves_down_one_row_and_scores_a_point() {
     let mut game = started_game();
     let y = game.piece.as_ref().unwrap().y;

@@ -68,7 +68,7 @@ test("mobile buttons support a run without a keyboard and fit a narrow screen", 
   await expect(page.getByRole("button", { name: "Drop", exact: true })).toBeEnabled()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   const box = await board(page).boundingBox()
-  expect(Math.abs(box.width - box.height)).toBeLessThan(1)
+  expect(Math.abs(box.width / box.height - 12 / 20)).toBeLessThan(0.01)
   await context.close()
 })
 

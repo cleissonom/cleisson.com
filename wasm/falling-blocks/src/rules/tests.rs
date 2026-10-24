@@ -1,8 +1,7 @@
 use super::*;
 
 #[test]
-fn uses_a_square_board_and_mixed_size_pieces() {
-    assert_eq!((COLS, ROWS), (12, 12));
+fn uses_mixed_size_pieces() {
     let counts: Vec<usize> = PIECE_IDS
         .iter()
         .map(|id| {

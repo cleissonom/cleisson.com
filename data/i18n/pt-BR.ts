@@ -439,6 +439,7 @@ export const ptBRDictionary: LocaleDictionary = {
         controls: "Atalhos do teclado",
         touch: "Controles do jogo"
       },
+      fullscreenLabels: { enter: "Tela cheia", exit: "Sair da tela cheia" },
       overlay: {
         canvasLabel: "Tabuleiro de Falling Blocks",
         readyHint: "Preencha linhas horizontais completas para removê-las. Comece quando quiser.",
@@ -465,7 +466,7 @@ export const ptBRDictionary: LocaleDictionary = {
         restart: "Reiniciar"
       },
       inputHint:
-        "Use os botões ou selecione o tabuleiro para usar os atalhos. Ao sair do jogo, a partida é pausada.",
+        "Use os botões de toque no celular ou selecione o tabuleiro para usar os atalhos no computador. A tela cheia dá mais espaço ao jogo. Ao sair do jogo, a partida é pausada.",
       bestScoreNote:
         "Seu recorde fica salvo apenas neste navegador quando o armazenamento local está disponível. Limpar os dados do site apaga o recorde.",
       accessibilityNote:
@@ -473,7 +474,7 @@ export const ptBRDictionary: LocaleDictionary = {
       rulesTitle: "Como jogar",
       aboutTitle: "Sobre o jogo",
       rules: [
-        "Encaixe seis formatos de uma a cinco células em um tabuleiro 12×12. Mova e gire cada peça que cai; a sombra indica onde ela vai pousar. Reserve uma peça por jogada.",
+        "Encaixe seis formatos de uma a cinco células em um tabuleiro 12×20. Mova e gire cada peça que cai; a sombra indica onde ela vai pousar. Reserve uma peça por jogada.",
         "Preencha todas as 12 células de uma linha horizontal para removê-la. Linhas incompletas permanecem no tabuleiro.",
         "Após uma remoção, as linhas acima descem inteiras. Cada linha removida rende 90 × nível pontos.",
         "Descer rende 1 ponto por célula; soltar rende 2. A cada seis linhas removidas, o nível e a velocidade aumentam. A partida termina quando uma peça não consegue entrar ou fica acima do tabuleiro ao pousar."

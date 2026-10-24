@@ -13,7 +13,7 @@ function pieceColor(id: number): string {
   return PIECE_COLORS[id] ?? PIECE_COLORS[0]
 }
 
-/** A 2D context scaled for the current pixel ratio, with CSS dimensions set. */
+/** Scale the drawing buffer for pixel density; CSS owns the display dimensions. */
 export function fitCanvas(
   canvas: HTMLCanvasElement,
   width: number,
@@ -22,8 +22,6 @@ export function fitCanvas(
   const ratio = window.devicePixelRatio || 1
   canvas.width = Math.round(width * ratio)
   canvas.height = Math.round(height * ratio)
-  canvas.style.width = `${width}px`
-  canvas.style.height = "auto"
   const ctx = canvas.getContext("2d")
   if (!ctx) throw new Error("Canvas 2D context is unavailable")
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)

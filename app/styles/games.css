@@ -13,10 +13,25 @@
 
 .falling-blocks-play {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
   width: 100%;
-  max-width: 24rem;
+  max-width: 30rem;
   justify-self: center;
+  min-width: 0;
+}
+
+.falling-blocks-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+.falling-blocks-toolbar button {
+  min-height: 44px;
+}
+.falling-blocks-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.5rem;
+  align-items: start;
+  gap: var(--space-2);
   min-width: 0;
 }
 
@@ -26,7 +41,13 @@
   border: 2px solid var(--border);
   border-radius: 16px;
   background: #142522;
-  width: 100%;
+  width: min(
+    100%,
+    calc(
+      (100svh - 350px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--board-ratio)
+    )
+  );
+  justify-self: center;
 }
 
 .falling-blocks-board {
@@ -34,7 +55,6 @@
   width: 100%;
   max-width: 100%;
   height: auto;
-  aspect-ratio: 1;
 }
 
 .falling-blocks-board:focus-visible {
@@ -48,8 +68,8 @@
   display: grid;
   place-content: center;
   justify-items: center;
-  gap: var(--space-4);
-  padding: var(--space-6);
+  gap: var(--space-2);
+  padding: var(--space-3);
   text-align: center;
   background: rgb(20 37 34 / 94%);
   color: #f2f4ee;
@@ -57,7 +77,7 @@
 
 .falling-blocks-overlay-title {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: clamp(1rem, 4vw, 1.6rem);
   font-weight: 700;
 }
 
@@ -65,7 +85,7 @@
   max-width: 30ch;
   margin: 0;
   color: #c5d4cb;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
 }
 
 .falling-blocks-overlay button {
@@ -79,15 +99,17 @@
   display: grid;
   gap: var(--space-6);
   min-width: 0;
+  max-width: 46rem;
+  justify-self: center;
 }
 .falling-blocks-hud {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin: 0;
 }
 .falling-blocks-hud div {
-  padding: var(--space-3);
+  padding: var(--space-1);
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
@@ -95,23 +117,26 @@
 .falling-blocks-hud dt,
 .falling-blocks-slot figcaption {
   color: var(--muted);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.3;
 }
 .falling-blocks-hud dd {
   margin: 0;
-  font-size: clamp(0.875rem, 4vw, 1.25rem);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
 .falling-blocks-slots {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 .falling-blocks-slot {
   margin: 0;
-  padding: var(--space-3);
+  padding: var(--space-1);
   display: grid;
   justify-items: center;
   gap: var(--space-2);
@@ -123,6 +148,7 @@
   background: #142522;
   border-radius: 8px;
   display: block;
+  width: 4.5rem;
   max-width: 100%;
   height: auto;
 }
@@ -133,13 +159,97 @@
 }
 .falling-blocks-actions button {
   min-height: 44px;
-  padding: var(--space-2);
+  padding: var(--space-1);
   font-size: 0.8125rem;
   touch-action: manipulation;
+  white-space: nowrap;
+  line-height: 1.3;
 }
 .falling-blocks-input-hint {
   margin: 0;
   font-size: 0.8125rem;
+}
+.falling-blocks-notes {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.falling-blocks.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100dvh;
+  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+    max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  overflow: auto;
+  background: var(--bg);
+  grid-template-columns: 1fr;
+  align-content: center;
+}
+.falling-blocks.is-fullscreen .falling-blocks-panels,
+.falling-blocks.is-fullscreen .falling-blocks-notes {
+  display: none;
+}
+.falling-blocks.is-fullscreen .falling-blocks-play {
+  max-width: 34rem;
+}
+
+@media (min-width: 540px) and (min-aspect-ratio: 1/1) {
+  .falling-blocks-play {
+    max-width: 54rem;
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    grid-template-areas: "toolbar toolbar" "stage hud" "stage actions" "notes notes";
+    align-items: start;
+  }
+  .falling-blocks-toolbar {
+    grid-area: toolbar;
+  }
+  .falling-blocks-hud {
+    grid-area: hud;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .falling-blocks-hud dd {
+    font-size: 0.875rem;
+  }
+  .falling-blocks-stage {
+    grid-area: stage;
+    grid-template-columns: minmax(0, 1fr) 4.5rem;
+  }
+  .falling-blocks-board-wrap {
+    width: min(
+      100%,
+      calc(
+        (100svh - 100px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) *
+          var(--board-ratio)
+      ),
+      calc(40rem * var(--board-ratio))
+    );
+  }
+  .falling-blocks-actions {
+    grid-area: actions;
+    align-self: end;
+  }
+  .falling-blocks-notes {
+    grid-area: notes;
+  }
+  .falling-blocks.is-fullscreen .falling-blocks-play {
+    max-width: 54rem;
+  }
+}
+@media (max-height: 600px) {
+  .falling-blocks-overlay {
+    gap: var(--space-1);
+    padding: var(--space-2);
+  }
+  .falling-blocks-overlay-title {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .falling-blocks-overlay-hint {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
 }
 .falling-blocks-rules h2 {
   font-size: 1.1rem;
@@ -183,9 +293,6 @@
 }
 
 @media (min-width: 768px) {
-  .falling-blocks {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  }
   .games-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
