@@ -1,5 +1,6 @@
 import type { LocaleDictionary } from "@/data/i18n/types"
 import { buildRecommendations, type RecommendationTranslationsById } from "@/data/recommendations"
+import { sudokuEnUS } from "@/data/sudoku/en-US"
 
 const recommendationTranslations: RecommendationTranslationsById = {
   "valeriia-kruchinina": {
@@ -277,6 +278,7 @@ export const enUSDictionary: LocaleDictionary = {
           heading: "Cookies, analytics, and performance",
           paragraphs: [
             "Falling Blocks stores your best score in this browser when local storage is available. The score is not sent to a server or shared between devices. Clearing this site’s browser data removes the record.",
+            "Sudoku saves your current puzzle, entries, pencil notes, elapsed time, hint usage, and best times in this browser when local storage is available. These game details are not sent to a server or shared between devices. Clearing this site’s browser data removes your saved progress and records.",
             "The site uses a locale cookie to support language detection and routing, and a theme cookie when you choose light or dark mode. Each can remain for up to one year. They support requested site behavior rather than advertising. Vercel Analytics and Speed Insights are enabled to understand aggregate usage, page delivery, and performance; Vercel may process technical request and device information under its own terms.",
             "Hosting and security providers may retain operational logs according to their own policies. This site does not sell personal information and does not add third-party advertising trackers. Links to LinkedIn, GitHub, and other external resources leave this site and are governed by those services' privacy practices."
           ]
@@ -413,7 +415,7 @@ export const enUSDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Browser Games",
       metadataDescription:
-        "Play Falling Blocks, a falling-block puzzle with six mixed-size shapes. Complete horizontal rows to clear space and score points.",
+        "Play Falling Blocks and Sudoku in your browser, with keyboard and touch controls, fullscreen play, and locally saved records.",
       lead: "Small games from my programming experiments. Pick a game and try it in your browser.",
       playLabel: "Play",
       wasmNote:
@@ -524,6 +526,12 @@ export const enUSDictionary: LocaleDictionary = {
           description:
             "A falling-block puzzle built for this site. Rust handles the game rules in WebAssembly; a canvas draws the board. Each run stays in this tab, with no account, saved leaderboard, or game audio.",
           stack: ["Rust", "WebAssembly", "TypeScript", "Canvas 2D"]
+        },
+        sudoku: {
+          title: "Sudoku",
+          summary: sudokuEnUS.summary,
+          description: sudokuEnUS.description,
+          stack: ["Rust", "WebAssembly", "TypeScript", "HTML"]
         }
       }
     },

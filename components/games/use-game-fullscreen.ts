@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 
 export function useGameFullscreen(
   container: RefObject<HTMLElement | null>,
-  board: RefObject<HTMLCanvasElement | null>
+  board: RefObject<HTMLElement | null>
 ) {
   const [fullscreen, setFullscreen] = useState(false)
   const button = useRef<HTMLButtonElement>(null)
@@ -47,9 +47,15 @@ export function useGameFullscreen(
       } else if (event.key === "Tab") {
         const controls = Array.from(
           container.current?.querySelectorAll<HTMLElement>(
-            "button:not([disabled]), [tabindex='0']"
+            "button:not([disabled]), select:not([disabled]), input:not([disabled]), [tabindex='0']"
           ) ?? []
-        ).filter((element) => element.getClientRects().length > 0)
+        ).filter(
+          (element) =>
+            element.tabIndex >= 0 &&
+            !element.matches(":disabled") &&
+            element.getClientRects().length > 0 &&
+            getComputedStyle(element).visibility === "visible"
+        )
         const current = controls.indexOf(document.activeElement as HTMLElement)
         const index =
           current < 0
@@ -58,7 +64,7 @@ export function useGameFullscreen(
               : 0
             : (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length
         event.preventDefault()
-        controls[index]?.focus({ preventScroll: true })
+        controls[index]?.focus()
       }
     }
     document.addEventListener("keydown", keydown, true)

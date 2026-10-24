@@ -1,6 +1,7 @@
 import "server-only"
 
 import { getDictionary } from "@/data/i18n"
+import { getSudokuDictionary } from "@/data/sudoku"
 import type { ContentSection, ExperienceCompany } from "@/data/i18n/types"
 import {
   getAllPosts,
@@ -176,20 +177,25 @@ function gameMarkdown(locale: Locale, slug: string): string | null {
   const games = dictionary.pages.games
   const game = getGameBySlug(locale, slug)
   if (!game) return null
+  const sudoku = slug === "sudoku" ? getSudokuDictionary(locale) : null
+  const instructions = sudoku ?? games
 
   return document(
     `# ${game.title}`,
     `> ${game.summary}`,
     game.description,
     `**${dictionary.ui.labels.stack}:** ${game.stack.join(", ")}`,
-    `**${games.wasmNote}**`,
-    `## ${games.rulesTitle}\n\n${games.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}`,
-    games.inputHint,
-    games.bestScoreNote,
-    games.accessibilityNote,
-    `## ${games.panelLabels.controls}\n\n${bulletList(
-      games.controls.map((entry) => `\`${entry.key}\` — ${entry.action}`)
-    )}`,
+    `**${sudoku?.loadingNote ?? games.wasmNote}**`,
+    `## ${instructions.rulesTitle}\n\n${instructions.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}`,
+    sudoku?.difficultyNote,
+    instructions.inputHint,
+    sudoku?.storageNote ?? games.bestScoreNote,
+    instructions.accessibilityNote,
+    sudoku
+      ? null
+      : `## ${games.panelLabels.controls}\n\n${bulletList(
+          games.controls.map((entry) => `\`${entry.key}\` — ${entry.action}`)
+        )}`,
     `## ${games.playLabel}\n\n[${games.playLabel} ${game.title}](/${locale}/games/${game.slug})`,
     `[${dictionary.ui.labels.backToGames}](/${locale}/games)`
   )

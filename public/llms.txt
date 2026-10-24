@@ -22,6 +22,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Projects](https://www.cleisson.com/en-US/projects.md): Public and demonstrable engineering projects.
 - [Hercília Construções](https://www.cleisson.com/en-US/projects/hercilia-construcoes.md): Website and product catalog for Cleisson's family building materials store in his hometown, Picos.
 - [Falling Blocks](https://www.cleisson.com/en-US/games/falling-blocks.md): Falling-block puzzle with six mixed-size shapes, a 12×20 board, complete horizontal row clearing, touch controls and fullscreen play.
+- [Sudoku](https://www.cleisson.com/en-US/games/sudoku.md): Classic 9×9 Sudoku with unique puzzles, pencil notes, explained hints, keyboard and touch controls, and locally saved progress and best unassisted times.
 - [Blog](https://www.cleisson.com/en-US/blog.md): Technical articles and downloadable publications.
 - [Resume](https://www.cleisson.com/en-US/resume.md): Resume overview and English PDF download.
 - [Contact](https://www.cleisson.com/en-US/contact.md): Professional contact guidance and direct email channel.
@@ -36,6 +37,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Jogos](https://www.cleisson.com/pt-BR/games.md): Jogos de navegador com regras compiladas para WebAssembly.
 - [Hercília Construções](https://www.cleisson.com/pt-BR/projects/hercilia-construcoes.md): Site e catálogo da loja de materiais de construção da família de Cleisson em Picos, sua cidade natal.
 - [Falling Blocks](https://www.cleisson.com/pt-BR/games/falling-blocks.md): Quebra-cabeça de blocos com seis formatos, tabuleiro 12×20, remoção de linhas horizontais completas, controles de toque e tela cheia.
+- [Sudoku](https://www.cleisson.com/pt-BR/games/sudoku.md): Sudoku clássico 9×9 com solução única, anotações, dicas explicadas, controles de teclado e toque, progresso e melhores tempos sem dicas salvos localmente.
 - [Blog](https://www.cleisson.com/pt-BR/blog.md): Artigos técnicos e publicações para download.
 - [Currículo](https://www.cleisson.com/pt-BR/resume.md): Resumo profissional e currículo em PDF.
 - [Contato](https://www.cleisson.com/pt-BR/contact.md): Orientações de contato profissional e canal direto por e-mail.
@@ -50,6 +52,7 @@ This site is the primary source for Cleisson's professional profile, experience,
 - [Juegos](https://www.cleisson.com/es-ES/games.md): Juegos de navegador con reglas compiladas a WebAssembly.
 - [Hercília Construções](https://www.cleisson.com/es-ES/projects/hercilia-construcoes.md): Sitio web y catálogo de la tienda de materiales de construcción de la familia de Cleisson en Picos, su ciudad natal.
 - [Falling Blocks](https://www.cleisson.com/es-ES/games/falling-blocks.md): Rompecabezas de bloques con seis formas, tablero de 12×20, eliminación de filas horizontales completas, controles táctiles y pantalla completa.
+- [Sudoku](https://www.cleisson.com/es-ES/games/sudoku.md): Sudoku clásico de 9×9 con solución única, notas, pistas explicadas, controles de teclado y táctiles, progreso y mejores tiempos sin pistas guardados localmente.
 - [Blog](https://www.cleisson.com/es-ES/blog.md): Artículos técnicos y publicaciones descargables.
 - [Currículum](https://www.cleisson.com/es-ES/resume.md): Resumen profesional y currículum en PDF.
 - [Contacto](https://www.cleisson.com/es-ES/contact.md): Orientación para consultas profesionales y correo directo.
