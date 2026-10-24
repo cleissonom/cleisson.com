@@ -185,6 +185,7 @@ function gameMarkdown(locale: Locale, slug: string): string | null {
     `**${games.wasmNote}**`,
     `## ${games.rulesTitle}\n\n${games.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}`,
     games.inputHint,
+    games.bestScoreNote,
     games.accessibilityNote,
     `## ${games.panelLabels.controls}\n\n${bulletList(
       games.controls.map((entry) => `\`${entry.key}\` — ${entry.action}`)

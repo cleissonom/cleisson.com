@@ -277,6 +277,7 @@ export const esESDictionary: LocaleDictionary = {
         {
           heading: "Cookies, analítica y rendimiento",
           paragraphs: [
+            "Falling Blocks guarda tu récord en este navegador cuando el almacenamiento local está disponible. La puntuación no se envía a un servidor ni se comparte entre dispositivos. Borrar los datos de este sitio en el navegador elimina el récord.",
             "El sitio utiliza una cookie de idioma para apoyar la detección y el enrutamiento del idioma, y una cookie de tema cuando seleccionas el modo claro u oscuro. Cada una puede permanecer hasta un año. Sirven al comportamiento solicitado del sitio y no a la publicidad. Vercel Analytics y Speed Insights están habilitados para comprender el uso agregado, la entrega de páginas y el rendimiento; Vercel puede procesar información técnica de solicitudes y dispositivos bajo sus propios términos.",
             "Los proveedores de alojamiento y seguridad pueden conservar registros operativos de acuerdo con sus propias políticas. Este sitio no vende información personal ni incorpora rastreadores publicitarios de terceros. Los enlaces a LinkedIn, GitHub y otros recursos externos salen de este sitio y se rigen por las prácticas de privacidad de esos servicios."
           ]
@@ -284,7 +285,7 @@ export const esESDictionary: LocaleDictionary = {
         {
           heading: "Preguntas y opciones",
           paragraphs: [
-            "Puedes borrar las cookies de idioma y tema en tu navegador, bloquear funciones opcionales del cliente o consultar el contenido renderizado por el servidor sin JavaScript. Las solicitudes a la API REST y a MCP, con sus argumentos limitados, pueden aparecer en registros ordinarios de alojamiento, límites de uso, diagnóstico o seguridad; no envíes una descripción confidencial de un puesto, credenciales ni datos personales sensibles. Para una pregunta de privacidad sobre este sitio o sobre un correo que enviaste anteriormente, utiliza la página de contacto y describe la solicitud sin añadir más información sensible. Este aviso se actualizó el 23 de agosto de 2026."
+            "Puedes borrar las cookies de idioma y tema en tu navegador, bloquear funciones opcionales del cliente o consultar el contenido renderizado por el servidor sin JavaScript. Las solicitudes a la API REST y a MCP, con sus argumentos limitados, pueden aparecer en registros ordinarios de alojamiento, límites de uso, diagnóstico o seguridad; no envíes una descripción confidencial de un puesto, credenciales ni datos personales sensibles. Para una pregunta de privacidad sobre este sitio o sobre un correo que enviaste anteriormente, utiliza la página de contacto y describe la solicitud sin añadir más información sensible. Este aviso se actualizó el 24 de octubre de 2026."
           ]
         }
       ]
@@ -428,6 +429,7 @@ export const esESDictionary: LocaleDictionary = {
       },
       statsLabels: {
         score: "Puntos",
+        bestScore: "Récord",
         level: "Nivel",
         lines: "Líneas"
       },
@@ -464,6 +466,8 @@ export const esESDictionary: LocaleDictionary = {
       },
       inputHint:
         "Usa los botones o selecciona el tablero para usar los atajos. Al salir del juego, la partida se pausa.",
+      bestScoreNote:
+        "Tu récord se guarda solo en este navegador cuando el almacenamiento local está disponible. Borrar los datos del sitio elimina el récord.",
       accessibilityNote:
         "Este es un rompecabezas visual. El tablero no tiene una versión equivalente para lectores de pantalla; las reglas y los controles están disponibles en texto.",
       rulesTitle: "Cómo jugar",

@@ -16,7 +16,10 @@ test("a completed row clears while partial rows keep their cells and order", asy
   await page.clock.pauseAt(time)
   await page.goto("/en-US/games/falling-blocks")
   await page.getByRole("button", { name: "Start", exact: true }).click()
-  const cleared = page.locator(".falling-blocks-hud dd").nth(2)
+  const cleared = page
+    .locator(".falling-blocks-hud > div")
+    .filter({ has: page.getByText("Lines", { exact: true }) })
+    .locator("dd")
 
   // Six mixed shapes leave two holes, then one, in the bottom row.
   for (const shift of [-4, -2, 1, 2, 4, 0]) {

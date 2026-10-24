@@ -10,6 +10,7 @@ import {
   type FallingBlocksEngine
 } from "@/lib/falling-blocks/abi"
 import { drawBoard, drawPiecePreview, fitCanvas } from "@/lib/falling-blocks/render"
+import { readBestScore, saveBestScore } from "@/lib/falling-blocks/best-score"
 
 export const BOARD_CELL = 32
 export const PREVIEW_CELL = 18
@@ -24,7 +25,13 @@ export type GameAction =
   | "counterclockwise"
   | "drop"
   | "hold"
-export type Snapshot = { score: number; level: number; lines: number; status: number }
+export type Snapshot = {
+  score: number
+  bestScore: number
+  level: number
+  lines: number
+  status: number
+}
 
 function initialize(engine: FallingBlocksEngine) {
   const seed = crypto.getRandomValues(new Uint32Array(2))
@@ -115,9 +122,11 @@ export function useFallingBlocks(
         )
         let lastTime = performance.now()
         let previous: Snapshot | null = null
+        let bestScore = readBestScore()
 
         function render() {
           const frame = engine.read()
+          if (frame.score > bestScore) bestScore = saveBestScore(frame.score)
           drawBoard(ctx, frame, BOARD_CELL)
           for (const [index, id] of [frame.held, frame.queue[0]].entries()) {
             engine.previewSize(id)
@@ -125,6 +134,7 @@ export function useFallingBlocks(
           }
           const value = {
             score: frame.score,
+            bestScore,
             level: frame.level,
             lines: frame.lines,
             status: frame.status

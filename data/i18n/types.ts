@@ -94,6 +94,7 @@ export type GamePageDictionary = {
   statusLabels: GameStatusLabels
   statsLabels: {
     score: string
+    bestScore: string
     level: string
     lines: string
   }
@@ -129,6 +130,7 @@ export type GamePageDictionary = {
     string
   >
   inputHint: string
+  bestScoreNote: string
   accessibilityNote: string
   rulesTitle: string
   aboutTitle: string

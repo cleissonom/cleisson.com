@@ -276,6 +276,7 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Cookies, analytics, and performance",
           paragraphs: [
+            "Falling Blocks stores your best score in this browser when local storage is available. The score is not sent to a server or shared between devices. Clearing this site’s browser data removes the record.",
             "The site uses a locale cookie to support language detection and routing, and a theme cookie when you choose light or dark mode. Each can remain for up to one year. They support requested site behavior rather than advertising. Vercel Analytics and Speed Insights are enabled to understand aggregate usage, page delivery, and performance; Vercel may process technical request and device information under its own terms.",
             "Hosting and security providers may retain operational logs according to their own policies. This site does not sell personal information and does not add third-party advertising trackers. Links to LinkedIn, GitHub, and other external resources leave this site and are governed by those services' privacy practices."
           ]
@@ -283,7 +284,7 @@ export const enUSDictionary: LocaleDictionary = {
         {
           heading: "Questions and choices",
           paragraphs: [
-            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. REST API and MCP requests and their limited arguments may appear in ordinary hosting, rate-limit, diagnostic, or security logs; do not send a confidential job description, credentials, or sensitive personal data. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on August 23, 2026."
+            "You can clear the locale and theme cookies in your browser, block optional client-side features, or browse the server-rendered content without JavaScript. REST API and MCP requests and their limited arguments may appear in ordinary hosting, rate-limit, diagnostic, or security logs; do not send a confidential job description, credentials, or sensitive personal data. For a privacy question about this site or a direct email you previously sent, use the contact page and describe the request without including additional sensitive information. This notice was last updated on October 24, 2026."
           ]
         }
       ]
@@ -427,6 +428,7 @@ export const enUSDictionary: LocaleDictionary = {
       },
       statsLabels: {
         score: "Score",
+        bestScore: "Best score",
         level: "Level",
         lines: "Lines"
       },
@@ -463,6 +465,8 @@ export const enUSDictionary: LocaleDictionary = {
       },
       inputHint:
         "Use the buttons, or focus the board to use keyboard shortcuts. Leaving the game pauses it.",
+      bestScoreNote:
+        "Your best score is saved only in this browser when local storage is available. Clearing site data removes it.",
       accessibilityNote:
         "This is a visual puzzle. The board does not have a screen-reader equivalent; the rules and controls are available as text.",
       rulesTitle: "How to play",
