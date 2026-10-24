@@ -42,9 +42,9 @@ export function SudokuGame({ wasmPath, locale, copy }: Props) {
   const difficulty = current?.difficulty ?? 0
   const best = game.records[difficulty]
 
-  function focus(index: number) {
+  function focus(index: number, options: FocusOptions = { preventScroll: true }) {
     setSelected(index)
-    cells.current[index]?.focus({ preventScroll: true })
+    cells.current[index]?.focus(options)
   }
 
   function enter(value: number) {
@@ -54,8 +54,10 @@ export function SudokuGame({ wasmPath, locale, copy }: Props) {
 
   function tool(action: (typeof TOOLS)[number][0]) {
     if (action === "notes") setNotesMode((value) => !value)
-    else if (action === "undo") game.undo()
-    else if (action === "clear") enter(0)
+    else if (action === "undo") {
+      game.undo()
+      focus(selected)
+    } else if (action === "clear") enter(0)
     else if (action === "pause") game.pause()
     else {
       const suggestion = game.explainHint()
@@ -327,12 +329,24 @@ export function SudokuGame({ wasmPath, locale, copy }: Props) {
                   type="button"
                   className="primary-button"
                   disabled={!playing}
-                  onClick={game.applyHint}
+                  onClick={() => {
+                    if (!game.hint) return
+                    const { index } = game.hint
+                    game.applyHint()
+                    focus(index, { preventScroll: false })
+                  }}
                 >
                   {copy.actions.applyHint}
                 </button>
               ) : null}
-              <button type="button" className="secondary-button" onClick={game.closeHint}>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => {
+                  game.closeHint()
+                  focus(selected, { preventScroll: false })
+                }}
+              >
                 {copy.actions.dismissHint}
               </button>
             </div>
