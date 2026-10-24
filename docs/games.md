@@ -43,7 +43,7 @@ Browser checks cover completing a row through normal keyboard play, preserving i
 
 ```bash
 BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/games.spec.mjs tests/browser/game-clearing.spec.mjs tests/browser/game-best-score.spec.mjs tests/browser/game-display.spec.mjs
-BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/sudoku.spec.mjs tests/browser/sudoku-display.spec.mjs
+BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/sudoku.spec.mjs tests/browser/sudoku-display.spec.mjs tests/browser/sudoku-focus.spec.mjs
 ```
 
 Sudoku checks exercise the real WASM engine, immutable clues, conflicts, notes, undo, hints, completion, active timing, saved progress and records, keyboard navigation, and touch layouts. Localized HTML and Markdown contracts keep its rules and storage disclosures available without JavaScript. Browser emulation does not replace a physical-device or screen-reader review.
