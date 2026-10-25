@@ -7,9 +7,9 @@ import { LOCALES, type Locale } from "@/lib/i18n"
  * titles, summaries, and UI copy live in the dictionaries under
  * `pages.games.entries` (see `lib/games.ts`).
  */
-export type GameSlug = "falling-blocks" | "sudoku"
+export type GameSlug = "falling-blocks" | "sudoku" | "4096"
 
-export const GAMES = ["falling-blocks", "sudoku"] as const satisfies readonly GameSlug[]
+export const GAMES = ["falling-blocks", "sudoku", "4096"] as const satisfies readonly GameSlug[]
 
 export function isGameSlug(value: string): value is GameSlug {
   return (GAMES as readonly string[]).includes(value)

@@ -17,4 +17,5 @@ ai_tasks
 # Rust/WASM build outputs
 wasm/falling-blocks/target
 wasm/sudoku/target
+wasm/merge-4096/target
 output/playwright/

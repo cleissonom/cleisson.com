@@ -36,7 +36,7 @@ frontmatter and link targets.
 ## Maintainer reference
 
 Browser game maintenance is documented in `docs/games.md`. After changing a
-Rust engine, run `npm run games:wasm` and `npm run games:wasm:check` (both games) with the
+Rust engine, run `npm run games:wasm` and `npm run games:wasm:check` (all games) with the
 documented compiler version; review the source and committed binary together.
 Keep localized rules, Markdown, discovery, and keyboard/touch behavior aligned.
 

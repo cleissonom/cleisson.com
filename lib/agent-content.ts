@@ -1,6 +1,7 @@
 import "server-only"
 
 import { getDictionary } from "@/data/i18n"
+import { get4096Dictionary } from "@/data/merge-4096"
 import { getSudokuDictionary } from "@/data/sudoku"
 import type { ContentSection, ExperienceCompany } from "@/data/i18n/types"
 import {
@@ -178,20 +179,21 @@ function gameMarkdown(locale: Locale, slug: string): string | null {
   const game = getGameBySlug(locale, slug)
   if (!game) return null
   const sudoku = slug === "sudoku" ? getSudokuDictionary(locale) : null
-  const instructions = sudoku ?? games
+  const custom = slug === "4096" ? get4096Dictionary(locale) : sudoku
+  const instructions = custom ?? games
 
   return document(
     `# ${game.title}`,
     `> ${game.summary}`,
     game.description,
     `**${dictionary.ui.labels.stack}:** ${game.stack.join(", ")}`,
-    `**${sudoku?.loadingNote ?? games.wasmNote}**`,
+    `**${custom?.loadingNote ?? games.wasmNote}**`,
     `## ${instructions.rulesTitle}\n\n${instructions.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}`,
     sudoku?.difficultyNote,
     instructions.inputHint,
-    sudoku?.storageNote ?? games.bestScoreNote,
+    custom?.storageNote ?? games.bestScoreNote,
     instructions.accessibilityNote,
-    sudoku
+    custom
       ? null
       : `## ${games.panelLabels.controls}\n\n${bulletList(
           games.controls.map((entry) => `\`${entry.key}\` — ${entry.action}`)

@@ -16,6 +16,13 @@ export type GamesPageDictionary = GamePageDictionary
 
 export const FALLING_BLOCKS_WASM_PATH = "/games/falling-blocks/falling-blocks.wasm"
 export const SUDOKU_WASM_PATH = "/games/sudoku/sudoku.wasm"
+export const MERGE_4096_WASM_PATH = "/games/4096/4096.wasm"
+
+const WASM_PATHS: Record<GameSlug, string> = {
+  "falling-blocks": FALLING_BLOCKS_WASM_PATH,
+  sudoku: SUDOKU_WASM_PATH,
+  "4096": MERGE_4096_WASM_PATH
+}
 
 export function gamesDictionary(locale: Locale): GamesPageDictionary {
   return getDictionary(locale).pages.games
@@ -25,7 +32,7 @@ export function getAllGames(locale: Locale): GameEntry[] {
   const entries = gamesDictionary(locale).entries
   return GAMES.map((slug) => ({
     slug,
-    wasmPath: slug === "sudoku" ? SUDOKU_WASM_PATH : FALLING_BLOCKS_WASM_PATH,
+    wasmPath: WASM_PATHS[slug],
     ...entries[slug]
   }))
 }
