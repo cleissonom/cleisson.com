@@ -12,9 +12,11 @@ import {
   Surface
 } from "@/components/design-system"
 import { FallingBlocksGame } from "@/components/games/falling-blocks-game"
+import { Merge4096Game } from "@/components/games/merge-4096-game"
 import { SudokuGame } from "@/components/games/sudoku-game"
 import { JsonLd } from "@/components/json-ld"
 import { getDictionary } from "@/data/i18n"
+import { get4096Dictionary } from "@/data/merge-4096"
 import { getSudokuDictionary } from "@/data/sudoku"
 import { getAllGames, getGameBySlug } from "@/lib/games"
 import { LOCALES, isLocale } from "@/lib/i18n"
@@ -82,6 +84,7 @@ export default async function GameDetailPage({
     notFound()
   }
   const sudoku = game.slug === "sudoku" ? getSudokuDictionary(locale) : null
+  const merge4096 = game.slug === "4096" ? get4096Dictionary(locale) : null
 
   const breadcrumbs = breadcrumbJsonLd([
     { name: ui.nav.home, url: absoluteUrl(`/${locale}`) },
@@ -98,11 +101,13 @@ export default async function GameDetailPage({
           <Eyebrow>{ui.nav.games}</Eyebrow>
           <h1 id="game-title">{game.title}</h1>
           <Lead>{game.summary}</Lead>
-          <MutedText>{sudoku?.loadingNote ?? games.wasmNote}</MutedText>
+          <MutedText>{merge4096?.loadingNote ?? sudoku?.loadingNote ?? games.wasmNote}</MutedText>
         </PageHeader>
       </Surface>
 
-      {sudoku ? (
+      {merge4096 ? (
+        <Merge4096Game wasmPath={game.wasmPath} locale={locale} copy={merge4096} />
+      ) : sudoku ? (
         <SudokuGame wasmPath={game.wasmPath} locale={locale} copy={sudoku} />
       ) : (
         <FallingBlocksGame wasmPath={game.wasmPath} locale={locale} copy={games} />

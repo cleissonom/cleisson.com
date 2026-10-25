@@ -1,0 +1,16 @@
+[package]
+name = "merge-4096"
+version = "1.0.0"
+edition = "2024"
+publish = false
+description = "Deterministic 4096 tile-merging engine for cleisson.com/games"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

@@ -1,6 +1,7 @@
 import type { LocaleDictionary } from "@/data/i18n/types"
 import { buildRecommendations, type RecommendationTranslationsById } from "@/data/recommendations"
 import { sudokuPtBR } from "@/data/sudoku/pt-BR"
+import { merge4096PtBR } from "@/data/merge-4096/pt-BR"
 
 const recommendationTranslations: RecommendationTranslationsById = {
   "valeriia-kruchinina": {
@@ -280,6 +281,7 @@ export const ptBRDictionary: LocaleDictionary = {
           paragraphs: [
             "Falling Blocks salva seu recorde neste navegador quando o armazenamento local está disponível. A pontuação não é enviada a um servidor nem compartilhada entre dispositivos. Limpar os dados deste site no navegador apaga o recorde.",
             "Sudoku salva o tabuleiro atual, os números inseridos, as anotações, o tempo decorrido, o uso de dicas e os melhores tempos neste navegador quando o armazenamento local está disponível. Esses dados do jogo não são enviados a um servidor nem compartilhados entre dispositivos. Limpar os dados deste site no navegador apaga o progresso salvo e os recordes.",
+            "4096 salva o tabuleiro, a pontuação, as jogadas e o recorde neste navegador quando o armazenamento local está disponível. Esse progresso não é enviado a um servidor nem compartilhado entre dispositivos. Limpar os dados deste site no navegador apaga a partida salva e o recorde.",
             "O site usa um cookie de idioma para apoiar a detecção e o roteamento de idioma, e um cookie de tema quando você escolhe o modo claro ou escuro. Cada um pode permanecer por até um ano. Eles atendem ao comportamento solicitado do site, e não à publicidade. Vercel Analytics e Speed Insights estão habilitados para entender uso agregado, entrega de páginas e desempenho; a Vercel pode processar informações técnicas da requisição e do dispositivo sob seus próprios termos.",
             "Provedores de hospedagem e segurança podem manter logs operacionais conforme suas próprias políticas. Este site não vende informações pessoais nem adiciona rastreadores de publicidade de terceiros. Links para LinkedIn, GitHub e outros recursos externos deixam este site e seguem as práticas de privacidade desses serviços."
           ]
@@ -416,7 +418,7 @@ export const ptBRDictionary: LocaleDictionary = {
     games: {
       metadataTitle: "Jogos no navegador",
       metadataDescription:
-        "Jogue Falling Blocks e Sudoku no navegador, com controles de teclado e toque, tela cheia e recordes salvos localmente.",
+        "Jogue Falling Blocks, Sudoku e 4096 no navegador, com controles de teclado e toque, tela cheia e recordes salvos localmente.",
       lead: "Pequenos jogos dos meus experimentos de programação. Escolha um e jogue no navegador.",
       playLabel: "Jogar",
       wasmNote:
@@ -532,6 +534,12 @@ export const ptBRDictionary: LocaleDictionary = {
           title: "Sudoku",
           summary: sudokuPtBR.summary,
           description: sudokuPtBR.description,
+          stack: ["Rust", "WebAssembly", "TypeScript", "HTML"]
+        },
+        "4096": {
+          title: "4096",
+          summary: merge4096PtBR.summary,
+          description: merge4096PtBR.description,
           stack: ["Rust", "WebAssembly", "TypeScript", "HTML"]
         }
       }
