@@ -20,7 +20,7 @@ export const merge4096EnUS: Merge4096Dictionary = {
   statusLabels: {
     loading: "Loading game…",
     playing: "Playing",
-    won: "4096 reached!",
+    won: "Congratulations! You reached 4096!",
     over: "No moves left",
     error: "Unable to load"
   },
@@ -40,7 +40,7 @@ export const merge4096EnUS: Merge4096Dictionary = {
   storageNote:
     "Your board and best score stay in this browser when local storage is available. Clearing site data removes them. Nothing is sent to a game server.",
   accessibilityNote:
-    "Each grid cell exposes its position and number as text. Keyboard controls work only while the board is focused; direction buttons provide the same moves. The score and game status are announced after a move.",
+    "Each grid cell exposes its position and number as text. Keyboard controls work only while the board is focused; direction buttons provide the same moves. The score and game status are announced after a move. The victory animation respects reduced-motion settings.",
   cellLabel: "Row {row}, column {column}: {value}",
   emptyLabel: "empty",
   rulesTitle: "How to play 4096",

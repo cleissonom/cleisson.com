@@ -20,7 +20,7 @@ export const merge4096EsES: Merge4096Dictionary = {
   statusLabels: {
     loading: "Cargando juego…",
     playing: "En juego",
-    won: "¡Llegaste a 4096!",
+    won: "¡Felicidades! ¡Llegaste a 4096!",
     over: "No quedan movimientos",
     error: "No se ha podido cargar"
   },
@@ -42,7 +42,7 @@ export const merge4096EsES: Merge4096Dictionary = {
   storageNote:
     "Tu tablero y récord se guardan en este navegador cuando el almacenamiento local está disponible. Borrar los datos del sitio elimina esta información. No se envía nada a un servidor de juego.",
   accessibilityNote:
-    "Cada celda del tablero informa de su posición y su número como texto. Los atajos de teclado funcionan solo cuando el tablero está seleccionado; los botones de dirección hacen las mismas jugadas. La puntuación y el estado del juego se anuncian después de una jugada.",
+    "Cada celda del tablero informa de su posición y su número como texto. Los atajos de teclado funcionan solo cuando el tablero está seleccionado; los botones de dirección hacen las mismas jugadas. La puntuación y el estado del juego se anuncian después de una jugada. La animación de victoria respeta la preferencia de movimiento reducido.",
   cellLabel: "Fila {row}, columna {column}: {value}",
   emptyLabel: "vacía",
   rulesTitle: "Cómo jugar a 4096",

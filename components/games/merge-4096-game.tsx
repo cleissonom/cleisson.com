@@ -27,6 +27,12 @@ const KEYS: Record<string, Direction> = {
   s: 3
 }
 const ROWS = [0, 1, 2, 3]
+const CONFETTI = Array.from({ length: 24 }, (_, piece) => ({
+  "--piece": piece,
+  "--delay": `${((piece * 7) % 24) * 18}ms`,
+  "--duration": `${2100 + ((piece * 13) % 9) * 100}ms`,
+  "--drift": `${(((piece * 11) % 7) - 3) * 16}px`
+}))
 
 export function Merge4096Game({ wasmPath, locale, copy }: Props) {
   const game = use4096Game(wasmPath)
@@ -233,7 +239,16 @@ export function Merge4096Game({ wasmPath, locale, copy }: Props) {
             ))}
           </div>
           {!playing ? (
-            <div className="merge4096-overlay">
+            <div
+              className={`merge4096-overlay${status === "won" ? " is-won" : ""}${game.celebrating ? " is-celebrating" : ""}`}
+            >
+              {game.celebrating ? (
+                <div className="merge4096-confetti" aria-hidden="true">
+                  {CONFETTI.map((style, piece) => (
+                    <span key={piece} style={style as CSSProperties} />
+                  ))}
+                </div>
+              ) : null}
               <p className="merge4096-overlay-title">{copy.statusLabels[status]}</p>
               <p>{hint}</p>
               <button

@@ -1,5 +1,44 @@
 import { test, expect } from "@playwright/test"
 
+for (const [locale, fullscreen, continueLabel] of [
+  ["en-US", "Fullscreen", "Keep playing"],
+  ["pt-BR", "Tela cheia", "Continuar"],
+  ["es-ES", "Pantalla completa", "Continuar"]
+]) {
+  test(`the win message and continuation fit phone landscape in ${locale}`, async ({ page }) => {
+    await page.setViewportSize({ width: 568, height: 320 })
+    await page.emulateMedia({ reducedMotion: "reduce" })
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        "4096.progress",
+        JSON.stringify({
+          version: 1,
+          snapshot: { cells: [2048, 2048, 2, ...Array(13).fill(0)], score: 0, moves: 0, rng: 1 },
+          continued: false
+        })
+      )
+    })
+    await page.goto(`/${locale}/games/4096`)
+    const board = page.getByRole("grid")
+    await expect(board).toHaveAttribute("aria-disabled", "false")
+    await page.getByRole("button", { name: fullscreen, exact: true }).click()
+    await board.focus()
+    await page.keyboard.press("ArrowLeft")
+    const overlay = page.locator(".merge4096-overlay")
+    await expect(page.getByRole("button", { name: continueLabel, exact: true })).toBeFocused()
+    const bounds = await overlay.boundingBox()
+    for (const element of await overlay.locator(":scope > p, :scope > button").all()) {
+      const box = await element.boundingBox()
+      expect(box.y).toBeGreaterThanOrEqual(bounds.y)
+      expect(box.y + box.height).toBeLessThanOrEqual(bounds.y + bounds.height)
+    }
+    const button = page.getByRole("button", { name: continueLabel, exact: true })
+    expect((await button.boundingBox()).height).toBeGreaterThanOrEqual(44)
+    await button.click()
+    await expect(board).toBeFocused()
+  })
+}
+
 for (const viewport of [
   { width: 320, height: 568 },
   { width: 390, height: 844 },

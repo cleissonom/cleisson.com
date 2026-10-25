@@ -16,6 +16,8 @@ Sudoku saves the current clues, entries, notes, elapsed time, difficulty, and hi
 
 4096 stores its best score under `4096.best-score` and its current board, score, move count, random-generator state, and continued-play choice under `4096.progress`. Records stay in browser local storage and are shared between locales on the same origin. Starting a new game keeps the best score; clearing site data removes the saved game and record. Unavailable storage permits play in memory for the current visit. 4096 has no account or server-side game state and adds no telemetry beyond the existing site analytics.
 
+Reaching 4096 through a fresh move plays a brief confetti burst and animates the congratulations message once. Restoring a saved win shows the message without replaying the celebration. Reduced-motion preferences disable both animations; the Keep playing action remains available throughout. The celebration is presentation-only and does not change the Rust engine or saved-data format.
+
 ## Implementation and verification
 
 The same game works with keyboard controls on a laptop and touch buttons on a phone. The board keeps square cells while its displayed size adapts to the viewport; portrait and landscape layouts keep the board and controls together. Fullscreen uses the browser API when available and a viewport-filling layout otherwise. The exit button remains available in both modes. Changing display mode preserves the current run and personal best. Browsers that use the fallback may retain their address bar.
