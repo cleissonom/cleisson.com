@@ -171,6 +171,40 @@
   font-size: clamp(1rem, 4vw, 1.5rem);
   font-weight: 700;
 }
+.merge4096-overlay.is-won .merge4096-overlay-title {
+  color: #fbd664;
+}
+.merge4096-overlay > p,
+.merge4096-overlay > button {
+  position: relative;
+  z-index: 1;
+}
+.merge4096-confetti {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+}
+.merge4096-confetti span {
+  position: absolute;
+  top: -16px;
+  left: calc(var(--piece) * 4.25%);
+  width: 8px;
+  height: 14px;
+  background: #fbd664;
+}
+.merge4096-confetti span:nth-child(2n) {
+  background: #8ee3e7;
+}
+.merge4096-confetti span:nth-child(3n) {
+  background: #ffb4c6;
+  border-radius: 50%;
+}
+.merge4096-confetti span:nth-child(4n) {
+  background: #c2b5ff;
+}
 .merge4096-directions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -252,5 +286,40 @@
 @media (prefers-reduced-motion: no-preference) {
   .merge4096-cell {
     transition: background-color 120ms ease-out;
+  }
+  .merge4096-confetti {
+    display: block;
+  }
+  .merge4096-confetti span {
+    animation: merge4096-confetti var(--duration) cubic-bezier(0.12, 0.65, 0.45, 1) both;
+    animation-delay: var(--delay);
+  }
+  .merge4096-overlay.is-celebrating .merge4096-overlay-title {
+    animation: merge4096-congratulations 650ms ease-out both;
+  }
+}
+@keyframes merge4096-confetti {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  10%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift), calc(100cqh + 32px), 0) rotate(720deg);
+  }
+}
+@keyframes merge4096-congratulations {
+  0% {
+    transform: scale(0.86);
+  }
+  60% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
   }
 }

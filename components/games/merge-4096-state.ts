@@ -22,11 +22,12 @@ export function use4096Game(wasmPath: string) {
   const [board, setBoard] = useState<MergeBoard | null>(null)
   const [best, setBest] = useState(0)
   const [continued, setContinued] = useState(false)
+  const [celebrating, setCelebrating] = useState(false)
   const [failed, setFailed] = useState(false)
   const [storageUnavailable, setStorageUnavailable] = useState(false)
   const [attempt, setAttempt] = useState(0)
 
-  const publish = useCallback(() => {
+  const publish = useCallback((celebrateWin = false) => {
     if (!engine.current) return
     const value = engine.current.read()
     if (value.score > highest.current) {
@@ -45,6 +46,7 @@ export function use4096Game(wasmPath: string) {
     setBoard(value)
     setBest(highest.current)
     setContinued(continuing.current)
+    setCelebrating(celebrateWin && value.won)
   }, [])
 
   const newGame = useCallback(() => {
@@ -88,7 +90,8 @@ export function use4096Game(wasmPath: string) {
     if (!engine.current || failed) return
     const value = engine.current.read()
     if (value.over || (value.won && !continuing.current)) return
-    if (engine.current.move(direction)) publish()
+    // Only a fresh winning move celebrates; restoring a saved win stays still.
+    if (engine.current.move(direction)) publish(!value.won)
   }
 
   function keepPlaying() {
@@ -98,9 +101,21 @@ export function use4096Game(wasmPath: string) {
 
   function retry() {
     setFailed(false)
+    setCelebrating(false)
     setBoard(null)
     setAttempt((value) => value + 1)
   }
 
-  return { board, best, continued, failed, storageUnavailable, move, newGame, keepPlaying, retry }
+  return {
+    board,
+    best,
+    continued,
+    celebrating,
+    failed,
+    storageUnavailable,
+    move,
+    newGame,
+    keepPlaying,
+    retry
+  }
 }

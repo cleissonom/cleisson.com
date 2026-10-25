@@ -20,7 +20,7 @@ export const merge4096PtBR: Merge4096Dictionary = {
   statusLabels: {
     loading: "Carregando jogo…",
     playing: "Em jogo",
-    won: "4096 alcançado!",
+    won: "Parabéns! Você chegou a 4096!",
     over: "Sem jogadas possíveis",
     error: "Não foi possível carregar"
   },
@@ -42,7 +42,7 @@ export const merge4096PtBR: Merge4096Dictionary = {
   storageNote:
     "Seu tabuleiro e recorde ficam neste navegador quando o armazenamento local está disponível. Limpar os dados do site apaga essas informações. Nada é enviado a um servidor de jogo.",
   accessibilityNote:
-    "Cada célula do tabuleiro informa sua posição e seu número em texto. Os atalhos de teclado funcionam apenas quando o tabuleiro está selecionado; os botões de direção fazem as mesmas jogadas. A pontuação e o estado do jogo são anunciados após uma jogada.",
+    "Cada célula do tabuleiro informa sua posição e seu número em texto. Os atalhos de teclado funcionam apenas quando o tabuleiro está selecionado; os botões de direção fazem as mesmas jogadas. A pontuação e o estado do jogo são anunciados após uma jogada. A animação de vitória respeita a preferência por movimento reduzido.",
   cellLabel: "Linha {row}, coluna {column}: {value}",
   emptyLabel: "vazia",
   rulesTitle: "Como jogar 4096",

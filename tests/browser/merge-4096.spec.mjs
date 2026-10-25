@@ -125,11 +125,36 @@ test("swipes move once and ignore small, cancelled, and multiple-touch gestures"
 })
 
 test("4096 celebrates the goal and persists the choice to keep playing", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" })
   await seed(page, [2048, 2048, 2, ...Array(13).fill(0)])
   await board(page).focus()
   await page.keyboard.press("ArrowLeft")
   await expect(page.getByRole("button", { name: "Keep playing", exact: true })).toBeFocused()
   expect((await cells(page)).includes(4096)).toBe(true)
+  await expect(page.locator(".merge4096-overlay-title")).toContainText("Congratulations!")
+  const animationStarts = await page.locator(".merge4096-overlay").evaluate((element) =>
+    element.getAnimations({ subtree: true }).map((animation) => {
+      const timing = animation.effect.getComputedTiming()
+      return { start: animation.startTime, iterations: timing.iterations, duration: timing.endTime }
+    })
+  )
+  expect(animationStarts.length).toBeGreaterThan(1)
+  for (const animation of animationStarts) {
+    expect(animation.iterations).toBe(1)
+    expect(animation.duration).toBeLessThanOrEqual(3500)
+  }
+  await page.getByRole("button", { name: "Fullscreen", exact: true }).click()
+  const fullscreenStarts = await page
+    .locator(".merge4096-overlay")
+    .evaluate((element) =>
+      element.getAnimations({ subtree: true }).map((animation) => animation.startTime)
+    )
+  expect(fullscreenStarts).toEqual(animationStarts.map((animation) => animation.start))
+  await page.locator(".merge4096-overlay").evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations({ subtree: true }).map((animation) => animation.finished)
+    )
+  })
   await page.getByRole("button", { name: "Keep playing", exact: true }).click()
   await expect(board(page)).toBeFocused()
   expect((await progress(page)).continued).toBe(true)
@@ -137,6 +162,40 @@ test("4096 celebrates the goal and persists the choice to keep playing", async (
   await expect(board(page)).toHaveAttribute("aria-disabled", "false")
   await expect(page.getByRole("button", { name: "Keep playing", exact: true })).toHaveCount(0)
   await expect(page.locator(".merge4096-hud dd").last()).toHaveText("4,096")
+})
+
+test("a restored win keeps its message without replaying the celebration", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" })
+  await seed(page, [4096, 2, ...Array(14).fill(0)])
+  await expect(page.locator(".merge4096-overlay-title")).toContainText("Congratulations!")
+  expect(
+    await page
+      .locator(".merge4096-overlay")
+      .evaluate((element) => element.getAnimations({ subtree: true }).length)
+  ).toBe(0)
+  await page.getByRole("button", { name: "Keep playing", exact: true }).click()
+  await expect(board(page)).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(page.locator(".merge4096-overlay")).toHaveCount(0)
+})
+
+test("reduced motion keeps congratulations and continuation without animation", async ({
+  page
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await seed(page, [2048, 2048, 2, ...Array(13).fill(0)])
+  await board(page).focus()
+  await page.keyboard.press("ArrowLeft")
+  await expect(page.locator(".merge4096-overlay-title")).toContainText("Congratulations!")
+  expect(
+    await page
+      .locator(".merge4096-board-wrap")
+      .evaluate((element) => element.getAnimations({ subtree: true }).length)
+  ).toBe(0)
+  await expect(page.getByRole("button", { name: "Keep playing", exact: true })).toBeFocused()
+  await page.keyboard.press("Enter")
+  await expect(board(page)).toBeFocused()
+  await expect(board(page)).toHaveAttribute("aria-disabled", "false")
 })
 
 test("terminal boards offer a new game and retain the record", async ({ page }) => {
