@@ -53,6 +53,7 @@
 }
 .merge4096-board-wrap {
   position: relative;
+  container-type: inline-size;
   width: min(100%, calc(100svh - 300px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
   justify-self: center;
   border-radius: 18px;
@@ -168,7 +169,7 @@
   line-height: 1.4;
 }
 .merge4096-overlay .merge4096-overlay-title {
-  font-size: clamp(1rem, 4vw, 1.5rem);
+  font-size: clamp(1rem, 5cqi, 1.5rem);
   font-weight: 700;
 }
 .merge4096-overlay.is-won .merge4096-overlay-title {
