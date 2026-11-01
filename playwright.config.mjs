@@ -1,5 +1,7 @@
 import { defineConfig } from "@playwright/test"
 
+const browserName = process.env.PLAYWRIGHT_BROWSER || "chromium"
+
 export default defineConfig({
   testDir: "./tests/browser",
   testMatch: "*.spec.mjs",
@@ -10,8 +12,9 @@ export default defineConfig({
   reporter: "list",
   outputDir: "output/playwright/test-results",
   use: {
+    browserName,
     baseURL: process.env.BROWSER_BASE_URL || "http://127.0.0.1:3100",
-    channel: process.env.PLAYWRIGHT_CHANNEL || "chromium",
+    channel: browserName === "chromium" ? process.env.PLAYWRIGHT_CHANNEL || "chromium" : undefined,
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 2,
     trace: "retain-on-failure",

@@ -6,6 +6,7 @@ import type { SudokuDictionary } from "@/data/sudoku/types"
 import type { Locale } from "@/lib/i18n"
 import type { Difficulty } from "@/lib/sudoku/abi"
 import { useGameFullscreen } from "./use-game-fullscreen"
+import { useGameFocusPause } from "./use-game-focus-pause"
 import { useSudokuGame } from "./sudoku-state"
 
 type Props = { wasmPath: string; locale: Locale; copy: SudokuDictionary }
@@ -26,6 +27,7 @@ export function formatSudokuTime(milliseconds: number): string {
 export function SudokuGame({ wasmPath, locale, copy }: Props) {
   const game = useSudokuGame(wasmPath)
   const container = useRef<HTMLElement>(null)
+  const onBlur = useGameFocusPause(container, game.pause)
   const board = useRef<HTMLDivElement>(null)
   const cells = useRef<(HTMLButtonElement | null)[]>([])
   const [selected, setSelected] = useState(0)
@@ -139,9 +141,7 @@ export function SudokuGame({ wasmPath, locale, copy }: Props) {
       aria-modal={fullscreen ? true : undefined}
       aria-label={copy.boardLabel}
       lang={locale}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) game.pause()
-      }}
+      onBlur={onBlur}
     >
       <div className="sudoku-play">
         <div className="sudoku-toolbar">

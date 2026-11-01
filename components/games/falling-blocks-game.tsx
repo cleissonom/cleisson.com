@@ -7,6 +7,7 @@ import { COLS, ROWS, FALLING_BLOCKS_STATUS } from "@/lib/falling-blocks/abi"
 import type { Locale } from "@/lib/i18n"
 import { BOARD_CELL, PREVIEW_CELL, useFallingBlocks, type GameAction } from "./use-falling-blocks"
 import { useGameFullscreen } from "./use-game-fullscreen"
+import { useGameFocusPause } from "./use-game-focus-pause"
 
 type Props = { wasmPath: string; locale: Locale; copy: GamePageDictionary }
 const EMPTY = { score: 0, bestScore: 0, level: 1, lines: 0, status: FALLING_BLOCKS_STATUS.ready }
@@ -29,6 +30,7 @@ export function FallingBlocksGame({ wasmPath, locale, copy }: Props) {
   const held = useRef<HTMLCanvasElement>(null)
   const next = useRef<HTMLCanvasElement>(null)
   const { snapshot, failed, perform, pause, retry } = useFallingBlocks(wasmPath, board, held, next)
+  const onBlur = useGameFocusPause(container, pause)
   const {
     fullscreen,
     button: fullscreenButton,
@@ -72,9 +74,7 @@ export function FallingBlocksGame({ wasmPath, locale, copy }: Props) {
       aria-label={overlay.canvasLabel}
       role={fullscreen ? "dialog" : undefined}
       aria-modal={fullscreen ? true : undefined}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) pause()
-      }}
+      onBlur={onBlur}
     >
       <div className="falling-blocks-play">
         <div className="falling-blocks-toolbar">

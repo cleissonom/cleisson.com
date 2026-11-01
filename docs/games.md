@@ -22,6 +22,8 @@ Reaching 4096 through a fresh move plays a brief confetti burst and animates the
 
 The same game works with keyboard controls on a laptop and touch buttons on a phone. The board keeps square cells while its displayed size adapts to the viewport; portrait and landscape layouts keep the board and controls together. Fullscreen uses the browser API when available and a viewport-filling layout otherwise. The exit button remains available in both modes. Changing display mode preserves the current run and personal best. Browsers that use the fallback may retain their address bar.
 
+Falling Blocks and Sudoku distinguish an internal pointer gesture from leaving the game. Safari can move focus to the page container while a game button is being tapped; that temporary focus change must not pause play before the click runs. Moving focus to an outside control, interacting outside the game, hiding the page, and explicit Pause still pause play. 4096 has no pause state.
+
 - `wasm/falling-blocks/`: dependency-free Rust rules, state machine, and WASM ABI. `src/lib.rs` documents memory regions and exports.
 - `wasm/sudoku/`: dependency-free Rust generation, solving, validation, candidates, hints, and WASM ABI.
 - `wasm/merge-4096/`: dependency-free Rust sliding, merging, scoring, spawning, and WASM ABI.
@@ -56,6 +58,13 @@ Browser checks cover completing a row through normal keyboard play, preserving i
 BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/games.spec.mjs tests/browser/game-clearing.spec.mjs tests/browser/game-best-score.spec.mjs tests/browser/game-display.spec.mjs
 BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/sudoku.spec.mjs tests/browser/sudoku-display.spec.mjs tests/browser/sudoku-focus.spec.mjs
 BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/merge-4096.spec.mjs tests/browser/merge-4096-display.spec.mjs
+```
+
+For touch and focus changes, also run the Safari-engine regressions with WebKit. The default browser remains Chromium; `PLAYWRIGHT_BROWSER=webkit` selects WebKit without a Chromium channel. These tests cover internal buttons and nonfocusable surfaces, fullscreen, outside focus, canceled touches, and 4096 continuation:
+
+```bash
+npx playwright install webkit
+PLAYWRIGHT_BROWSER=webkit BROWSER_BASE_URL=http://localhost:3123 npm run test:browser -- tests/browser/game-touch-focus.spec.mjs
 ```
 
 Sudoku checks exercise the real WASM engine, immutable clues, conflicts, notes, undo, hints, completion, active timing, saved progress and records, keyboard navigation, and touch layouts. Localized HTML and Markdown contracts keep its rules and storage disclosures available without JavaScript. Browser emulation does not replace a physical-device or screen-reader review.
