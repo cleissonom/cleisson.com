@@ -39,6 +39,45 @@
         "node": "v24.20.0",
         "channel": "chromium"
       }
+    },
+    "/downloads/blog/python-bytecode-at-build-time.en-US.pdf": {
+      "source": "content/blog/en-US/python-bytecode-at-build-time.md",
+      "pdfUrl": "/downloads/blog/python-bytecode-at-build-time.en-US.pdf",
+      "inputHash": "8fa76c915ded79f73d929e07d4b57d09963b60a07e09156062d563c341ec7152",
+      "pdfHash": "8f78fc58b52c2b3a7fd7ee9b6845386e003b2b588947f60fa4d4d29979c34e4a",
+      "renderer": {
+        "browser": "157.0.8103.79",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.22.1",
+        "channel": "chrome"
+      }
+    },
+    "/downloads/blog/python-bytecode-at-build-time.es-ES.pdf": {
+      "source": "content/blog/es-ES/python-bytecode-at-build-time.md",
+      "pdfUrl": "/downloads/blog/python-bytecode-at-build-time.es-ES.pdf",
+      "inputHash": "9f92529f940e398e6f22c148536b4b46a54f4c8bdf79b1d34579341046d7644b",
+      "pdfHash": "198b9b540ba0be4e0e310748264b12aaf575602d8c2e30dd3871bc1a66c2fb71",
+      "renderer": {
+        "browser": "157.0.8103.79",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.22.1",
+        "channel": "chrome"
+      }
+    },
+    "/downloads/blog/python-bytecode-at-build-time.pt-BR.pdf": {
+      "source": "content/blog/pt-BR/python-bytecode-at-build-time.md",
+      "pdfUrl": "/downloads/blog/python-bytecode-at-build-time.pt-BR.pdf",
+      "inputHash": "acd6a7dbaa3a3b9fd3e06a88ac890c97651c184fab03f0e90bfeccbc79ff998d",
+      "pdfHash": "e171430f7a805620a58e168a67d2d0494035e1a85b45c006434040820c8aac51",
+      "renderer": {
+        "browser": "157.0.8103.79",
+        "platform": "darwin",
+        "arch": "arm64",
+        "node": "v24.22.1",
+        "channel": "chrome"
+      }
     }
   }
 }
