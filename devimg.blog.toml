@@ -29,6 +29,6 @@ fit = "contain"
 allow_upscale = false
 
 [budgets]
-max_total_bytes = "650kb"
+max_total_bytes = "800kb"
 max_file_bytes = "260kb"
 fail_on_regression = true

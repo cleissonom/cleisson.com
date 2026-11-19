@@ -67,6 +67,9 @@ Existing `pdfUrl` values are authoritative, including translated filenames:
 | `en-US` | `implementation-planning-vs-developing.en-US.pdf`      |
 | `pt-BR` | `implementation-planning-vs-desenvolvimento.pt-BR.pdf` |
 | `es-ES` | `implementation-planning-vs-desarrollo.es-ES.pdf`      |
+| `en-US` | `python-bytecode-at-build-time.en-US.pdf`              |
+| `pt-BR` | `python-bytecode-at-build-time.pt-BR.pdf`              |
+| `es-ES` | `python-bytecode-at-build-time.es-ES.pdf`              |
 
 Without `pdfUrl`, use `/downloads/blog/<slug>.<locale>.pdf`. After rendering
 successfully, the generator inserts that one frontmatter field without serializing

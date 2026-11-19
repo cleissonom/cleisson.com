@@ -53,7 +53,7 @@ function post(
 
 test("preserves every existing localized download URL and selects the requested source", () => {
   const posts = discoverPosts(process.cwd())
-  assert.equal(posts.length, 3)
+  assert.equal(posts.length, 6)
   for (const locale of locales) {
     const [entry] = selectPosts(posts, { slug: "implementation-planning-vs-developing", locale })
     const suffix = { "en-US": "developing", "pt-BR": "desenvolvimento", "es-ES": "desarrollo" }[

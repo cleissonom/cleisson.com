@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generated_at": "unix:1781148594",
+  "generated_at": "unix:1795048110",
   "config_path": "devimg.blog.toml",
-  "config_hash": "blake3:7ea1e83f949cd3c6f51f2c7afc177a343c4aa15dc17b1f3b035c9765bda78f7f",
+  "config_hash": "blake3:0f950a41408e22764aabf9d17d8e0d3379c02df3a85944b59f1f75201e8062d0",
   "outputs": [
     {
       "source_path": "public/images/blog/implementation-planning-vs-desarrollo.es-ES.png",
@@ -99,10 +99,42 @@
       "bytes": 132719,
       "hash": "blake3:a289060b857e2807ee5ba91e5851eca3c311edbb8a2fce1dd24cac1881d58905",
       "operation_hash": "blake3:776380d4a3a148c5ae6542f3d6a33441acb9de7df35ec825c26091250a42ebe2"
+    },
+    {
+      "source_path": "public/images/blog/python-bytecode-at-build-time.png",
+      "source_hash": "blake3:cae9ef918732bd2ba5ddeeb0f314b2e8af751101f483e1ea5ee603fbb157bc74",
+      "source_width": 2400,
+      "source_height": 1470,
+      "source_bytes": 112634,
+      "output_path": "public/images/generated/blog/python-bytecode-at-build-time.blog-card.640.3ba3d5922d95.jpeg",
+      "preset": "blog-card",
+      "fit": "contain",
+      "width": 640,
+      "height": 392,
+      "format": "jpeg",
+      "bytes": 39368,
+      "hash": "blake3:3ba3d5922d95aadfca68d1ee7e512c62da984fd3866dd8d8af8f495701d694c3",
+      "operation_hash": "blake3:adbe6fa3cdcd080e3b338c9224b1f16636e6d002783019d2d7b817e63f2095b8"
+    },
+    {
+      "source_path": "public/images/blog/python-bytecode-at-build-time.png",
+      "source_hash": "blake3:cae9ef918732bd2ba5ddeeb0f314b2e8af751101f483e1ea5ee603fbb157bc74",
+      "source_width": 2400,
+      "source_height": 1470,
+      "source_bytes": 112634,
+      "output_path": "public/images/generated/blog/python-bytecode-at-build-time.blog-social.1200.94cb1bb1e017.jpeg",
+      "preset": "blog-social",
+      "fit": "contain",
+      "width": 1200,
+      "height": 735,
+      "format": "jpeg",
+      "bytes": 87988,
+      "hash": "blake3:94cb1bb1e017c925cd312006609b442ad2657e5ec695cc791c3d6bdae6c28770",
+      "operation_hash": "blake3:07a2c7e3ad5833080eef55ac97afc0f98f4b4e69f698ecc7043df3c200406260"
     }
   ],
   "totals": {
-    "source_bytes": 430593,
-    "output_bytes": 584710
+    "source_bytes": 543227,
+    "output_bytes": 712066
   }
 }

@@ -6,6 +6,16 @@ import test from "node:test"
 const root = process.cwd()
 const locales = ["en-US", "pt-BR", "es-ES"]
 const realPostSlug = "implementation-planning-vs-developing"
+const bytecodePostSlug = "python-bytecode-at-build-time"
+const publishedSlugs = [realPostSlug, bytecodePostSlug].sort()
+const bytecodeCoverImage = "/images/blog/python-bytecode-at-build-time.png"
+const bytecodeFigures = [
+  "python-bytecode-compile-moves",
+  "python-bytecode-startup-chart",
+  "python-bytecode-import-flow",
+  "python-bytecode-pyc-header",
+  "python-bytecode-compile-vs-load"
+]
 const expectedCoverImageByLocale = {
   "en-US": "/images/blog/implementation-planning-vs-developing.en-US.png",
   "pt-BR": "/images/blog/implementation-planning-vs-desenvolvimento.pt-BR.png",
@@ -88,7 +98,7 @@ function unquoteYamlValue(value) {
   return trimmed
 }
 
-test("the blog publishes only the real post in every locale", () => {
+test("the blog publishes only the real posts in every locale", () => {
   for (const locale of locales) {
     const dir = path.join(root, "content", "blog", locale)
     const slugs = fs
@@ -97,7 +107,7 @@ test("the blog publishes only the real post in every locale", () => {
       .map((file) => file.slice(0, -3))
       .sort()
 
-    assert.deepEqual(slugs, [realPostSlug], `${locale} should publish only the real post`)
+    assert.deepEqual(slugs, publishedSlugs, `${locale} should publish only the real posts`)
   }
 })
 
@@ -145,4 +155,38 @@ test("the real post has localized content, image metadata, and a PDF download", 
   ]) {
     assert.equal(fs.existsSync(path.join(root, assetName)), false, `${assetName} should be moved`)
   }
+})
+
+test("the bytecode post has localized content and figures, a shared cover, and a PDF download", () => {
+  const coverAlts = new Set()
+
+  for (const locale of locales) {
+    const post = readPost(locale, bytecodePostSlug)
+    const pdfUrl = `/downloads/blog/${bytecodePostSlug}.${locale}.pdf`
+
+    assert.equal(post.frontmatter.slug, bytecodePostSlug)
+    assert.equal(post.frontmatter.lang, locale)
+    assert.equal(post.frontmatter.coverImage, bytecodeCoverImage)
+    assert.ok(post.frontmatter.coverAlt?.length > 20, `${locale} cover needs a description`)
+    assert.equal(post.frontmatter.pdfUrl, pdfUrl)
+    assert.equal(post.frontmatter.date, "2026-11-18")
+    assert.ok(post.body.length > 6000, `${post.filePath} should contain the translated article`)
+    coverAlts.add(post.frontmatter.coverAlt)
+
+    for (const figure of bytecodeFigures) {
+      const imageUrl = `/images/blog/${figure}.${locale}.svg`
+      assert.ok(post.body.includes(`](${imageUrl})`), `${locale} article should show ${figure}`)
+      assert.ok(fs.existsSync(path.join(root, "public", imageUrl)), `${imageUrl} should exist`)
+    }
+    assert.ok(
+      fs.existsSync(path.join(root, "public", pdfUrl)),
+      `${locale} blog PDF download should be served from public downloads`
+    )
+  }
+
+  assert.equal(coverAlts.size, locales.length, "each locale should describe the cover itself")
+  assert.ok(
+    fs.existsSync(path.join(root, "public", bytecodeCoverImage)),
+    "the shared language-neutral cover PNG should exist"
+  )
 })

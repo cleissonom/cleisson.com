@@ -11,6 +11,8 @@ import pymupdf
 
 def normalized(value):
     value = unicodedata.normalize("NFKC", value).replace("\u00ad", "")
+    # Chromium may wrap a line after a hyphen ("site-" / "packages"); compare both sides without that break.
+    value = re.sub(r"-\s+", "-", value)
     return re.sub(r"\s+", " ", value).strip()
 
 
