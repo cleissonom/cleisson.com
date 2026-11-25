@@ -35,6 +35,7 @@ export function SiteNavigation({
           <Link
             key={key}
             href={href as Route}
+            prefetch={false}
             className={`site-nav-link${isActive ? " site-nav-link-active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
