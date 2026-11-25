@@ -1,7 +1,9 @@
 import "server-only"
 
+import { getContributions, getContributionsCopy } from "@/data/contributions"
 import { getDictionary } from "@/data/i18n"
 import type { Recommendation } from "@/data/i18n/types"
+import { labsInfrastructureUrl, labsOrganizationUrl, labsProjectCopy } from "@/data/labs-projects"
 import {
   getAllPosts,
   getAllProjects,
@@ -284,6 +286,46 @@ function projectRecords(locale: Locale): SearchRecord[] {
   })
 }
 
+function contributionRecords(locale: Locale): SearchRecord[] {
+  const copy = getContributionsCopy(locale)
+  return getContributions(locale).map((entry) => {
+    const context = [
+      entry.title,
+      entry.project,
+      entry.organization,
+      `${entry.repository}#${entry.number}`,
+      `${copy.mergedLabel} ${entry.mergedAt}`
+    ].join(" — ")
+    return record(
+      `contribution:${entry.id}`,
+      {
+        ...sourceUrls(locale, "/contributions"),
+        evidenceType: "inspectable_public_artifact",
+        claim: entry.summary,
+        context,
+        artifactUrls: [entry.url]
+      },
+      `${copy.title} ${entry.summary} ${entry.repository} ${context}`
+    )
+  })
+}
+
+function labsInfrastructureRecord(locale: Locale): SearchRecord {
+  const { context, infrastructureLabel } = labsProjectCopy[locale]
+  const claim = `Cleisson Labs ${context} ${infrastructureLabel}.`
+  return record(
+    "labs:infrastructure",
+    {
+      ...sourceUrls(locale, "/projects"),
+      evidenceType: "inspectable_public_artifact",
+      claim,
+      context: "cleisson-labs/.github",
+      artifactUrls: [labsInfrastructureUrl, labsOrganizationUrl]
+    },
+    `${claim} cleisson-labs/.github`
+  )
+}
+
 function postArtifacts(post: BlogEntry): string[] {
   const urls = [post.canonicalUrl]
   if (post.pdfUrl) urls.push(`${SITE_URL}${post.pdfUrl}`)
@@ -320,6 +362,8 @@ function allRecords(locale: Locale): SearchRecord[] {
     ...profileRecords(locale),
     ...experienceRecords(locale),
     ...projectRecords(locale),
+    labsInfrastructureRecord(locale),
+    ...contributionRecords(locale),
     ...postRecords(locale),
     ...recommendationRecords(locale)
   ]

@@ -36,6 +36,7 @@ export type UiDictionary = {
     games: string
     experience: string
     projects: string
+    contributions: string
     blog: string
     resume: string
   }
@@ -164,6 +165,7 @@ export type LocaleDictionary = {
   pages: {
     home: {
       breadcrumbLabel: string
+      contributionsLink: string
       keywords: string[]
     }
     about: {

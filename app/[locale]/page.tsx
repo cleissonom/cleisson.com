@@ -133,6 +133,11 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
               />
             ))}
           </Grid>
+          <p>
+            <InlineLink href={`/${locale}/contributions`}>
+              {dictionary.pages.home.contributionsLink}
+            </InlineLink>
+          </p>
         </SectionStack>
 
         <Surface as="section" className="preview-section" aria-labelledby="home-experience-title">

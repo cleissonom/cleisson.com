@@ -1,9 +1,17 @@
 import { notFound } from "next/navigation"
 
-import { Lead, PageHeader, SectionStack, Surface } from "@/components/design-system"
+import {
+  InlineLink,
+  Lead,
+  MutedText,
+  PageHeader,
+  SectionStack,
+  Surface
+} from "@/components/design-system"
 import { JsonLd } from "@/components/json-ld"
 import { ProjectListWithFilters } from "@/components/project-list-with-filters"
 import { getDictionary } from "@/data/i18n"
+import { labsInfrastructureUrl, labsOrganizationUrl, labsProjectCopy } from "@/data/labs-projects"
 import { getAllProjects } from "@/lib/content"
 import { projectCardImageVariant } from "@/lib/devimg"
 import { isLocale } from "@/lib/i18n"
@@ -37,6 +45,7 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
 
   const dictionary = getDictionary(locale)
   const ui = dictionary.ui
+  const labs = labsProjectCopy[locale]
   const projects = getAllProjects(locale)
   const projectCards = projects.map((project) => ({
     slug: project.slug,
@@ -62,6 +71,10 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
         <PageHeader className="page-overview-copy">
           <h1 id="projects-title">{dictionary.pages.projects.metadataTitle}</h1>
           <Lead>{dictionary.pages.projects.lead}</Lead>
+          <MutedText>
+            <InlineLink href={labsOrganizationUrl}>Cleisson Labs</InlineLink> {labs.context}{" "}
+            <InlineLink href={labsInfrastructureUrl}>{labs.infrastructureLabel}</InlineLink>.
+          </MutedText>
         </PageHeader>
       </Surface>
 

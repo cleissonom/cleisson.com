@@ -8,7 +8,7 @@ export const PUBLIC_API_ENDPOINTS = [
 
 export const REST_EXAMPLES = [
   `curl '${SITE_URL}/api/v1/profile?locale=en-US'`,
-  `curl --get '${SITE_URL}/api/v1/evidence' --data-urlencode 'topics=Kubernetes' --data-urlencode 'topics=AWS' --data-urlencode 'locale=en-US'`
+  `curl --get '${SITE_URL}/api/v1/evidence' --data-urlencode 'topics=Kubernetes' --data-urlencode 'topics=django/django' --data-urlencode 'locale=en-US'`
 ] as const
 
 export const PROBLEM_EXAMPLE = JSON.stringify(

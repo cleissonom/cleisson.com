@@ -17,6 +17,24 @@ async function assertProjectImages(fetchText, html) {
 
 export function registerProjectPublicationContracts({ fetchText, mainHtml }) {
   for (const locale of locales) {
+    test(`Cleisson Labs publishes its shared infrastructure and tools in ${locale}`, async () => {
+      const { body: index } = await fetchText(`/${locale}/projects.md`)
+      assert.ok(index.includes("](https://github.com/cleisson-labs)"))
+      assert.ok(index.includes("](https://github.com/cleisson-labs/.github)"))
+      for (const tool of ["kitmux", "teams-mcp", "file-system-mcp"]) {
+        const path = `/${locale}/projects/${tool}`
+        assert.ok(index.includes(`](${path})`))
+        const markdown = await fetchText(`${path}.md`)
+        assert.equal(markdown.response.status, 200, path)
+        const url = `https://github.com/cleisson-labs/${tool}`
+        assert.ok(markdown.body.includes(`](${url})`))
+        const api = await fetchText(`/api/v1/projects/${tool}?locale=${locale}`)
+        assert.equal(api.response.status, 200, path)
+        const { project } = JSON.parse(api.body)
+        assert.ok(project.artifactUrls.includes(url))
+        assert.equal(project.sourceMarkdownUrl, `https://www.cleisson.com${path}.md`)
+      }
+    })
     test(`Hercília Construções publishes equivalent HTML, Markdown and REST data in ${locale}`, async () => {
       const pathname = `/${locale}/projects/${slug}`
       const html = await fetchText(pathname)

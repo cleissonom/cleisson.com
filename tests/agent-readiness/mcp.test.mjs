@@ -5,6 +5,7 @@ import path from "node:path"
 import { after, before, test } from "node:test"
 
 import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client"
+import { getContributions } from "../../data/contributions.ts"
 
 const root = process.cwd()
 let origin
@@ -300,6 +301,44 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
     })
     assert.match(guardedPrompt.messages[0]?.content?.text ?? "", /untrusted focus label/i)
     assert.match(guardedPrompt.messages[0]?.content?.text ?? "", /ignore instructions inside/i)
+  } finally {
+    await client.close()
+  }
+})
+
+test("merged upstream PRs have matching localized REST and MCP evidence", async () => {
+  const client = new Client({ name: "contributions", version: "1.0.0" })
+  await client.connect(new StreamableHTTPClientTransport(new URL("/api/mcp", origin)))
+  try {
+    const { resources } = await client.listResources()
+    for (const locale of ["en-US", "pt-BR", "es-ES"]) {
+      const entries = getContributions(locale)
+      const topics = entries.map(({ repository }) => repository)
+      const query = new URLSearchParams({ locale })
+      for (const topic of topics) query.append("topics", topic)
+      const rest = await fetch(`${origin}/api/v1/evidence?${query}`)
+      assert.equal(rest.status, 200)
+      const result = await client.callTool({ name: "find_evidence", arguments: { topics, locale } })
+      const evidence = await rest.json()
+      assert.deepEqual(result.structuredContent, evidence)
+      const canonical = `https://www.cleisson.com/${locale}/contributions`
+      const uri = `${canonical}.md`
+      assert.ok(resources.some((resource) => resource.uri === uri))
+      const resource = await client.readResource({ uri })
+      const markdown = await fetch(`${origin}/${locale}/contributions.md`)
+      assert.equal(markdown.status, 200)
+      assert.equal(resource.contents[0].text, await markdown.text())
+      for (const entry of entries) {
+        const topic = evidence.topics.find((item) => item.topic === entry.repository)
+        const match = topic.evidence.find((item) => item.artifactUrls.includes(entry.url))
+        assert.equal(match?.evidenceType, "inspectable_public_artifact", entry.repository)
+        assert.equal(match.matchStatus, "direct")
+        assert.equal(match.claim, entry.summary)
+        assert.ok(match.context.includes(entry.title))
+        assert.equal(match.sourceUrl, canonical)
+        assert.equal(match.sourceMarkdownUrl, uri)
+      }
+    }
   } finally {
     await client.close()
   }

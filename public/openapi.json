@@ -44,7 +44,7 @@
       "get": {
         "operationId": "find_evidence",
         "summary": "Find source-linked professional evidence",
-        "description": "Searches the public portfolio for one concise requirement per topic and returns direct, adjacent, or no-public-evidence results without generating a candidate score. This operation is read-only and requires no authentication.",
+        "description": "Searches the public portfolio, including merged upstream pull requests, for one concise requirement per topic and returns direct, adjacent, or no-public-evidence results without generating a candidate score. This operation is read-only and requires no authentication.",
         "tags": ["Professional evidence"],
         "parameters": [
           {
@@ -353,7 +353,7 @@
           "sourceMarkdownUrl": { "$ref": "#/components/schemas/SourceMarkdownUrl" },
           "artifactUrls": {
             "type": "array",
-            "description": "Inspectable public artifact links supporting the item, when available.",
+            "description": "Inspectable public artifact links supporting the item, such as an upstream pull request, when available.",
             "items": { "type": "string", "format": "uri" }
           }
         }

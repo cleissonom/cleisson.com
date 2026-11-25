@@ -12,6 +12,7 @@ const STATIC_PAGES = new Set([
   "contact",
   "privacy",
   "projects",
+  "contributions",
   "blog",
   "games",
   "resume",

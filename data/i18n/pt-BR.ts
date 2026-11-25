@@ -63,6 +63,7 @@ export const ptBRDictionary: LocaleDictionary = {
       games: "Jogos",
       experience: "Experiência",
       projects: "Projetos",
+      contributions: "Contribuições",
       blog: "Blog",
       resume: "Currículo"
     },
@@ -219,6 +220,8 @@ export const ptBRDictionary: LocaleDictionary = {
   pages: {
     home: {
       breadcrumbLabel: "Início",
+      contributionsLink:
+        "Minhas contribuições para projetos de código aberto da Netflix, da AWS e do Django",
       keywords: [
         "Desenvolvimento de Software",
         "Infraestrutura em Nuvem",
@@ -346,7 +349,7 @@ export const ptBRDictionary: LocaleDictionary = {
       boundariesHeading: "Limites de confiança",
       boundaries: [
         "O MCP é uma fonte de informações do portfólio; ele não é Cleisson e não fala em nome dele.",
-        "Os resultados diferenciam declarações do candidato, artefatos verificáveis, textos publicados e recomendações republicadas.",
+        "Os resultados distinguem relatos de experiência, artefatos públicos como pull requests já incorporados, textos publicados e recomendações republicadas.",
         "Direta e adjacente descrevem relevância textual, não verificação independente; use evidenceType e os links de fonte para avaliar a procedência.",
         "Nenhuma evidência pública significa apenas que este site não encontrou correspondência; isso não prova ausência de experiência.",
         "Não envie descrições confidenciais de vagas, credenciais ou dados pessoais sensíveis; detalhes limitados da requisição podem aparecer em logs de hospedagem ou segurança.",
@@ -375,8 +378,8 @@ export const ptBRDictionary: LocaleDictionary = {
     projects: {
       metadataTitle: "Projetos pessoais",
       metadataDescription:
-        "Projetos pessoais de software entre infraestrutura do portfólio, ferramentas open source para desenvolvedores e futuros laboratórios de aprendizado.",
-      lead: "Projetos pessoais reais que eu construo, mantenho ou uso para aprofundar habilidades de engenharia. Esta página fica focada em trabalhos públicos ou demonstráveis, não em ideias provisórias.",
+        "Ferramentas do Cleisson Labs, servidores MCP e extensões de navegador, além de sites que Cleisson de Oliveira Moura desenvolveu.",
+      lead: "Ferramentas de linha de comando, integrações e sites, com notas sobre como funcionam.",
       filterHeading: "Filtrar por label",
       allLabels: "Todas as labels",
       clearLabels: "Limpar labels",

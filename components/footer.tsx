@@ -10,6 +10,7 @@ export function Footer({
   aboutLabel,
   resumeLabel,
   contactLabel,
+  gamesLabel,
   privacyLabel,
   mcpLabel,
   opensInNewTabLabel
@@ -18,6 +19,7 @@ export function Footer({
   aboutLabel: string
   resumeLabel: string
   contactLabel: string
+  gamesLabel: string
   privacyLabel: string
   mcpLabel: string
   opensInNewTabLabel: string
@@ -42,6 +44,7 @@ export function Footer({
             <span className="sr-only"> ({opensInNewTabLabel})</span>
           </a>
           <Link href={`/${locale}/contact` as Route}>{contactLabel}</Link>
+          <Link href={`/${locale}/games` as Route}>{gamesLabel}</Link>
           <Link href={`/${locale}/privacy` as Route}>{privacyLabel}</Link>
           <Link href={`/${locale}/mcp` as Route}>{mcpLabel}</Link>
           <a href="/rss.xml">RSS</a>

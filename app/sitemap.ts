@@ -13,6 +13,7 @@ const staticPaths = [
   "/privacy",
   "/experience",
   "/projects",
+  "/contributions",
   "/blog",
   "/games",
   "/resume",
