@@ -37,6 +37,9 @@ export function registerProjectPublicationContracts({ fetchText, mainHtml }) {
     })
     test(`Hercília Construções publishes equivalent HTML, Markdown and REST data in ${locale}`, async () => {
       const pathname = `/${locale}/projects/${slug}`
+      const home = await fetchText(`/${locale}.md`)
+      assert.ok(home.body.includes(`](${pathname})`))
+      assert.ok(home.body.includes(`](/${locale}/projects/kitmux)`))
       const html = await fetchText(pathname)
       assert.equal(html.response.status, 200, pathname)
       assert.match(mainHtml(html.body), /<h1\b[^>]*>Hercília Construções<\/h1>/)

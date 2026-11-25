@@ -9,6 +9,7 @@ import type { ContentSection, ExperienceCompany } from "@/data/i18n/types"
 import {
   getAllPosts,
   getAllProjects,
+  getFeaturedProjects,
   getPostBySlug,
   getProjectBySlug,
   type ProjectEntry
@@ -50,7 +51,7 @@ function sectionMarkdown(section: ContentSection): string {
 
 function homeMarkdown(locale: Locale): string {
   const dictionary = getDictionary(locale)
-  const projects = getAllProjects(locale).slice(0, 2)
+  const projects = getFeaturedProjects(locale)
   const posts = getAllPosts(locale).slice(0, 2)
 
   return document(

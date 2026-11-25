@@ -58,7 +58,10 @@ test("project image feedback leaves keyboard link targets stationary", async ({ 
   await page.setViewportSize({ width: 1280, height: 900 })
   await page.emulateMedia({ reducedMotion: "no-preference" })
   await page.goto("/en-US/projects")
-  const card = page.locator(".projects-grid article").first()
+  const card = page
+    .locator(".projects-grid article")
+    .filter({ has: page.locator("img") })
+    .first()
   const image = card.locator("img")
   const link = card.getByRole("link").first()
   const before = await link.boundingBox()
