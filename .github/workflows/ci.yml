@@ -52,7 +52,7 @@ jobs:
           set -euo pipefail
           tmp="$(mktemp -d)"
           gh release download "v${DEVIMG_VERSION}" \
-            --repo cleissonom/devimg \
+            --repo cleisson-labs/devimg \
             --pattern 'devimg-linux-x86_64.tar.gz*' \
             --dir "$tmp"
           (

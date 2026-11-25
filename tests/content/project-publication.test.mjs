@@ -6,7 +6,7 @@ import test from "node:test"
 const root = process.cwd()
 const locales = ["en-US", "pt-BR", "es-ES"]
 const projectSlug = "jira-toggl-quickstart"
-const repositoryUrl = "https://github.com/cleissonom/jira-toggl-quickstart"
+const repositoryUrl = "https://github.com/cleisson-labs/jira-toggl-quickstart"
 const storeUrl =
   "https://chromewebstore.google.com/detail/jira-%E2%86%92-toggl-quick-start/ijkninhienjcgnlfcelljeoimpankboc"
 const coverImage = "/projects/jira-toggl-quickstart.png"

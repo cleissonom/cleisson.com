@@ -29,7 +29,7 @@ AccessTrace keeps two narrow `quality:cover-crop` acknowledgements for the card 
 
 ## Verification
 
-Prerequisites: run from the repository root with Bash and the DevImg CLI on `PATH`. Use the release pinned by [CI](../.github/workflows/ci.yml), currently [v0.2.7](https://github.com/cleissonom/devimg/releases/tag/v0.2.7), and verify the published checksum for your platform. DevImg is external development tooling; `npm ci` does not install it, and the deployed site does not run it.
+Prerequisites: run from the repository root with Bash and the DevImg CLI on `PATH`. Use the release pinned by [CI](../.github/workflows/ci.yml), currently [v0.2.7](https://github.com/cleisson-labs/devimg/releases/tag/v0.2.7), and verify the published checksum for your platform. DevImg is external development tooling; `npm ci` does not install it, and the deployed site does not run it.
 
 ```bash
 devimg --version

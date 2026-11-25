@@ -23,7 +23,7 @@ stack:
   - Node.js
 coverImage: /projects/jira-toggl-quickstart.png
 links:
-  repo: https://github.com/cleissonom/jira-toggl-quickstart
+  repo: https://github.com/cleisson-labs/jira-toggl-quickstart
   live: https://chromewebstore.google.com/detail/jira-%E2%86%92-toggl-quick-start/ijkninhienjcgnlfcelljeoimpankboc
 highlights:
   - Added Jira controls for starting and stopping Toggl timers, plus a side panel for replaying work and tracking daily and weekly totals.

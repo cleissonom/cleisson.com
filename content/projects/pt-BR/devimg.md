@@ -21,7 +21,7 @@ stack:
   - Processamento de Imagens
   - Markdown
 links:
-  repo: https://github.com/cleissonom/devimg
+  repo: https://github.com/cleisson-labs/devimg
   package: https://crates.io/crates/devimg
 coverImage: /projects/devimg.png
 highlights:
@@ -45,7 +45,7 @@ cargo install devimg
 Use a GitHub Action pública em pull requests:
 
 ```yaml
-- uses: cleissonom/devimg/action@v0.2.7
+- uses: cleisson-labs/devimg/action@v0.2.7
   with:
     mode: check
 ```
