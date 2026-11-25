@@ -112,7 +112,7 @@ function registerEvidenceTool(server: McpServer) {
     {
       title: "Find professional evidence",
       description:
-        "Find source-linked public portfolio evidence for one concise requirement per topic. Returns direct, adjacent, or no public evidence without generating a candidate score.",
+        "Find source-linked public portfolio evidence, including merged upstream pull requests, for one concise requirement per topic. Returns direct, adjacent, or no public evidence without generating a candidate score.",
       inputSchema: z
         .object({
           topics: z.array(topicSchema).min(1).max(10),
@@ -171,6 +171,7 @@ const staticResources = [
   ["about", "Professional profile", 1],
   ["experience", "Professional experience and recommendations", 1],
   ["projects", "Public project index", 0.9],
+  ["contributions", "Merged open-source contributions", 0.9],
   ["blog", "Published technical writing", 0.8],
   ["resume", "Resume overview", 0.9],
   ["contact", "Professional contact guidance", 0.8],

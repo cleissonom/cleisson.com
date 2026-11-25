@@ -1,6 +1,8 @@
 import "server-only"
 
+import { getContributions, getContributionsCopy } from "@/data/contributions"
 import { getDictionary } from "@/data/i18n"
+import { labsInfrastructureUrl, labsOrganizationUrl, labsProjectCopy } from "@/data/labs-projects"
 import { get4096Dictionary } from "@/data/merge-4096"
 import { getSudokuDictionary } from "@/data/sudoku"
 import type { ContentSection, ExperienceCompany } from "@/data/i18n/types"
@@ -11,6 +13,7 @@ import {
   getProjectBySlug,
   type ProjectEntry
 } from "@/lib/content"
+import { formatContentDate } from "@/lib/display-date"
 import { getAllGames, getGameBySlug } from "@/lib/games"
 import {
   MCP_DISCOVERY_EXAMPLE,
@@ -57,6 +60,7 @@ function homeMarkdown(locale: Locale): string {
     ...dictionary.content.about,
     `## ${dictionary.ui.sections.focusAreas}\n\n${bulletList(dictionary.content.focusAreas)}`,
     projectIndex(locale, projects),
+    `[${dictionary.pages.home.contributionsLink}](/${locale}/contributions)`,
     postIndex(locale, posts),
     `[${dictionary.ui.cta.contact}](/${locale}/contact)`,
     `[${dictionary.pages.mcp.documentationLabel}](/${locale}/mcp)`
@@ -134,7 +138,8 @@ function projectIndex(locale: Locale, projects = getAllProjects(locale)): string
       `### ${title}`,
       project.summary,
       `**${dictionary.ui.labels.role}:** ${project.role}`,
-      `**${dictionary.ui.labels.stack}:** ${project.stack.join(", ")}`
+      `**${dictionary.ui.labels.stack}:** ${project.stack.join(", ")}`,
+      `**${dictionary.ui.labels.topics}:** ${project.tags.join(", ")}`
     ).trim()
   })
 
@@ -143,11 +148,31 @@ function projectIndex(locale: Locale, projects = getAllProjects(locale)): string
 
 function projectsMarkdown(locale: Locale): string {
   const dictionary = getDictionary(locale)
+  const labs = labsProjectCopy[locale]
   return document(
     `# ${dictionary.pages.projects.metadataTitle}`,
     `> ${dictionary.pages.projects.lead}`,
+    `[Cleisson Labs](${labsOrganizationUrl}) ${labs.context} [${labs.infrastructureLabel}](${labsInfrastructureUrl}).`,
     projectIndex(locale)
   )
+}
+
+function contributionsMarkdown(locale: Locale): string {
+  const copy = getContributionsCopy(locale)
+  const entries = getContributions(locale).map((entry) => {
+    const mergedDate = formatContentDate(entry.mergedAt, locale, {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    })
+    return document(
+      `## ${entry.project} — ${entry.title}`,
+      entry.organization,
+      entry.summary,
+      `${copy.mergedLabel} ${mergedDate} · [${copy.pullRequestLabel} #${entry.number}](${entry.url})`
+    ).trim()
+  })
+  return document(`# ${copy.title}`, `> ${copy.lead}`, ...entries)
 }
 
 function gameIndex(locale: Locale): string {
@@ -335,6 +360,7 @@ function staticMarkdown(locale: Locale, page?: string): string | null {
   if (page === "contact" || page === "privacy") return trustPageMarkdown(locale, page)
   if (page === "experience") return experienceMarkdown(locale)
   if (page === "projects") return projectsMarkdown(locale)
+  if (page === "contributions") return contributionsMarkdown(locale)
   if (page === "blog") return blogMarkdown(locale)
   if (page === "games") return gamesMarkdown(locale)
   if (page === "resume") return resumeMarkdown(locale)

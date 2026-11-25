@@ -59,10 +59,8 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
   const experienceTimeline = summarizeExperienceTimeline(dictionary.content.experienceTimeline)
   const fullExperienceTimeline = dictionary.content.experienceTimeline
   const focusAreas = dictionary.content.focusAreas
-  const allProjects = getAllProjects(locale)
-  const allPosts = getAllPosts(locale)
-  const projects = allProjects.slice(0, 2)
-  const posts = allPosts.slice(0, 2)
+  const projects = getAllProjects(locale).slice(0, 2)
+  const posts = getAllPosts(locale).slice(0, 2)
   const currentCompany = fullExperienceTimeline[0]
   const currentRole = currentCompany?.roles[0]
   const bestFitSummary = dictionary.pages.contact.sections[0]?.paragraphs[0]
@@ -133,6 +131,11 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
               />
             ))}
           </Grid>
+          <p>
+            <InlineLink href={`/${locale}/contributions`}>
+              {dictionary.pages.home.contributionsLink}
+            </InlineLink>
+          </p>
         </SectionStack>
 
         <Surface as="section" className="preview-section" aria-labelledby="home-experience-title">

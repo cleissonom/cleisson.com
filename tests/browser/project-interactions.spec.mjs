@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test"
+import { projectCount } from "./project-count.mjs"
 
 test("outside clicks dismiss labels without clearing selections or stealing focus", async ({
   page
@@ -17,10 +18,12 @@ test("outside clicks dismiss labels without clearing selections or stealing focu
   await expect(theme).toBeFocused()
   await trigger.click()
   await expect(auditLogs).toBeChecked()
-  await expect(page.locator(".projects-filter [role='status']")).toHaveText("1 of 6 projects")
+  await expect(page.locator(".projects-filter [role='status']")).toHaveText(
+    `1 of ${projectCount("en-US")} projects`
+  )
   await page.getByRole("button", { name: /clear/i }).click()
   await expect(dropdown).toHaveAttribute("open", "")
-  await expect(page.locator(".projects-grid article")).toHaveCount(6)
+  await expect(page.locator(".projects-grid article")).toHaveCount(projectCount("en-US"))
 })
 
 test("tapping outside dismisses labels and preserves the selected filter", async ({

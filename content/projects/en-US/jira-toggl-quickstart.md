@@ -8,6 +8,7 @@ status: active
 type: developer-tool
 stage: live
 tags:
+  - Cleisson Labs
   - Chrome Extension
   - Jira
   - Toggl Track

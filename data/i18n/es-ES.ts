@@ -63,6 +63,7 @@ export const esESDictionary: LocaleDictionary = {
       games: "Juegos",
       experience: "Experiencia",
       projects: "Proyectos",
+      contributions: "Contribuciones",
       blog: "Blog",
       resume: "Currículum"
     },
@@ -219,6 +220,8 @@ export const esESDictionary: LocaleDictionary = {
   pages: {
     home: {
       breadcrumbLabel: "Inicio",
+      contributionsLink:
+        "Mis contribuciones a proyectos de código abierto de Netflix, AWS y Django",
       keywords: [
         "Ingeniería backend",
         "Infraestructura en la nube",
@@ -346,7 +349,7 @@ export const esESDictionary: LocaleDictionary = {
       boundariesHeading: "Límites de confianza",
       boundaries: [
         "El MCP es una fuente de información del portafolio; no es Cleisson ni habla en su nombre.",
-        "Los resultados diferencian declaraciones del candidato, artefactos inspeccionables, textos publicados y testimonios republicados.",
+        "Los resultados distinguen la experiencia declarada, los artefactos públicos como los pull requests ya integrados, los textos publicados y los testimonios republicados.",
         "Directa y adyacente describen relevancia textual, no verificación independiente; usa evidenceType y los enlaces de origen para evaluar la procedencia.",
         "Sin evidencia pública solo significa que este sitio no encontró una coincidencia; no demuestra ausencia de experiencia.",
         "No envíes descripciones confidenciales de puestos, credenciales ni datos personales sensibles; detalles limitados de la solicitud pueden aparecer en registros de alojamiento o seguridad.",
@@ -375,8 +378,8 @@ export const esESDictionary: LocaleDictionary = {
     projects: {
       metadataTitle: "Proyectos personales",
       metadataDescription:
-        "Proyectos personales de software entre infraestructura del portafolio, herramientas open source para desarrolladores y futuros laboratorios de aprendizaje.",
-      lead: "Proyectos personales reales que construyo, mantengo o uso para profundizar habilidades de ingeniería. Esta página se enfoca en trabajo público o demostrable, no en ideas provisionales.",
+        "Herramientas de Cleisson Labs, servidores MCP y extensiones de navegador, junto con sitios web desarrollados por Cleisson de Oliveira Moura.",
+      lead: "Herramientas de línea de comandos, integraciones y sitios web, con notas sobre cómo funcionan.",
       filterHeading: "Filtrar por etiqueta",
       allLabels: "Todas las etiquetas",
       clearLabels: "Borrar etiquetas",

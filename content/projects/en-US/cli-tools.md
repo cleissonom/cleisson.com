@@ -8,6 +8,7 @@ status: active
 type: developer-tool
 stage: maintained
 tags:
+  - Cleisson Labs
   - CLI
   - Rust
   - C

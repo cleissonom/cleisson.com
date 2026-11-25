@@ -5,6 +5,7 @@ import path from "node:path"
 import { after, before, test } from "node:test"
 import { registerRecoveryContracts } from "./recovery-contracts.mjs"
 import { registerProjectPublicationContracts } from "./project-publication-contracts.mjs"
+import { registerContributionContracts } from "./contributions-contracts.mjs"
 import { registerGamesContracts } from "./games-contracts.mjs"
 import { registerSudokuContracts } from "./sudoku-contracts.mjs"
 import { register4096Contracts } from "./merge-4096-contracts.mjs"
@@ -154,6 +155,7 @@ before(
 after(stopServer)
 
 registerProjectPublicationContracts({ fetchText, mainHtml })
+registerContributionContracts({ fetchText, mainHtml })
 registerGamesContracts({ fetchText, mainHtml, fetchBinary })
 registerSudokuContracts({ fetchText, mainHtml, fetchBinary })
 register4096Contracts({ fetchText, mainHtml, fetchBinary })

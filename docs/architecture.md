@@ -40,6 +40,8 @@ Pages and layouts render on the server. Locale/detail static parameters allow pr
 
 [`lib/content.ts`](../lib/content.ts) reads from the repository root and sorts entries. [`lib/content-source.ts`](../lib/content-source.ts) shares YAML-only parsing and blog validation with the PDF tools. [`next.config.mjs`](../next.config.mjs) includes `content/**/*.md` in server output tracing so deployed handlers can read it. Preserve that inclusion when organizing content.
 
+Upstream contributions live in [the localized contribution records](../data/contributions.ts). The contributions page, Markdown, REST evidence search and MCP use those records. Each entry links to its upstream pull request and stores the merge timestamp reported by GitHub.
+
 ## Authoring and published assets
 
 Prerequisites: the development environment and existing content tests. Use a corresponding locale file as an example. The project schema in [`lib/content.ts`](../lib/content.ts) and blog schema in [`lib/content-source.ts`](../lib/content-source.ts) are authoritative for fields and defaults.
@@ -72,7 +74,7 @@ The proxy also negotiates HTML versus Markdown and rewrites explicit `.md` URLs 
 
 | Interface                 | Paths and authority                                                                                                                                                                         |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Canonical HTML pages      | `/{locale}`, then `/about`, `/contact`, `/privacy`, `/experience`, `/projects`, `/projects/{slug}`, `/blog`, `/blog/{slug}`, `/games`, `/games/{slug}`, `/resume`, `/mcp` under that locale |
+| Canonical HTML pages      | `/{locale}`, with `/about`, `/contact`, `/privacy`, `/experience`, `/projects`, `/projects/{slug}`, `/contributions`, `/blog`, `/blog/{slug}`, `/games`, `/games/{slug}`, `/resume`, `/mcp` |
 | Markdown                  | Equivalent canonical pages via `Accept: text/markdown` or `.md`; [`lib/agent-content.ts`](../lib/agent-content.ts)                                                                          |
 | REST                      | `/api/v1/profile`, `/api/v1/evidence`, `/api/v1/projects/{slug}`; [`lib/public-api.ts`](../lib/public-api.ts) and [`lib/professional-evidence.ts`](../lib/professional-evidence.ts)         |
 | MCP                       | `/api/mcp`, with `/mcp` compatibility alias; [`lib/mcp-server.ts`](../lib/mcp-server.ts) uses the same professional evidence                                                                |

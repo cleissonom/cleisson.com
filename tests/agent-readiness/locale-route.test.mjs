@@ -11,7 +11,7 @@ const options = {
 }
 
 test("locale switching preserves every localized public information route", () => {
-  for (const page of ["about", "contact", "privacy", "mcp", "games"]) {
+  for (const page of ["about", "contact", "privacy", "mcp", "games", "contributions"]) {
     assert.equal(resolveLocaleSwitchPath(`/en-US/${page}`, "pt-BR", options), `/pt-BR/${page}`)
   }
   assert.equal(resolveLocaleSwitchPath("/en-US/developers", "pt-BR", options), "/pt-BR")

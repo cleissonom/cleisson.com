@@ -62,6 +62,7 @@ export const enUSDictionary: LocaleDictionary = {
       games: "Games",
       experience: "Experience",
       projects: "Projects",
+      contributions: "Contributions",
       blog: "Blog",
       resume: "Resume"
     },
@@ -218,6 +219,7 @@ export const enUSDictionary: LocaleDictionary = {
   pages: {
     home: {
       breadcrumbLabel: "Home",
+      contributionsLink: "My open source contributions to Netflix, AWS and Django",
       keywords: [
         "Backend Engineering",
         "Cloud Infrastructure",
@@ -345,7 +347,7 @@ export const enUSDictionary: LocaleDictionary = {
       boundariesHeading: "Trust boundaries",
       boundaries: [
         "The MCP is a portfolio information source; it is not Cleisson and does not speak on his behalf.",
-        "Results separate candidate-authored claims, inspectable artifacts, published writing, and republished testimonials.",
+        "Results distinguish self-reported experience, public artifacts such as merged pull requests, published writing, and republished testimonials.",
         "Direct and adjacent describe textual relevance, not independent verification; use evidenceType and source links to evaluate provenance.",
         "No public evidence means only that this site did not provide a match; it does not prove an absence of experience.",
         "Do not send confidential job descriptions, credentials, or sensitive personal data; limited request details may appear in hosting or security logs.",
@@ -374,8 +376,8 @@ export const enUSDictionary: LocaleDictionary = {
     projects: {
       metadataTitle: "Personal Projects",
       metadataDescription:
-        "Personal software projects spanning portfolio infrastructure, open-source developer tools, and future learning labs.",
-      lead: "Real personal projects I build, maintain, or use to learn deeper engineering skills. I keep this page focused on public or demonstrable work instead of draft ideas.",
+        "Cleisson Labs developer tools, MCP servers and browser extensions, alongside websites built by Cleisson de Oliveira Moura.",
+      lead: "Command-line tools, integrations and websites, with notes on how they work.",
       filterHeading: "Filter by label",
       allLabels: "All labels",
       clearLabels: "Clear labels",

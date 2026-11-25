@@ -8,6 +8,8 @@ import type { UiDictionary } from "@/data/i18n/types"
 import { normalizePath } from "@/lib/locale-route"
 import type { Locale } from "@/lib/i18n"
 
+const primaryPages = ["home", "experience", "projects", "contributions", "blog", "resume"] as const
+
 export function SiteNavigation({
   locale,
   labels,
@@ -22,7 +24,7 @@ export function SiteNavigation({
 
   return (
     <nav className="site-nav" aria-label={label}>
-      {Object.entries(labels).map(([key, text]) => {
+      {primaryPages.map((key) => {
         const href = key === "home" ? rootPath : `${rootPath}/${key}`
         const isActive =
           key === "home"
@@ -33,10 +35,11 @@ export function SiteNavigation({
           <Link
             key={key}
             href={href as Route}
+            prefetch={false}
             className={`site-nav-link${isActive ? " site-nav-link-active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
-            {text}
+            {labels[key]}
           </Link>
         )
       })}

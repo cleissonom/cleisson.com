@@ -218,6 +218,15 @@
     padding-inline: var(--space-2);
   }
 }
+@media (max-width: 32rem) {
+  .site-nav {
+    display: grid;
+    /* Three columns for phone-sized screens, fewer when readers enlarge the text. */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, max(5.5rem, 27%)), 1fr));
+    justify-items: start;
+    column-gap: var(--space-2);
+  }
+}
 @media (min-width: 1024px) {
   .header-grid {
     display: grid;
