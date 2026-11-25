@@ -138,11 +138,6 @@ export function getProjectBySlug(locale: Locale, slug: string): ProjectEntry | n
   return getAllProjects(locale).find((project) => project.slug === slug) ?? null
 }
 
-export function getFeaturedProjects(locale: Locale): ProjectEntry[] {
-  const featured = ["kitmux", "hercilia-construcoes"]
-  return getAllProjects(locale).filter((project) => featured.includes(project.slug))
-}
-
 export function getAllProjectSlugs(locale: Locale): string[] {
   return getAllProjects(locale).map((project) => project.slug)
 }

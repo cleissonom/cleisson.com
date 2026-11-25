@@ -64,6 +64,7 @@ test("project image feedback leaves keyboard link targets stationary", async ({ 
     .first()
   const image = card.locator("img")
   const link = card.getByRole("link").first()
+  await link.scrollIntoViewIfNeeded()
   const before = await link.boundingBox()
   await link.focus()
   await expect

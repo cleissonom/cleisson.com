@@ -3,10 +3,10 @@ import { test, expect } from "@playwright/test"
 test.use({ javaScriptEnabled: false })
 
 for (const locale of ["en-US", "pt-BR", "es-ES"]) {
-  test(`Hercília is featured and readable with images without JavaScript in ${locale}`, async ({
+  test(`Hercília is reachable from the catalog and readable without JavaScript in ${locale}`, async ({
     page
   }) => {
-    await page.goto(`/${locale}`)
+    await page.goto(`/${locale}/projects`)
     await page.getByRole("link", { name: "Hercília Construções", exact: true }).click()
     await expect(page).toHaveURL(`/${locale}/projects/hercilia-construcoes`)
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hercília Construções")

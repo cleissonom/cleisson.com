@@ -20,7 +20,7 @@ import { PostCard } from "@/components/post-card"
 import { ProjectCard } from "@/components/project-card"
 import { getDictionary } from "@/data/i18n"
 import { siteIdentity } from "@/data/profile"
-import { getAllPosts, getFeaturedProjects } from "@/lib/content"
+import { getAllPosts, getAllProjects } from "@/lib/content"
 import { summarizeExperienceTimeline } from "@/lib/experience"
 import { isLocale } from "@/lib/i18n"
 import { SEO_IMAGE_PATHS, absoluteUrl, buildPageTitle, createMetadata } from "@/lib/metadata"
@@ -59,7 +59,7 @@ export default async function LocaleHomePage({ params }: { params: Promise<{ loc
   const experienceTimeline = summarizeExperienceTimeline(dictionary.content.experienceTimeline)
   const fullExperienceTimeline = dictionary.content.experienceTimeline
   const focusAreas = dictionary.content.focusAreas
-  const projects = getFeaturedProjects(locale)
+  const projects = getAllProjects(locale).slice(0, 2)
   const posts = getAllPosts(locale).slice(0, 2)
   const currentCompany = fullExperienceTimeline[0]
   const currentRole = currentCompany?.roles[0]

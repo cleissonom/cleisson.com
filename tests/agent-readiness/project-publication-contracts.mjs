@@ -19,6 +19,10 @@ export function registerProjectPublicationContracts({ fetchText, mainHtml }) {
   for (const locale of locales) {
     test(`Cleisson Labs publishes its shared infrastructure and tools in ${locale}`, async () => {
       const { body: index } = await fetchText(`/${locale}/projects.md`)
+      const { body: home } = await fetchText(`/${locale}.md`)
+      for (const heading of index.match(/^### .+$/gm).slice(0, 2)) {
+        assert.ok(home.includes(heading), `Homepage should feature ${heading}`)
+      }
       assert.ok(index.includes("](https://github.com/cleisson-labs)"))
       assert.ok(index.includes("](https://github.com/cleisson-labs/.github)"))
       for (const tool of ["kitmux", "teams-mcp", "file-system-mcp"]) {
@@ -37,9 +41,6 @@ export function registerProjectPublicationContracts({ fetchText, mainHtml }) {
     })
     test(`Hercília Construções publishes equivalent HTML, Markdown and REST data in ${locale}`, async () => {
       const pathname = `/${locale}/projects/${slug}`
-      const home = await fetchText(`/${locale}.md`)
-      assert.ok(home.body.includes(`](${pathname})`))
-      assert.ok(home.body.includes(`](/${locale}/projects/kitmux)`))
       const html = await fetchText(pathname)
       assert.equal(html.response.status, 200, pathname)
       assert.match(mainHtml(html.body), /<h1\b[^>]*>Hercília Construções<\/h1>/)
