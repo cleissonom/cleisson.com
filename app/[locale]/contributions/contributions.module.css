@@ -67,10 +67,6 @@
   line-height: 1.18;
 }
 
-.change p {
-  color: var(--muted);
-}
-
 .source a {
   color: var(--accent);
   font-weight: 600;

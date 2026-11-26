@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test"
 
+import { getContributions } from "../../data/contributions.ts"
+
 for (const theme of ["light", "dark"]) {
   test(`each project has one readable identity and one working local mark in ${theme} mode`, async ({
     page
@@ -9,7 +11,7 @@ for (const theme of ["light", "dark"]) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme)
 
     const contributions = page.locator("main li").filter({ has: page.locator("h2") })
-    await expect(contributions).toHaveCount(3)
+    await expect(contributions).toHaveCount(getContributions("en-US").length)
     for (const item of await contributions.all()) {
       const mark = item.locator("img:visible")
       await expect(mark).toHaveCount(1)

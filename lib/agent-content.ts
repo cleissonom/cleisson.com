@@ -168,7 +168,6 @@ function contributionsMarkdown(locale: Locale): string {
     return document(
       `## ${entry.project} — ${entry.title}`,
       entry.organization,
-      entry.summary,
       `${copy.mergedLabel} ${mergedDate} · [${copy.pullRequestLabel} #${entry.number}](${entry.url})`
     ).trim()
   })

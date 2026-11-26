@@ -16,9 +16,9 @@ import styles from "./contributions.module.css"
 type PageProps = { params: Promise<{ locale: string }> }
 
 const logos = {
-  "aws-cookie-expiry": { name: "aws", width: 72, height: 43, dark: true },
-  "netflix-hardware-filters": { name: "netflix", width: 26, height: 47, dark: false },
-  "django-template-blocks": { name: "django", width: 90, height: 32, dark: true }
+  "Amazon Web Services": { name: "aws", width: 72, height: 43, dark: true },
+  "Netflix Skunkworks": { name: "netflix", width: 26, height: 47, dark: false },
+  "Django Software Foundation": { name: "django", width: 90, height: 32, dark: true }
 } as const
 
 export async function generateMetadata({ params }: PageProps) {
@@ -33,8 +33,8 @@ export async function generateMetadata({ params }: PageProps) {
   })
 }
 
-function ProjectMark({ id }: { id: Contribution["id"] }) {
-  const logo = logos[id]
+function ProjectMark({ organization }: { organization: Contribution["organization"] }) {
+  const logo = logos[organization]
   return (
     <span className={styles.mark} aria-hidden="true">
       <Image
@@ -69,7 +69,7 @@ function ContributionRow({ item, locale }: { item: Contribution; locale: Locale 
   return (
     <li className={styles.row}>
       <div className={styles.identity}>
-        <ProjectMark id={item.id} />
+        <ProjectMark organization={item.organization} />
         <div>
           <p className={styles.project}>{item.project}</p>
           <p className={styles.organization}>{item.organization}</p>
@@ -77,7 +77,6 @@ function ContributionRow({ item, locale }: { item: Contribution; locale: Locale 
       </div>
       <div className={styles.change}>
         <h2 id={item.id}>{item.title}</h2>
-        <p>{item.summary}</p>
       </div>
       <div className={styles.source}>
         <a href={item.url}>

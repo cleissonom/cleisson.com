@@ -290,7 +290,6 @@ function contributionRecords(locale: Locale): SearchRecord[] {
   const copy = getContributionsCopy(locale)
   return getContributions(locale).map((entry) => {
     const context = [
-      entry.title,
       entry.project,
       entry.organization,
       `${entry.repository}#${entry.number}`,
@@ -301,11 +300,11 @@ function contributionRecords(locale: Locale): SearchRecord[] {
       {
         ...sourceUrls(locale, "/contributions"),
         evidenceType: "inspectable_public_artifact",
-        claim: entry.summary,
+        claim: entry.title,
         context,
         artifactUrls: [entry.url]
       },
-      `${copy.title} ${entry.summary} ${entry.repository} ${context}`
+      `${copy.title} ${entry.title} ${entry.repository} ${context}`
     )
   })
 }

@@ -47,7 +47,6 @@ export function registerContributionContracts({ fetchText, mainHtml }) {
         })
         assert.ok(explicit.body.includes(`${copy.mergedLabel} ${date}`))
         assert.ok(explicit.body.includes(contribution.title))
-        assert.ok(explicit.body.includes(contribution.summary))
         assert.ok(explicit.body.includes(`#${contribution.number}`))
       }
       const sitemap = await fetchText("/sitemap.xml")
