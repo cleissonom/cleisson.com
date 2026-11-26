@@ -5,24 +5,33 @@
   border-bottom: 1px solid var(--border);
 }
 
-.row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: start;
-  padding-block: var(--space-8);
+.group {
   border-top: 1px solid var(--border);
 }
 
-.identity {
-  display: flex;
-  gap: var(--space-4);
+.summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "mark identity chevron"
+    "mark stats chevron";
   align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-6);
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  background: var(--surface);
 }
 
 .mark {
   display: flex;
-  flex: none;
+  grid-area: mark;
   align-items: center;
   justify-content: center;
   width: 5.75rem;
@@ -43,77 +52,113 @@
   display: block;
 }
 
+.identity {
+  display: grid;
+  grid-area: identity;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
 .project {
   font-weight: 600;
   line-height: 1.35;
 }
 
 .organization,
-.source p {
-  margin-top: var(--space-1);
+.stats,
+.meta,
+.note {
   color: var(--muted);
   font-size: 0.875rem;
   line-height: 1.5;
 }
 
-.change {
-  display: grid;
-  gap: var(--space-2);
-  max-width: var(--reading-width);
+.stats {
+  display: flex;
+  grid-area: stats;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  font-variant-numeric: tabular-nums;
 }
 
-.change h2 {
-  font-size: clamp(1.35rem, 2.25vw, 1.8rem);
-  line-height: 1.18;
-}
-
-.change p {
+.chevron {
+  grid-area: chevron;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
   color: var(--muted);
+  transform: rotate(45deg);
 }
 
-.source a {
+.group[open] > .summary .chevron {
+  color: var(--accent);
+  transform: rotate(-45deg);
+}
+
+.content {
+  display: grid;
+  gap: var(--space-4);
+  padding-bottom: var(--space-8);
+}
+
+.repository,
+.meta a {
   color: var(--accent);
   font-weight: 600;
 }
 
-.source a:hover {
+.repository:hover,
+.meta a:hover {
   text-decoration-thickness: 2px;
 }
 
-.source p {
+.repository {
+  justify-self: start;
+}
+
+.pullRequests {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pullRequest {
+  display: grid;
+  gap: var(--space-1);
+  max-width: var(--reading-width);
+}
+
+.title {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.meta {
   font-variant-numeric: tabular-nums;
 }
 
-@media (min-width: 42rem) {
-  .row {
-    grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 2fr);
-    column-gap: var(--space-8);
-  }
-
-  .identity {
-    grid-row: span 2;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-  }
-
-  .mark {
-    justify-content: flex-start;
-  }
+.note {
+  margin-top: var(--space-4);
 }
 
-@media (min-width: 62rem) {
-  .row {
-    grid-template-columns: minmax(10rem, 1fr) minmax(0, 2.25fr) minmax(10rem, 0.8fr);
-    column-gap: var(--space-12);
+@media (min-width: 42rem) {
+  .summary {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "mark identity stats chevron";
+    column-gap: var(--space-6);
+    padding-inline: var(--space-2);
   }
 
-  .identity {
-    grid-row: auto;
-  }
-
-  .source {
-    justify-self: end;
+  .stats {
+    flex-direction: column;
+    align-items: flex-end;
     text-align: end;
+  }
+
+  .content {
+    padding-inline: calc(var(--space-2) + 5.75rem + var(--space-6)) var(--space-2);
   }
 }

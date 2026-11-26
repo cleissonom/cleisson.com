@@ -1,6 +1,13 @@
 import "server-only"
 
-import { getContributions, getContributionsCopy } from "@/data/contributions"
+import {
+  STARS_CHECKED_AT,
+  formatPullRequestCount,
+  formatStars,
+  getContributionGroups,
+  getContributionsCopy,
+  type Contribution
+} from "@/data/contributions"
 import { getDictionary } from "@/data/i18n"
 import { labsInfrastructureUrl, labsOrganizationUrl, labsProjectCopy } from "@/data/labs-projects"
 import { get4096Dictionary } from "@/data/merge-4096"
@@ -157,22 +164,35 @@ function projectsMarkdown(locale: Locale): string {
   )
 }
 
+const contributionDateOptions = { day: "numeric", month: "short", year: "numeric" } as const
+
+function contributionLine(entry: Contribution, locale: Locale): string {
+  const copy = getContributionsCopy(locale)
+  const mergedDate = formatContentDate(entry.mergedAt, locale, contributionDateOptions)
+  return `${entry.title} — ${copy.mergedLabel} ${mergedDate} · [${copy.pullRequestLabel} #${entry.number}](${entry.url})`
+}
+
 function contributionsMarkdown(locale: Locale): string {
   const copy = getContributionsCopy(locale)
-  const entries = getContributions(locale).map((entry) => {
-    const mergedDate = formatContentDate(entry.mergedAt, locale, {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    })
-    return document(
-      `## ${entry.project} — ${entry.title}`,
-      entry.organization,
-      entry.summary,
-      `${copy.mergedLabel} ${mergedDate} · [${copy.pullRequestLabel} #${entry.number}](${entry.url})`
+  const groups = getContributionGroups(locale).map((group) =>
+    document(
+      `## ${group.project}`,
+      [
+        group.organization,
+        `[${group.repository}](${group.url})`,
+        formatStars(group.stars, locale),
+        formatPullRequestCount(group.contributions.length, locale)
+      ].join(" · "),
+      bulletList(group.contributions.map((entry) => contributionLine(entry, locale)))
     ).trim()
-  })
-  return document(`# ${copy.title}`, `> ${copy.lead}`, ...entries)
+  )
+  const starsChecked = formatContentDate(STARS_CHECKED_AT, locale, contributionDateOptions)
+  return document(
+    `# ${copy.title}`,
+    `> ${copy.lead}`,
+    ...groups,
+    `${copy.starsCheckedLabel} ${starsChecked}.`
+  )
 }
 
 function gameIndex(locale: Locale): string {

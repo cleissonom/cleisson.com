@@ -3,7 +3,16 @@ import { notFound } from "next/navigation"
 
 import { Lead, PageHeader, SectionStack } from "@/components/design-system"
 import { JsonLd } from "@/components/json-ld"
-import { getContributions, getContributionsCopy, type Contribution } from "@/data/contributions"
+import {
+  STARS_CHECKED_AT,
+  formatPullRequestCount,
+  formatStars,
+  getContributionGroups,
+  getContributions,
+  getContributionsCopy,
+  type Contribution,
+  type ContributionGroup
+} from "@/data/contributions"
 import { getDictionary } from "@/data/i18n"
 import { formatContentDate } from "@/lib/display-date"
 import { isLocale, type Locale } from "@/lib/i18n"
@@ -15,10 +24,12 @@ import styles from "./contributions.module.css"
 
 type PageProps = { params: Promise<{ locale: string }> }
 
+const dateOptions = { day: "numeric", month: "short", year: "numeric" } as const
+
 const logos = {
-  "aws-cookie-expiry": { name: "aws", width: 72, height: 43, dark: true },
-  "netflix-hardware-filters": { name: "netflix", width: 26, height: 47, dark: false },
-  "django-template-blocks": { name: "django", width: 90, height: 32, dark: true }
+  "Amazon Web Services": { name: "aws", width: 72, height: 43, dark: true },
+  "Netflix Skunkworks": { name: "netflix", width: 26, height: 47, dark: false },
+  "Django Software Foundation": { name: "django", width: 90, height: 32, dark: true }
 } as const
 
 export async function generateMetadata({ params }: PageProps) {
@@ -33,8 +44,8 @@ export async function generateMetadata({ params }: PageProps) {
   })
 }
 
-function ProjectMark({ id }: { id: Contribution["id"] }) {
-  const logo = logos[id]
+function ProjectMark({ organization }: { organization: Contribution["organization"] }) {
+  const logo = logos[organization]
   return (
     <span className={styles.mark} aria-hidden="true">
       <Image
@@ -59,34 +70,62 @@ function ProjectMark({ id }: { id: Contribution["id"] }) {
   )
 }
 
-function ContributionRow({ item, locale }: { item: Contribution; locale: Locale }) {
+function PullRequestItem({ item, locale }: { item: Contribution; locale: Locale }) {
   const copy = getContributionsCopy(locale)
-  const date = formatContentDate(item.mergedAt, locale, {
-    day: "numeric",
-    month: "short",
-    year: "numeric"
-  })
   return (
-    <li className={styles.row}>
-      <div className={styles.identity}>
-        <ProjectMark id={item.id} />
-        <div>
-          <p className={styles.project}>{item.project}</p>
-          <p className={styles.organization}>{item.organization}</p>
-        </div>
-      </div>
-      <div className={styles.change}>
-        <h2 id={item.id}>{item.title}</h2>
-        <p>{item.summary}</p>
-      </div>
-      <div className={styles.source}>
+    <li className={styles.pullRequest}>
+      <p className={styles.title}>{item.title}</p>
+      <p className={styles.meta}>
         <a href={item.url}>
           {copy.pullRequestLabel} #{item.number}
         </a>
-        <p>
-          {copy.mergedLabel} <time dateTime={item.mergedAt}>{date}</time>
-        </p>
-      </div>
+        {` · ${copy.mergedLabel} `}
+        <time dateTime={item.mergedAt}>
+          {formatContentDate(item.mergedAt, locale, dateOptions)}
+        </time>
+      </p>
+    </li>
+  )
+}
+
+function RepositoryGroup({
+  group,
+  locale,
+  open
+}: {
+  group: ContributionGroup
+  locale: Locale
+  open: boolean
+}) {
+  return (
+    <li>
+      <details className={styles.group} open={open}>
+        <summary className={styles.summary}>
+          <ProjectMark organization={group.organization} />
+          <span className={styles.identity}>
+            <span className={styles.project}>{group.project}</span>
+            <span className={styles.organization}>{group.organization}</span>
+          </span>
+          <span className={styles.stats}>
+            <span>{formatPullRequestCount(group.contributions.length, locale)}</span>
+            <span>
+              <span aria-hidden="true">★ </span>
+              {formatStars(group.stars, locale)}
+            </span>
+          </span>
+          <span className={styles.chevron} aria-hidden="true" />
+        </summary>
+        <div className={styles.content}>
+          <a className={styles.repository} href={group.url}>
+            {group.repository}
+          </a>
+          <ol className={styles.pullRequests} role="list">
+            {group.contributions.map((item) => (
+              <PullRequestItem key={item.id} item={item} locale={locale} />
+            ))}
+          </ol>
+        </div>
+      </details>
     </li>
   )
 }
@@ -94,13 +133,14 @@ function ContributionRow({ item, locale }: { item: Contribution; locale: Locale 
 export default async function ContributionsPage({ params }: PageProps) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const { title, lead } = getContributionsCopy(locale)
+  const { title, lead, starsCheckedLabel } = getContributionsCopy(locale)
   const rows = getContributions(locale)
   const url = absoluteUrl(`/${locale}/contributions`)
   const breadcrumbs = breadcrumbJsonLd([
     { name: getDictionary(locale).ui.nav.home, url: absoluteUrl(`/${locale}`) },
     { name: title, url }
   ])
+  const starsChecked = formatContentDate(STARS_CHECKED_AT, locale, dateOptions)
   return (
     <SectionStack aria-labelledby="contributions-title">
       <JsonLd id="contributions-breadcrumb-jsonld" data={breadcrumbs} />
@@ -128,11 +168,19 @@ export default async function ContributionsPage({ params }: PageProps) {
         <h1 id="contributions-title">{title}</h1>
         <Lead>{lead}</Lead>
       </PageHeader>
-      <ul className={styles.list} role="list">
-        {rows.map((item) => (
-          <ContributionRow key={item.id} item={item} locale={locale} />
-        ))}
-      </ul>
+      <div>
+        <ul className={styles.list} role="list">
+          {getContributionGroups(locale).map((group, index) => (
+            <RepositoryGroup
+              key={group.repository}
+              group={group}
+              locale={locale}
+              open={index === 0}
+            />
+          ))}
+        </ul>
+        <p className={styles.note}>{`${starsCheckedLabel} ${starsChecked}.`}</p>
+      </div>
     </SectionStack>
   )
 }

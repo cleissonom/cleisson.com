@@ -333,8 +333,8 @@ test("merged upstream PRs have matching localized REST and MCP evidence", async 
         const match = topic.evidence.find((item) => item.artifactUrls.includes(entry.url))
         assert.equal(match?.evidenceType, "inspectable_public_artifact", entry.repository)
         assert.equal(match.matchStatus, "direct")
-        assert.equal(match.claim, entry.summary)
-        assert.ok(match.context.includes(entry.title))
+        assert.equal(match.claim, entry.title)
+        assert.ok(match.context.includes(`${entry.repository}#${entry.number}`))
         assert.equal(match.sourceUrl, canonical)
         assert.equal(match.sourceMarkdownUrl, uri)
       }

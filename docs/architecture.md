@@ -40,7 +40,7 @@ Pages and layouts render on the server. Locale/detail static parameters allow pr
 
 [`lib/content.ts`](../lib/content.ts) reads from the repository root and sorts entries. [`lib/content-source.ts`](../lib/content-source.ts) shares YAML-only parsing and blog validation with the PDF tools. [`next.config.mjs`](../next.config.mjs) includes `content/**/*.md` in server output tracing so deployed handlers can read it. Preserve that inclusion when organizing content.
 
-Upstream contributions live in [the localized contribution records](../data/contributions.ts). The contributions page, Markdown, REST evidence search and MCP use those records. Each entry links to its upstream pull request and stores the merge timestamp reported by GitHub.
+Upstream contributions live in [the localized contribution records](../data/contributions.ts). The contributions page, Markdown, REST evidence search and MCP use those records. Each entry has a short localized title, links to its upstream pull request and stores the merge timestamp reported by GitHub. The page groups entries by repository and shows a dated snapshot of each repository's GitHub stars; refresh `stars` and `STARS_CHECKED_AT` together, for example with `gh api repos/<owner>/<repo> --jq .stargazers_count`. Marks are shared per organization; a new organization needs one on the contributions page and in [the artwork sources](../public/contributions/SOURCES.md).
 
 ## Authoring and published assets
 

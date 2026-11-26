@@ -1,98 +1,108 @@
 import type { Locale } from "@/lib/i18n"
 
-type ContributionId = "aws-cookie-expiry" | "netflix-hardware-filters" | "django-template-blocks"
+type Organization = "Amazon Web Services" | "Netflix Skunkworks" | "Django Software Foundation"
+
+type RepositoryDetails = {
+  project: string
+  organization: Organization
+  stars: number
+}
+
+// GitHub stargazer counts read on this date. Refresh both when adding a contribution.
+export const STARS_CHECKED_AT = "2026-11-26"
+
+const repositories = {
+  "django/django": {
+    project: "Django",
+    organization: "Django Software Foundation",
+    stars: 91916
+  },
+  "aws-powertools/powertools-lambda-python": {
+    project: "Powertools for AWS Lambda (Python)",
+    organization: "Amazon Web Services",
+    stars: 3306
+  },
+  "Netflix-Skunkworks/service-capacity-modeling": {
+    project: "Service Capacity Modeling",
+    organization: "Netflix Skunkworks",
+    stars: 96
+  }
+} satisfies Record<string, RepositoryDetails>
+
+type Repository = keyof typeof repositories
 
 export type Contribution = {
-  id: ContributionId
-  organization: string
+  id: string
+  repository: Repository
   project: string
-  repository: string
+  organization: Organization
   number: number
   mergedAt: string
   status: "merged"
   url: string
   title: string
-  summary: string
 }
 
-type ContributionRecord = Omit<Contribution, "url" | "status" | "title" | "summary"> & {
-  translations: Record<Locale, Pick<Contribution, "title" | "summary">>
+export type ContributionGroup = RepositoryDetails & {
+  repository: Repository
+  url: string
+  contributions: Contribution[]
 }
 
+type ContributionRecord = Pick<Contribution, "repository" | "number" | "mergedAt"> & {
+  titles: Record<Locale, string>
+}
+
+// Newest first. Keep each entry to a short title; the pull request has the details.
 const records: ContributionRecord[] = [
   {
-    id: "aws-cookie-expiry",
-    organization: "Amazon Web Services",
-    project: "Powertools for AWS Lambda (Python)",
+    repository: "django/django",
+    number: 22332,
+    mergedAt: "2026-11-26T14:11:53Z",
+    titles: {
+      "en-US": "Preserve the order of sliced querysets in model formsets",
+      "pt-BR": "Preservar a ordem de querysets fatiados nos formsets de modelo",
+      "es-ES": "Conservar el orden de los querysets rebanados en los formsets de modelo"
+    }
+  },
+  {
+    repository: "django/django",
+    number: 22333,
+    mergedAt: "2026-11-26T10:41:24Z",
+    titles: {
+      "en-US": "Keep deferred foreign keys from breaking the admin changelist",
+      "pt-BR": "Evitar que chaves estrangeiras adiadas quebrem a listagem do admin",
+      "es-ES": "Evitar que las claves foráneas diferidas rompan el listado del admin"
+    }
+  },
+  {
     repository: "aws-powertools/powertools-lambda-python",
     number: 8876,
     mergedAt: "2026-11-25T13:07:17Z",
-    translations: {
-      "en-US": {
-        title: "Keep cookie expiry times correct across time zones",
-        summary:
-          "The event handler now converts expiry times to GMT before sending a cookie. It also uses English weekday and month names, as HTTP requires, regardless of the server’s locale."
-      },
-      "pt-BR": {
-        title: "Corrigir a expiração de cookies entre fusos horários",
-        summary:
-          "O manipulador de eventos agora converte o horário de expiração para GMT antes de enviar o cookie. Os nomes dos dias e meses saem em inglês, como exige o HTTP, independentemente do idioma do servidor."
-      },
-      "es-ES": {
-        title: "Corregir la caducidad de las cookies entre husos horarios",
-        summary:
-          "El gestor de eventos convierte la fecha de caducidad a GMT antes de enviar la cookie. Los nombres de los días y los meses se escriben en inglés, como exige HTTP, independientemente del idioma del servidor."
-      }
+    titles: {
+      "en-US": "Keep cookie expiry times correct across time zones",
+      "pt-BR": "Corrigir a expiração de cookies entre fusos horários",
+      "es-ES": "Corregir la caducidad de las cookies entre husos horarios"
     }
   },
   {
-    id: "netflix-hardware-filters",
-    organization: "Netflix Skunkworks",
-    project: "Service Capacity Modeling",
     repository: "Netflix-Skunkworks/service-capacity-modeling",
     number: 373,
     mergedAt: "2026-11-24T05:20:39Z",
-    translations: {
-      "en-US": {
-        title: "Apply hardware filters to mean and percentile plans",
-        summary:
-          "The capacity planner could recommend disks or instances outside the requested hardware pool. Its mean and percentile estimates now respect the same drive and lifecycle filters as the least-regret plan."
-      },
-      "pt-BR": {
-        title: "Respeitar os filtros de hardware nas médias e nos percentis",
-        summary:
-          "O planejador de capacidade podia recomendar discos ou instâncias fora do conjunto solicitado. As estimativas de média e percentis agora usam os mesmos filtros de disco e de ciclo de vida do plano de menor arrependimento."
-      },
-      "es-ES": {
-        title: "Aplicar los filtros de hardware a las medias y los percentiles",
-        summary:
-          "El planificador de capacidad podía recomendar discos o instancias fuera del conjunto solicitado. Las estimaciones de medias y percentiles ahora respetan los mismos filtros de disco y de ciclo de vida que el plan de mínimo arrepentimiento."
-      }
+    titles: {
+      "en-US": "Apply hardware filters to mean and percentile plans",
+      "pt-BR": "Respeitar os filtros de hardware nas médias e nos percentis",
+      "es-ES": "Aplicar los filtros de hardware a las medias y los percentiles"
     }
   },
   {
-    id: "django-template-blocks",
-    organization: "Django Software Foundation",
-    project: "Django",
     repository: "django/django",
     number: 22322,
     mergedAt: "2026-11-23T14:43:19Z",
-    translations: {
-      "en-US": {
-        title: "Match the right closing tag in Django templates",
-        summary:
-          "Fixed how the template parser closes comment and verbatim blocks. With multiline tags disabled, a closing tag split across lines can no longer end the block prematurely."
-      },
-      "pt-BR": {
-        title: "Reconhecer a tag de fechamento correta nos templates do Django",
-        summary:
-          "Corrigi a leitura dos blocos comment e verbatim. Quando as tags de várias linhas estão desativadas, uma tag de fechamento dividida em duas linhas já não encerra o bloco antes da hora."
-      },
-      "es-ES": {
-        title: "Reconocer la etiqueta de cierre correcta en las plantillas de Django",
-        summary:
-          "Corregí la lectura de los bloques comment y verbatim. Cuando las etiquetas multilínea están desactivadas, una etiqueta de cierre dividida en dos líneas ya no termina el bloque antes de tiempo."
-      }
+    titles: {
+      "en-US": "Match the right closing tag in Django templates",
+      "pt-BR": "Reconhecer a tag de fechamento correta nos templates do Django",
+      "es-ES": "Reconocer la etiqueta de cierre correcta en las plantillas de Django"
     }
   }
 ]
@@ -102,32 +112,79 @@ const copy = {
     title: "Open-source contributions",
     lead: "Fixes I’ve contributed to open-source projects. The pull requests link to the patches and the tests that cover them.",
     mergedLabel: "Merged",
-    pullRequestLabel: "Pull request"
+    pullRequestLabel: "Pull request",
+    pullRequestCount: { one: "merged pull request", other: "merged pull requests" },
+    starsLabel: "GitHub stars",
+    starsCheckedLabel: "Star counts as of"
   },
   "pt-BR": {
     title: "Contribuições de código aberto",
     lead: "Correções que enviei a projetos de código aberto. Os pull requests mostram o que mudou e os testes que cobrem cada correção.",
     mergedLabel: "Integrado em",
-    pullRequestLabel: "Pull request"
+    pullRequestLabel: "Pull request",
+    pullRequestCount: { one: "pull request integrado", other: "pull requests integrados" },
+    starsLabel: "estrelas no GitHub",
+    starsCheckedLabel: "Estrelas contadas em"
   },
   "es-ES": {
     title: "Contribuciones al código abierto",
     lead: "Correcciones que he aportado a proyectos de código abierto. Los pull requests muestran los cambios y las pruebas que cubren cada corrección.",
     mergedLabel: "Integrado el",
-    pullRequestLabel: "Pull request"
+    pullRequestLabel: "Pull request",
+    pullRequestCount: { one: "pull request integrado", other: "pull requests integrados" },
+    starsLabel: "estrellas en GitHub",
+    starsCheckedLabel: "Estrellas contadas el"
   }
 } satisfies Record<
   Locale,
-  { title: string; lead: string; mergedLabel: string; pullRequestLabel: string }
+  {
+    title: string
+    lead: string
+    mergedLabel: string
+    pullRequestLabel: string
+    pullRequestCount: { one: string; other: string }
+    starsLabel: string
+    starsCheckedLabel: string
+  }
 >
 
 export function getContributions(locale: Locale): Contribution[] {
-  return records.map(({ translations, ...record }) => ({
+  return records.map(({ titles, ...record }) => ({
     ...record,
-    ...translations[locale],
+    id: `${record.repository}#${record.number}`,
+    project: repositories[record.repository].project,
+    organization: repositories[record.repository].organization,
+    title: titles[locale],
     status: "merged",
     url: `https://github.com/${record.repository}/pull/${record.number}`
   }))
+}
+
+// Groups follow their newest contribution, because the records are newest first.
+export function getContributionGroups(locale: Locale): ContributionGroup[] {
+  const groups = new Map<Repository, ContributionGroup>()
+  for (const contribution of getContributions(locale)) {
+    const { repository } = contribution
+    const group = groups.get(repository) ?? {
+      ...repositories[repository],
+      repository,
+      url: `https://github.com/${repository}`,
+      contributions: []
+    }
+    group.contributions.push(contribution)
+    groups.set(repository, group)
+  }
+  return [...groups.values()]
+}
+
+export function formatPullRequestCount(count: number, locale: Locale): string {
+  const { one, other } = copy[locale].pullRequestCount
+  return `${count} ${new Intl.PluralRules(locale).select(count) === "one" ? one : other}`
+}
+
+export function formatStars(stars: number, locale: Locale): string {
+  const count = new Intl.NumberFormat(locale, { notation: "compact", maximumFractionDigits: 1 })
+  return `${count.format(stars)} ${copy[locale].starsLabel}`
 }
 
 export function getContributionsCopy(locale: Locale) {
