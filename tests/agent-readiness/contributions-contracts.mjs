@@ -1,7 +1,14 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
 
-import { getContributions, getContributionsCopy } from "../../data/contributions.ts"
+import {
+  STARS_CHECKED_AT,
+  formatPullRequestCount,
+  formatStars,
+  getContributionGroups,
+  getContributions,
+  getContributionsCopy
+} from "../../data/contributions.ts"
 import { formatContentDate } from "../../lib/display-date.ts"
 
 export function registerContributionContracts({ fetchText, mainHtml }) {
@@ -49,6 +56,19 @@ export function registerContributionContracts({ fetchText, mainHtml }) {
         assert.ok(explicit.body.includes(contribution.title))
         assert.ok(explicit.body.includes(`#${contribution.number}`))
       }
+      for (const group of getContributionGroups(locale)) {
+        const stars = formatStars(group.stars, locale)
+        const count = formatPullRequestCount(group.contributions.length, locale)
+        assert.ok(page.includes(`href="${group.url}"`) && explicit.body.includes(`](${group.url})`))
+        assert.ok(page.includes(stars) && explicit.body.includes(stars), stars)
+        assert.ok(page.includes(count) && explicit.body.includes(count), count)
+      }
+      const checked = `${copy.starsCheckedLabel} ${formatContentDate(STARS_CHECKED_AT, locale, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      })}`
+      assert.ok(page.includes(checked) && explicit.body.includes(checked), checked)
       const sitemap = await fetchText("/sitemap.xml")
       assert.ok(sitemap.body.includes(`<loc>${canonical}</loc>`))
       const instructions = await fetchText("/llms.txt")
