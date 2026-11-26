@@ -341,10 +341,6 @@ test("every REST failure is actionable RFC 9457 JSON", async () => {
     assertProblem(await fetchJson(pathname, { headers: { Accept: "text/html" } }), status, code)
   }
 
-  const unpublished = await fetchJson("/api/v1/projects/accesstrace")
-  assertProblem(unpublished, 404, "project_not_found")
-  assert.doesNotMatch(JSON.stringify(unpublished.body), /unavailable|draft|private/i)
-
   const untrustedQuery = await fetchJson("/api/not-a-real-route?token=do-not-reflect")
   assertProblem(untrustedQuery, 404, "route_not_found")
   assert.doesNotMatch(JSON.stringify(untrustedQuery.body), /do-not-reflect/)

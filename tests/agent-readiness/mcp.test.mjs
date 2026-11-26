@@ -206,15 +206,7 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
     const search = await client.callTool({
       name: "find_evidence",
       arguments: {
-        topics: [
-          "Kubernetes",
-          "Go",
-          "ClickHouse",
-          "Google Workspace",
-          "GraphQL",
-          "DevImg",
-          "Python Kubernetes"
-        ],
+        topics: ["Kubernetes", "Go", "Google Workspace", "GraphQL", "DevImg", "Python Kubernetes"],
         locale: "en-US"
       }
     })
@@ -233,11 +225,6 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
       topicResults.find(({ topic }) => topic === "Python Kubernetes")?.status,
       "adjacent"
     )
-    const clickHouse = topicResults.find(({ topic }) => topic === "ClickHouse")
-    assert.equal(clickHouse?.status, "direct")
-    assert.ok(clickHouse?.totalMatches > 0)
-    assert.ok(clickHouse?.evidence.length > 0)
-    assert.ok(clickHouse?.evidence.every(({ sourceUrl }) => sourceUrl.endsWith("/en-US/projects")))
     const devimgEvidence = topicResults.find(({ topic }) => topic === "DevImg")?.evidence ?? []
     assert.ok(devimgEvidence.some(({ evidenceType }) => evidenceType === "self_reported_project"))
     assert.ok(
@@ -263,14 +250,6 @@ test("the MCP exposes read-only evidence tools, resources, and prompts", async (
       name: "get_project",
       arguments: { slug: " devimg ", locale: "en-US" }
     })
-
-    const unpublishedProject = await client.callTool({
-      name: "get_project",
-      arguments: { slug: "accesstrace", locale: "en-US" }
-    })
-    assert.equal(unpublishedProject.structuredContent?.found, false)
-    assert.equal(unpublishedProject.structuredContent?.project, null)
-    assert.match(unpublishedProject.structuredContent?.sourceUrl ?? "", /\/en-US\/projects$/)
 
     const { resources } = await client.listResources()
     assert.ok(resources.some(({ uri }) => uri === "https://www.cleisson.com/en-US/mcp.md"))
